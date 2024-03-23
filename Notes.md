@@ -85,6 +85,19 @@ When working with an array, accessing (reading/writing/deleting) any given eleme
 
 ## Search
 
+### Linear Search
+
+A simple linear search will check all the elements of an array and return true if it matches an input to search for, if it cannot find a match based on the input we return false, in the following example our array is the `haystack` and the input we are searching for is the `needle`:
+
+```zig
+pub fn linearSearch(haystack: []isize, needle: isize) bool {
+    for (haystack) |e| if (e == needle) return true;
+    return false;
+}
+```
+
+This example is O(N) complexity, as the complexity increases with the size of the input. A larger array to search through would linearly increase the time and memory complexity of the search.
+
 ## Sort
 
 ## Arrays

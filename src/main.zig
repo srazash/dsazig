@@ -1,4 +1,7 @@
 const std = @import("std");
+const testing = std.testing;
+
+const algo = @import("algorithms/algorithms.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -20,6 +23,8 @@ pub fn main() !void {
     std.debug.print("my_array -> {any}\n", .{my_array});
 
     std.debug.print("{}\n", .{sumCharCodes("Ryan")});
+
+    std.debug.print("492 in my_array? -> {}\n", .{algo.linearSearch(my_array[0..], 492)});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -37,4 +42,10 @@ fn sumCharCodesE(n: []const u8) usize {
         sum += char;
     }
     return sum;
+}
+
+test "test linear search" {
+    var my_array = [_]isize{ 1, 2, 3, 4, 5 };
+    const result = algo.linearSearch(&my_array, 3);
+    try testing.expect(result == true);
 }
