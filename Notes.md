@@ -79,6 +79,10 @@ Quicksort conforms to O(NlogN).
 
 Binary tree search conforms to O(logN).
 
+Constant Time Operations:
+
+When working with an array, accessing (reading/writing/deleting) any given element is an O(1) constant time operation because the length of the array is known and cannot change, so accessing any element will take the same amount of time, if we needed to iterate through every element that would be an O(N) where N is affected by the length of an array, but the increase in time would grow linearly.
+
 ## Search
 
 ## Sort
