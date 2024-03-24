@@ -98,6 +98,16 @@ pub fn linearSearch(haystack: []isize, needle: isize) bool {
 
 This example is O(N) complexity, as the complexity increases with the size of the input. A larger array to search through would linearly increase the time and memory complexity of the search.
 
+### Binary Search
+
+Binary search needs the input to be ordered before searching begins. This is because, unlike a linear search, we do not check every element of the input, but rather we disregard half of the input based whether the value we're searching for is less than or greater than the value at the middle of the input each time it is halved.
+
+This means our complexity is O(logN), comparing this to O(N) of a linear search, if we had 4096 values, a binary search would complete in a maximum of 12 loops, a linear search would complete in a maximum of 4096 loops.
+
+NOTE: If our input is halved at every loop we're likely dealing with O(logN) or O(NlogN)!
+
+
+
 ## Sort
 
 ## Arrays

@@ -24,7 +24,9 @@ pub fn main() !void {
 
     std.debug.print("{}\n", .{sumCharCodes("Ryan")});
 
-    std.debug.print("492 in my_array? -> {}\n", .{algo.linearSearch(my_array[0..], 492)});
+    std.debug.print("linearSearch: 492 in my_array? -> {}\n", .{algo.linearSearch(my_array[0..], 492)});
+
+    std.debug.print("binarySearch: 492 in my_array? -> {}\n", .{algo.binarySearch(my_array[0..], 492)});
 }
 
 fn sumCharCodes(n: []const u8) usize {
