@@ -106,7 +106,22 @@ This means our complexity is O(logN), comparing this to O(N) of a linear search,
 
 NOTE: If our input is halved at every loop we're likely dealing with O(logN) or O(NlogN)!
 
+Here is the pseudocode for a recursive version of the binary search:
 
+```pseudocode
+binarySearch(array, target, low, high)
+  middle = low + (high - low) / 2
+  value = array[middle]
+
+  while (low < high)
+    if value == target
+      return true
+    else if value > target
+      search(array, target, middle + 1, high)
+    else
+      search(array, target, low, middle)
+  return false
+```
 
 ## Sort
 

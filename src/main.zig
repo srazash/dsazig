@@ -24,9 +24,20 @@ pub fn main() !void {
 
     std.debug.print("{}\n", .{sumCharCodes("Ryan")});
 
-    std.debug.print("linearSearch: 492 in my_array? -> {}\n", .{algo.linearSearch(my_array[0..], 492)});
+    std.debug.print("linearSearch: 492 in my_array? -> {}\n", .{algo.linearSearch(@TypeOf(my_array), my_array, 492)});
 
-    std.debug.print("binarySearch: 492 in my_array? -> {}\n", .{algo.binarySearch(my_array[0..], 492)});
+    std.debug.print("binarySearch: 492 in my_array? -> {}\n", .{algo.binarySearch(@TypeOf(my_array), my_array, 492)});
+
+    var mut_array = [_]u8{ 1, 2, 3, 4, 5 };
+    const imu_array = [_]u8{ 1, 2, 3, 4, 5 };
+
+    std.debug.print("linearSearch: 3 in mut_array? -> {}\n", .{algo.linearSearch(@TypeOf(&mut_array), &mut_array, 3)});
+
+    std.debug.print("linearSearch: 3 in imu_array? -> {}\n", .{algo.linearSearch(@TypeOf(&imu_array), &imu_array, 3)});
+
+    std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array))});
+
+    std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array)).Array.child});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -47,7 +58,7 @@ fn sumCharCodesE(n: []const u8) usize {
 }
 
 test "test linear search" {
-    var my_array = [_]isize{ 1, 2, 3, 4, 5 };
-    const result = algo.linearSearch(&my_array, 3);
+    const my_array = [_]isize{ 1, 2, 3, 4, 5 };
+    const result = algo.linearSearch(@TypeOf(&my_array), &my_array, 3);
     try testing.expect(result == true);
 }
