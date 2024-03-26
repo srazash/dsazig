@@ -109,19 +109,25 @@ NOTE: If our input is halved at every loop we're likely dealing with O(logN) or 
 Here is the pseudocode for a recursive version of the binary search:
 
 ```pseudocode
-binarySearch(array, target, low, high)
-  middle = low + (high - low) / 2
-  value = array[middle]
+binarySearch(haystack, needle)
+  low = 0
+  high = haystack.length
 
   while (low < high)
-    if value == target
+    middle = low + (high - low) / 2
+    value = haystack[middle]
+
+    if value == needle
       return true
-    else if value > target
-      search(array, target, middle + 1, high)
+    else if value > needle
+      high = middle
     else
-      search(array, target, low, middle)
+      low = middle + 1
+
   return false
 ```
+
+### The Two Crystal Ball Problem
 
 ## Sort
 

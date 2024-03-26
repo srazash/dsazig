@@ -6,7 +6,22 @@ pub fn linearSearch(comptime T: type, haystack: T, needle: anytype) bool {
     return false;
 }
 
-pub fn binarySearch(comptime T: type, haystack: T, needle: anytype, low: usize, high: usize) bool {
-    const middle = low + (high - low) / 2;
-    const value = haystack[middle];
+pub fn binarySearch(comptime T: type, haystack: T, needle: anytype) bool {
+    var low: usize = 0;
+    var high: usize = haystack.len;
+
+    while (low < high) {
+        const middle = low + (high - low) / 2;
+        const value = haystack[middle];
+
+        if (value == needle) {
+            return true;
+        } else if (value > needle) {
+            high = middle;
+        } else {
+            low = middle + 1;
+        }
+    }
+
+    return false;
 }
