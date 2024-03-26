@@ -129,6 +129,50 @@ binarySearch(haystack, needle)
 
 ### The Two Crystal Ball Problem
 
+> Given two crystal balls that will break if dropped from a high enough distance, determine the exact spot in which it will break in the most optimised way.
+
+If we think of this in terms of a 100 storey building, what we're trying to establish is the lowest floor at which a crystal ball will break.
+
+In DSA terms, we're looking at an array:
+
+`0 [ f, f . . . f, t, . . . ] n`
+
+At some point in the array, the value that represents a crystal ball breaking will switch from false to true. We are trying to find that point in the most efficient way possible.
+
+If we were to check floor by floor (or array element by array element) when the crystal ball would break we would have a time complexity of O(N), BUT we have TWO crystal balls.
+
+An effective approach that is more efficient than a O(N) approach would be to jump through the values in chunks, and once we get our first "break" we can got to the start of the previous chunk and begin check linearly from there.
+
+A convenient way to do this would be to calculate the square root of N and jump through it that way. While this is not recognised as a standard Big-O notation, it would confirm to O(sqrtN).
+
+This is beacuse at most we jump though the array in blocks of sqrt of N, jump back once a sqrt of N and then check a single block of sqrt of N in a linear fashion.
+
+```zig
+// take in a type (T) and an array of type T (breaks)
+// we will return an optional usize, either the index we start breaking at
+// or null to indicate no breaks were found
+pub fn two_crystal_balls(comptime T: type, breaks: T) ?usize {
+    // calculate our jumps
+    const jump: usize = std.math.floor(std.math.sqrt(breaks.len));
+
+    var i: usize = jump; // set the index to the first jump point
+
+    // loop over the arrays in jumps
+    while (i < breaks.length) : (i += jump) {
+        if (breaks[i]) break; // break out once we find a break (ball 1 gone)
+    }
+
+    i -= jump; // go back one jump
+
+    // loop over the array one element at a time
+    while (i < breaks.length) : (i += 1) {
+        if (breaks[i]) return i; // return the index of the first break (ball 2 gone)
+    }
+
+    return null; // return null if no breaks are found
+}
+```
+
 ## Sort
 
 ## Arrays

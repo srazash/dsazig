@@ -38,6 +38,21 @@ pub fn main() !void {
     std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array))});
 
     std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array)).Array.child});
+
+    var my_breaks = try allocator.alloc(bool, 100);
+    defer allocator.free(my_breaks);
+
+    const breakpoint = 57;
+    for (my_breaks, 0..) |_, i| {
+        if (i < breakpoint) {
+            my_breaks[i] = false;
+        } else {
+            my_breaks[i] = true;
+        }
+    }
+
+    std.debug.print("breakpoint set to {} -> {any}\n", .{ breakpoint, my_breaks });
+    std.debug.print("breakpoint? -> {?}\n", .{algo.twoCrystalBalls(@TypeOf(my_breaks), my_breaks)});
 }
 
 fn sumCharCodes(n: []const u8) usize {
