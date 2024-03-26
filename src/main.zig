@@ -6,10 +6,11 @@ const algo = @import("algorithms/algorithms.zig");
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+    var arena = std.heap.ArenaAllocator.init(gpa.allocator());
+    defer arena.deinit();
+    const allocator = arena.allocator();
 
     var my_array = try allocator.alloc(isize, 1024); // create a 1kb array of isize
-    defer allocator.free(my_array);
 
     var counter: u16 = 0;
 
@@ -40,7 +41,6 @@ pub fn main() !void {
     std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array)).Array.child});
 
     var my_breaks = try allocator.alloc(bool, 100);
-    defer allocator.free(my_breaks);
 
     const breakpoint = 57;
     for (my_breaks, 0..) |_, i| {
