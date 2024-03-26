@@ -72,8 +72,32 @@ fn sumCharCodesE(n: []const u8) usize {
     return sum;
 }
 
+// TESTS
+
 test "test linear search" {
     const my_array = [_]isize{ 1, 2, 3, 4, 5 };
     const result = algo.linearSearch(@TypeOf(&my_array), &my_array, 3);
     try testing.expect(result == true);
+}
+
+test "test binary search" {
+    const my_array = [_]isize{ 2, 4, 6, 8, 10 };
+    const result = algo.binarySearch(@TypeOf(&my_array), &my_array, 8);
+    try testing.expect(result == true);
+}
+
+test "test two crystal balls" {
+    var my_array: [100]bool = undefined;
+    const breakpoint = 69;
+
+    for (my_array, 0..) |_, i| {
+        if (i < breakpoint) {
+            my_array[i] = false;
+        } else {
+            my_array[i] = true;
+        }
+    }
+
+    const result = algo.twoCrystalBalls(@TypeOf(&my_array), &my_array);
+    try testing.expect(result == breakpoint);
 }
