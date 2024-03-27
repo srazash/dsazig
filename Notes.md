@@ -55,6 +55,8 @@ Some common Big-O complexity:
 - O(2^N) grows so quickly it is typically not possible to run on traditional hardware.
 - O(N!) grows so quickly it is typically not possible to run on traditional hardware.
 
+![Comparison of Big-O](big-o.jpg "Comparison of Big-O")
+
 ```zig
 fn sumCharCodesS(n: []const u8) usize {
     var sum: usize = 0;
@@ -174,6 +176,49 @@ pub fn two_crystal_balls(comptime T: type, breaks: T) ?usize {
 ```
 
 ## Sort
+
+### Bubble Sort
+
+In mathematical terms we would describe an array as sorted if all the elements conform to:
+
+`0 [ 1, 2, 3 . . . 8, 9, 10 ] n`
+`Xi <= Xi+1`
+
+The value in any given 'i' position (an element) within an array 'X' must be less than or equal to the value in the next position 'i+1'.
+
+A bubble sort starts at the 0th position and progresses to the end of the array.
+
+```
+0 [ 1, 3, 7, 4, 2 ] n
+    ^
+```
+
+If at any point it encounters a value that is not greater than or equal to itself in the next position, the values are swapped.
+
+```
+0 [ 1, 3, 4, 2, 7 ] n
+             ^
+```
+
+In our example array, once we have reached the second to last position and swapped any values that didn't conform to `Xi <= Xi+1` we have a **more** sorted array, but not a fully sorted array. Once thing we can guarantee is that the largest itemn in our array will be at the end of the array after one iteration, so we can then disregard the last element, and for each iteration we can disregard one less element.
+
+```
+0 [ 1, 3, 4, 2 | 7 ] n
+    ^
+```
+
+We sort again but ignore the last element:
+
+```
+0 [ 1, 3, 2, 4 | 7 ] n
+          ^
+```
+
+And we start the next iteration ignoring the last 2 elements, and so on until the array is fully sorted...
+
+I terms of time complexity, as we progress through our sort we start by going through all elements, N elements, and for each subsequent iteration we go through N-1, N-2, N-3, N-... and so on, until we get to N - N + 1, the final element.
+
+This functions similarly to having a loop within a loop, in that for each individual elemen, we must run through the length of the array to perform the sort. Meaning this algorithm conforms to O(N^2).
 
 ## Arrays
 

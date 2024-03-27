@@ -53,6 +53,22 @@ pub fn main() !void {
 
     std.debug.print("breakpoint set to {} -> {any}\n", .{ breakpoint, my_breaks });
     std.debug.print("breakpoint? -> {?}\n", .{algo.twoCrystalBalls(@TypeOf(my_breaks), my_breaks)});
+
+    var unsorted_array = try allocator.alloc(u8, 10);
+    unsorted_array[0] = 10;
+    unsorted_array[1] = 3;
+    unsorted_array[2] = 5;
+    unsorted_array[3] = 6;
+    unsorted_array[4] = 2;
+    unsorted_array[5] = 4;
+    unsorted_array[6] = 9;
+    unsorted_array[7] = 7;
+    unsorted_array[8] = 1;
+    unsorted_array[9] = 8;
+
+    std.debug.print("unsorted_array before bubble sort -> {any}\n", .{unsorted_array});
+    algo.bubbleSort(@TypeOf(unsorted_array), unsorted_array);
+    std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -100,4 +116,11 @@ test "test two crystal balls" {
 
     const result = algo.twoCrystalBalls(@TypeOf(&my_array), &my_array);
     try testing.expect(result == breakpoint);
+}
+
+test "test bubble sort" {
+    const expect = [_]usize{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    var result = [_]usize{ 10, 3, 5, 6, 2, 4, 9, 7, 1, 8 };
+    algo.bubbleSort(@TypeOf(&result), &result);
+    try testing.expect(std.mem.eql(usize, &result, &expect));
 }
