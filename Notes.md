@@ -220,6 +220,29 @@ I terms of time complexity, as we progress through our sort we start by going th
 
 This functions similarly to having a loop within a loop, in that for each individual elemen, we must run through the length of the array to perform the sort. Meaning this algorithm conforms to O(N^2).
 
+## Linked List Data Structures
+
+Linked List Data Structure:
+
+Linked lists are made up of two things, the list and nodes. Nodes are what store data and can have a pointer to the next and previous nodes (the last node in the list will point to `null` as it's next node). The list simply defines the extry point into the nodes with a `head` which points to the first node.
+
+A list will look like this:
+`(HEAD) -> [0] -> [1] -> [2] -> [3] -> (null)`
+
+The nodes that make it up will be of type Node<T> and contain a value, and a pointer to the next node.
+
+```
+Node<T>
+  value: T
+  next: ?Node<T>
+```
+
+A doubly linked list will also have `prev: ?Node<T>` that points to the previous node (or null if the node is the first in the list).
+
+Insertion and deletion into a linked list can be a very cheap operation as the nodes are individually alloctaed items in memory, and are not part of a contiguous data structure like an array.
+
+Instead an individual node can be inserted or deletion, by updating the next and prev pointers of the neigbouring nodes. These operations are O(1).
+
 ## Arrays
 
 ## Recursion

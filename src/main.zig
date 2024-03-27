@@ -2,6 +2,7 @@ const std = @import("std");
 const testing = std.testing;
 
 const algo = @import("algorithms/algorithms.zig");
+const ds = @import("data_structures/data_structures.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
