@@ -70,6 +70,9 @@ pub fn main() !void {
     std.debug.print("unsorted_array before bubble sort -> {any}\n", .{unsorted_array});
     algo.bubbleSort(@TypeOf(unsorted_array), unsorted_array);
     std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
+
+    const my_list = try ds.LinkedList(usize).init(allocator, 10);
+    std.debug.print("my_list.head.data -> {}\n", .{my_list.head.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -124,4 +127,12 @@ test "test bubble sort" {
     var result = [_]usize{ 10, 3, 5, 6, 2, 4, 9, 7, 1, 8 };
     algo.bubbleSort(@TypeOf(&result), &result);
     try testing.expect(std.mem.eql(usize, &result, &expect));
+}
+
+test "basic linked list" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator, 100);
+    defer my_list.deinit();
+    const result = my_list.head.data;
+    const expect: usize = 100;
+    try testing.expect(result == expect);
 }
