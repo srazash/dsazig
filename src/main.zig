@@ -72,7 +72,11 @@ pub fn main() !void {
     std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
 
     const my_list = try ds.LinkedList(usize).init(allocator, 10);
-    std.debug.print("my_list.head.data -> {}\n", .{my_list.head.data});
+    std.debug.print("my_list.len -> {}\n", .{my_list.len});
+    std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
+    std.debug.print("my_list.head.addr -> {}\n", .{&my_list.head.?.data});
+    std.debug.print("my_list.tail.data -> {}\n", .{my_list.tail.?.data});
+    std.debug.print("my_list.tail.addr -> {}\n", .{&my_list.tail.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -132,7 +136,7 @@ test "test bubble sort" {
 test "basic linked list" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator, 100);
     defer my_list.deinit();
-    const result = my_list.head.data;
+    const result = my_list.head.?.data;
     const expect: usize = 100;
     try testing.expect(result == expect);
 }
