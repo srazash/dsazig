@@ -71,7 +71,8 @@ pub fn main() !void {
     algo.bubbleSort(@TypeOf(unsorted_array), unsorted_array);
     std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
 
-    const my_list = try ds.LinkedList(usize).init(allocator, 10);
+    var my_list = try ds.LinkedList(usize).init(allocator);
+    try my_list.push(10);
     std.debug.print("my_list.len -> {}\n", .{my_list.len});
     std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
     std.debug.print("my_list.head.addr -> {}\n", .{&my_list.head.?.data});
@@ -134,8 +135,9 @@ test "test bubble sort" {
 }
 
 test "basic linked list" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator, 100);
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
+    try my_list.push(100);
     const result = my_list.head.?.data;
     const expect: usize = 100;
     try testing.expect(result == expect);

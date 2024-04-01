@@ -3,23 +3,21 @@ const std = @import("std");
 pub fn LinkedList(comptime T: type) type {
     return struct {
         const Node = struct {
-            allocator: std.mem.Allocator,
             data: T,
             next: ?*Node,
             prev: ?*Node,
 
             fn init(allocator: std.mem.Allocator, data: T) !*Node {
-                const new_node = try allocator.create(Node);
-                new_node.allocator = allocator;
-                new_node.data = data;
-                new_node.next = null;
-                new_node.prev = null;
-                return new_node;
+                const n = try allocator.create(Node);
+                n.data = data;
+                n.next = null;
+                n.prev = null;
+                return n;
             }
 
-            fn deinit(self: *Node) void {
-                if (self.next) |node| node.deinit();
-                self.allocator.destroy(self);
+            fn deinit(self: *Node, allocator: std.mem.Allocator) void {
+                if (self.next) |node| node.deinit(allocator);
+                allocator.destroy(self);
             }
         };
 
@@ -30,18 +28,35 @@ pub fn LinkedList(comptime T: type) type {
         tail: ?*Node,
         len: usize,
 
-        pub fn init(allocator: std.mem.Allocator, data: T) !Self {
-            const new_node = try Node.init(allocator, data);
+        pub fn init(allocator: std.mem.Allocator) !Self {
             return .{
                 .allocator = allocator,
-                .head = new_node,
-                .tail = new_node,
-                .len = 1,
+                .head = null,
+                .tail = null,
+                .len = 0,
             };
         }
 
         pub fn deinit(self: *Self) void {
-            self.head.?.deinit();
+            self.head.?.deinit(self.allocator);
+        }
+
+        // stack functions
+        pub fn push(self: *Self, data: T) !void {
+            const n = try Node.init(self.allocator, data);
+            n.data = data;
+            self.*.len += 1;
+            if (self.head == null) {
+                n.next = null;
+                n.prev = null;
+                self.*.head = n;
+                self.*.tail = n;
+            } else {
+                n.next = null;
+                n.prev = self.tail;
+                n.prev.?.next = n;
+                self.*.tail = n;
+            }
         }
     };
 }
