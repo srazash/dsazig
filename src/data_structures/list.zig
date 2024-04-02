@@ -41,6 +41,23 @@ pub fn LinkedList(comptime T: type) type {
             if (self.head != null) self.head.?.deinit(self.allocator);
         }
 
+        fn append(self: *Self, data: T) !void {
+            const n = try Node.init(self.allocator, data);
+            n.data = data;
+            self.*.len += 1;
+            if (self.head == null) {
+                n.next = null;
+                n.prev = null;
+                self.*.head = n;
+                self.*.tail = n;
+            } else {
+                n.next = null;
+                n.prev = self.tail;
+                n.prev.?.next = n;
+                self.*.tail = n;
+            }
+        }
+
         pub fn at(self: *Self, i: usize) !T {
             if (self.len == 0) return error.EmptyList;
             if (i >= self.len) return error.OutOfBounds;
@@ -56,20 +73,12 @@ pub fn LinkedList(comptime T: type) type {
 
         // stack functions
         pub fn push(self: *Self, data: T) !void {
-            const n = try Node.init(self.allocator, data);
-            n.data = data;
-            self.*.len += 1;
-            if (self.head == null) {
-                n.next = null;
-                n.prev = null;
-                self.*.head = n;
-                self.*.tail = n;
-            } else {
-                n.next = null;
-                n.prev = self.tail;
-                n.prev.?.next = n;
-                self.*.tail = n;
-            }
+            try append(self, data);
+        }
+
+        // queue functions
+        pub fn enqueue(self: *Self, data: T) !void {
+            try append(self, data);
         }
     };
 }
