@@ -38,7 +38,20 @@ pub fn LinkedList(comptime T: type) type {
         }
 
         pub fn deinit(self: *Self) void {
-            self.head.?.deinit(self.allocator);
+            if (self.head != null) self.head.?.deinit(self.allocator);
+        }
+
+        pub fn at(self: *Self, i: usize) !T {
+            if (self.len == 0) return error.EmptyList;
+            if (i >= self.len) return error.OutOfBounds;
+
+            var ptr = self.head;
+            var index: usize = 0;
+            while (index < i) : (index += 1) {
+                ptr = ptr.?.next;
+            }
+
+            return ptr.?.data;
         }
 
         // stack functions

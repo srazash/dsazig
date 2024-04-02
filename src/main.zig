@@ -72,12 +72,23 @@ pub fn main() !void {
     std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
 
     var my_list = try ds.LinkedList(usize).init(allocator);
+
     try my_list.push(10);
+    try my_list.push(20);
+    try my_list.push(30);
+
+    std.debug.print("my_list.at(1) -> {}\n", .{try my_list.at(1)});
+
     std.debug.print("my_list.len -> {}\n", .{my_list.len});
+
     std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
-    std.debug.print("my_list.head.addr -> {}\n", .{&my_list.head.?.data});
+    std.debug.print("&my_list.head -> {}\n", .{&my_list.head.?.data});
+
     std.debug.print("my_list.tail.data -> {}\n", .{my_list.tail.?.data});
-    std.debug.print("my_list.tail.addr -> {}\n", .{&my_list.tail.?.data});
+    std.debug.print("&my_list.tail -> {}\n", .{&my_list.tail.?.data});
+
+    std.debug.print("my_list.head.next.data -> {}\n", .{my_list.head.?.next.?.data});
+    std.debug.print("&my_list.head.next -> {}\n", .{&my_list.head.?.next.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -141,4 +152,53 @@ test "basic linked list" {
     const result = my_list.head.?.data;
     const expect: usize = 100;
     try testing.expect(result == expect);
+}
+
+test "linked list push" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(10); // head
+    try my_list.push(20);
+    try my_list.push(30); // tail
+
+    // test data exists that has been passed to the list using push()
+    const test_head = my_list.head.?.data == 10;
+    const test_head_next = my_list.head.?.next.?.data == 20;
+    const test_tail = my_list.tail.?.data == 30;
+
+    // test len of the list
+    const test_len = my_list.len == 3;
+
+    try testing.expect(test_head and test_head_next and test_tail and test_len);
+}
+
+test "linked list at" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(25); // 0
+    try my_list.push(50); // 1
+    try my_list.push(75); // 2
+
+    const expect: usize = 75;
+    const result = try my_list.at(2);
+
+    try testing.expect(result == expect);
+}
+
+test "linked list at: empty list" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try testing.expectError(error.EmptyList, my_list.at(0));
+}
+
+test "linked list at: out of bounds" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(1); // 0
+
+    try testing.expectError(error.OutOfBounds, my_list.at(1));
 }
