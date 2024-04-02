@@ -80,6 +80,8 @@ pub fn main() !void {
     std.debug.print("my_list.at(1) -> {}\n", .{try my_list.at(1)});
 
     std.debug.print("my_list.len -> {}\n", .{my_list.len});
+    std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
+    std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
 
     std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
     std.debug.print("&my_list.head -> {}\n", .{&my_list.head.?.data});
@@ -201,4 +203,21 @@ test "linked list at: out of bounds" {
     try my_list.push(1); // 0
 
     try testing.expectError(error.OutOfBounds, my_list.at(1));
+}
+
+test "linked list at: len vs length" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(25);
+    try my_list.push(50);
+    try my_list.push(75);
+
+    const len_result: usize = 3;
+    const length_result: usize = 3;
+    const vl_result: bool = true;
+
+    try testing.expect(len_result == my_list.len);
+    try testing.expect(length_result == my_list.length());
+    try testing.expect(vl_result == my_list.validateLength());
 }

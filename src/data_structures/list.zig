@@ -71,6 +71,21 @@ pub fn LinkedList(comptime T: type) type {
             return ptr.?.data;
         }
 
+        pub fn length(self: *Self) usize {
+            var ptr = self.head;
+            var len: usize = 0;
+            while (ptr != null) {
+                len += 1;
+                ptr = ptr.?.next;
+            }
+            return len;
+        }
+
+        pub fn validateLength(self: *Self) bool {
+            if (self.len == self.length()) return true;
+            return false;
+        }
+
         // stack functions
         pub fn push(self: *Self, data: T) !void {
             try append(self, data);
