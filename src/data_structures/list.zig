@@ -41,7 +41,7 @@ pub fn LinkedList(comptime T: type) type {
             if (self.head != null) self.head.?.deinit(self.allocator);
         }
 
-        fn append(self: *Self, data: T) !void {
+        pub fn append(self: *Self, data: T) !void {
             const n = try Node.init(self.allocator, data);
             n.data = data;
             self.*.len += 1;
@@ -56,6 +56,27 @@ pub fn LinkedList(comptime T: type) type {
                 n.prev.?.next = n;
                 self.*.tail = n;
             }
+        }
+
+        pub fn delete(self: *Self, i: usize) !void {
+            const ptr = try self.addrOf(i);
+
+            if (ptr == self.head and ptr == self.tail) {
+                self.head = null;
+                self.tail = null;
+            } else if (ptr == self.head) {
+                self.head = ptr.?.next;
+                ptr.?.next.?.prev = null;
+            } else if (ptr == self.tail) {
+                self.tail = ptr.?.prev;
+                ptr.?.prev.?.next = null;
+            } else {
+                ptr.?.next.?.prev = ptr.?.prev;
+                ptr.?.prev.?.next = ptr.?.next;
+            }
+
+            self.len -= 1;
+            self.allocator.destroy(ptr.?);
         }
 
         pub fn at(self: *Self, i: usize) !T {

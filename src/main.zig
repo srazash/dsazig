@@ -100,6 +100,14 @@ pub fn main() !void {
     std.debug.print("my_list.addrOf(0) -> {?*}\n", .{try my_list.addrOf(0)});
     std.debug.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
     std.debug.print("my_list.addrOf(2) -> {?*}\n", .{try my_list.addrOf(2)});
+
+    try my_list.delete(1);
+    std.debug.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
+    std.debug.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
+
+    std.debug.print("my_list.len -> {}\n", .{my_list.len});
+    std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
+    std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -241,4 +249,31 @@ test "linked list at: addrof" {
     const result = try my_list.addrOf(0);
 
     try testing.expect(result == expect);
+}
+
+test "linked list at: delete" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(5);
+    try my_list.push(10);
+    try my_list.push(15);
+
+    try testing.expect(my_list.len == 3);
+    try testing.expect(my_list.length() == 3);
+
+    try my_list.delete(1); // delete middle value
+
+    try testing.expect(my_list.len == 2);
+    try testing.expect(my_list.length() == 2);
+
+    try my_list.delete(1); // delete tail value
+
+    try testing.expect(my_list.len == 1);
+    try testing.expect(my_list.length() == 1);
+
+    try my_list.delete(0); // delete head
+
+    try testing.expect(my_list.len == 0);
+    try testing.expect(my_list.length() == 0);
 }
