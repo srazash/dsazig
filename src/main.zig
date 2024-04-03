@@ -258,22 +258,36 @@ test "linked list at: delete" {
     try my_list.push(5);
     try my_list.push(10);
     try my_list.push(15);
+    try my_list.push(20);
+    try my_list.push(25);
 
-    try testing.expect(my_list.len == 3);
-    try testing.expect(my_list.length() == 3);
-
-    try my_list.delete(1); // delete middle value
-
-    try testing.expect(my_list.len == 2);
-    try testing.expect(my_list.length() == 2);
-
-    try my_list.delete(1); // delete tail value
-
-    try testing.expect(my_list.len == 1);
-    try testing.expect(my_list.length() == 1);
+    try testing.expect(my_list.len == 5);
+    try testing.expect(my_list.length() == 5);
 
     try my_list.delete(0); // delete head
 
+    try testing.expect(my_list.len == 4);
+    try testing.expect(my_list.length() == 4);
+    try testing.expect(my_list.head == try my_list.addrOf(0));
+
+    try my_list.delete(3); // delete tail
+
+    try testing.expect(my_list.len == 3);
+    try testing.expect(my_list.length() == 3);
+    try testing.expect(my_list.tail == try my_list.addrOf(2));
+
+    try my_list.delete(0);
+    try my_list.delete(0);
+
+    try testing.expect(my_list.len == 1);
+    try testing.expect(my_list.length() == 1);
+    try testing.expect(my_list.head == try my_list.addrOf(0));
+    try testing.expect(my_list.tail == try my_list.addrOf(0));
+
+    try my_list.delete(0);
+
     try testing.expect(my_list.len == 0);
     try testing.expect(my_list.length() == 0);
+    try testing.expect(my_list.head == null);
+    try testing.expect(my_list.tail == null);
 }
