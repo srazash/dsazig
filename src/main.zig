@@ -77,20 +77,29 @@ pub fn main() !void {
     try my_list.push(20);
     try my_list.push(30);
 
-    std.debug.print("my_list.at(1) -> {}\n", .{try my_list.at(1)});
-
     std.debug.print("my_list.len -> {}\n", .{my_list.len});
     std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
     std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
 
     std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
-    std.debug.print("&my_list.head -> {}\n", .{&my_list.head.?.data});
+    std.debug.print("&my_list.head -> {?*}\n", .{my_list.head});
 
     std.debug.print("my_list.tail.data -> {}\n", .{my_list.tail.?.data});
-    std.debug.print("&my_list.tail -> {}\n", .{&my_list.tail.?.data});
+    std.debug.print("&my_list.tail -> {?*}\n", .{my_list.tail});
 
     std.debug.print("my_list.head.next.data -> {}\n", .{my_list.head.?.next.?.data});
-    std.debug.print("&my_list.head.next -> {}\n", .{&my_list.head.?.next.?.data});
+    std.debug.print("&my_list.head.next -> {?*}\n", .{my_list.head.?.next});
+
+    std.debug.print("&my_list.head.prev -> {?*}\n", .{my_list.head.?.prev});
+    std.debug.print("&my_list.tail.next -> {?*}\n", .{my_list.tail.?.next});
+
+    std.debug.print("my_list.at(0) -> {} ({})\n", .{ try my_list.at(0), @TypeOf(try my_list.at(0)) });
+    std.debug.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
+    std.debug.print("my_list.at(2) -> {} ({})\n", .{ try my_list.at(2), @TypeOf(try my_list.at(2)) });
+
+    std.debug.print("my_list.addrOf(0) -> {?*}\n", .{try my_list.addrOf(0)});
+    std.debug.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
+    std.debug.print("my_list.addrOf(2) -> {?*}\n", .{try my_list.addrOf(2)});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -220,4 +229,16 @@ test "linked list at: len vs length" {
     try testing.expect(len_result == my_list.len);
     try testing.expect(length_result == my_list.length());
     try testing.expect(vl_result == my_list.validateLength());
+}
+
+test "linked list at: addrof" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(1);
+
+    const expect = my_list.head;
+    const result = try my_list.addrOf(0);
+
+    try testing.expect(result == expect);
 }

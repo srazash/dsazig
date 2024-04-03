@@ -71,11 +71,23 @@ pub fn LinkedList(comptime T: type) type {
             return ptr.?.data;
         }
 
+        pub fn addrOf(self: *Self, i: usize) !?*Node {
+            if (self.len == 0) return error.EmptyList;
+            if (i >= self.len) return error.OutOfBounds;
+
+            var ptr = self.head;
+            var index: usize = 0;
+            while (index < i) : (index += 1) {
+                ptr = ptr.?.next;
+            }
+
+            return ptr.?;
+        }
+
         pub fn length(self: *Self) usize {
             var ptr = self.head;
             var len: usize = 0;
-            while (ptr != null) {
-                len += 1;
+            while (ptr != null) : (len += 1) {
                 ptr = ptr.?.next;
             }
             return len;
