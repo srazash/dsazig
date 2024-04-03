@@ -291,3 +291,51 @@ test "linked list at: delete" {
     try testing.expect(my_list.head == null);
     try testing.expect(my_list.tail == null);
 }
+
+test "linked list at: push and pop" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(1);
+    try my_list.push(2);
+    try my_list.push(3);
+
+    try testing.expect(my_list.len == 3);
+    try testing.expect(my_list.length() == 3);
+
+    var data = try my_list.pop();
+    try testing.expect(data == 3);
+
+    data = try my_list.pop();
+    try testing.expect(data == 2);
+
+    data = try my_list.pop();
+    try testing.expect(data == 1);
+
+    try testing.expect(my_list.len == 0);
+    try testing.expect(my_list.length() == 0);
+}
+
+test "linked list at: enqueue and dequeue" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.enqueue(1);
+    try my_list.enqueue(2);
+    try my_list.enqueue(3);
+
+    try testing.expect(my_list.len == 3);
+    try testing.expect(my_list.length() == 3);
+
+    var data = try my_list.dequeue();
+    try testing.expect(data == 1);
+
+    data = try my_list.dequeue();
+    try testing.expect(data == 2);
+
+    data = try my_list.dequeue();
+    try testing.expect(data == 3);
+
+    try testing.expect(my_list.len == 0);
+    try testing.expect(my_list.length() == 0);
+}

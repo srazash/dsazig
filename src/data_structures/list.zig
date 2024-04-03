@@ -59,6 +59,8 @@ pub fn LinkedList(comptime T: type) type {
         }
 
         pub fn delete(self: *Self, i: usize) !void {
+            if (self.head == null and self.tail == null) return error.EmptyList;
+
             const ptr = try self.addrOf(i);
 
             if (ptr == self.head and ptr == self.tail) {
@@ -124,9 +126,23 @@ pub fn LinkedList(comptime T: type) type {
             try append(self, data);
         }
 
+        pub fn pop(self: *Self) !T {
+            const i = self.len - 1;
+            const data = self.at(i);
+            try delete(self, i);
+            return data;
+        }
+
         // queue functions
         pub fn enqueue(self: *Self, data: T) !void {
             try append(self, data);
+        }
+
+        pub fn dequeue(self: *Self) !T {
+            const i = 0;
+            const data = self.at(i);
+            try delete(self, i);
+            return data;
         }
     };
 }
