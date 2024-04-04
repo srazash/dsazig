@@ -41,6 +41,7 @@ pub fn LinkedList(comptime T: type) type {
             if (self.head != null) self.head.?.deinit(self.allocator);
         }
 
+        // basic list functions (CRUD)
         pub fn append(self: *Self, data: T) !void {
             const n = try Node.init(self.allocator, data);
             n.data = data;
@@ -75,6 +76,19 @@ pub fn LinkedList(comptime T: type) type {
             }
         }
 
+        pub fn update(self: *Self, i: usize, data: T) !void {
+            if (self.len == 0) return error.EmptyList;
+            if (i >= self.len) return error.OutOfBounds;
+
+            var ptr = self.head;
+            var index: usize = 0;
+            while (index < i) : (index += 1) {
+                ptr = ptr.?.next;
+            }
+
+            ptr.?.data = data;
+        }
+
         pub fn delete(self: *Self, i: usize) !void {
             if (self.head == null and self.tail == null) return error.EmptyList;
 
@@ -98,6 +112,7 @@ pub fn LinkedList(comptime T: type) type {
             self.allocator.destroy(ptr.?);
         }
 
+        // utility functions
         pub fn at(self: *Self, i: usize) !T {
             if (self.len == 0) return error.EmptyList;
             if (i >= self.len) return error.OutOfBounds;

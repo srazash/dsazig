@@ -173,7 +173,7 @@ test "basic linked list" {
     try testing.expect(result == expect);
 }
 
-test "linked list push" {
+test "linked list: push" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -192,7 +192,7 @@ test "linked list push" {
     try testing.expect(test_head and test_head_next and test_tail and test_len);
 }
 
-test "linked list at" {
+test "linked list: at" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -206,14 +206,14 @@ test "linked list at" {
     try testing.expect(result == expect);
 }
 
-test "linked list at: empty list" {
+test "linked list: empty list error" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
     try testing.expectError(error.EmptyList, my_list.at(0));
 }
 
-test "linked list at: out of bounds" {
+test "linked list: out of bounds error" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -222,7 +222,7 @@ test "linked list at: out of bounds" {
     try testing.expectError(error.OutOfBounds, my_list.at(1));
 }
 
-test "linked list at: len vs length" {
+test "linked list: len vs length" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -239,7 +239,7 @@ test "linked list at: len vs length" {
     try testing.expect(vl_result == my_list.validateLength());
 }
 
-test "linked list at: addrof" {
+test "linked list: addrof" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -251,7 +251,7 @@ test "linked list at: addrof" {
     try testing.expect(result == expect);
 }
 
-test "linked list at: delete" {
+test "linked list: delete" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -292,7 +292,7 @@ test "linked list at: delete" {
     try testing.expect(my_list.tail == null);
 }
 
-test "linked list at: push and pop" {
+test "linked list: push and pop" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -316,7 +316,7 @@ test "linked list at: push and pop" {
     try testing.expect(my_list.length() == 0);
 }
 
-test "linked list at: enqueue and dequeue" {
+test "linked list: enqueue and dequeue" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
@@ -340,15 +340,26 @@ test "linked list at: enqueue and dequeue" {
     try testing.expect(my_list.length() == 0);
 }
 
-test "linked list at: prepend" {
+test "linked list: prepend" {
     var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
     defer my_list.deinit();
 
-    try my_list.push(1);
+    try my_list.append(1);
     try my_list.prepend(100);
 
     try testing.expect(try my_list.at(0) == 100);
     try testing.expect(try my_list.at(1) == 1);
     try testing.expect(my_list.head == try my_list.addrOf(0));
     try testing.expect(my_list.tail == try my_list.addrOf(1));
+}
+
+test "linked list: update" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.append(99);
+    try testing.expect(try my_list.at(0) == 99);
+
+    try my_list.update(0, 100);
+    try testing.expect(try my_list.at(0) == 100);
 }
