@@ -113,6 +113,9 @@ pub fn main() !void {
     try my_list.insert(2, 35);
     try my_list.printList();
     try my_list.printDetail();
+
+    std.debug.print("queue peek() -> {?}\n", .{my_list.queuePeek()});
+    std.debug.print("stack peek() -> {?}\n", .{my_list.stackPeek()});
 }
 
 fn sumCharCodes(n: []const u8) usize {

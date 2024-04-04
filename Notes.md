@@ -222,26 +222,81 @@ This functions similarly to having a loop within a loop, in that for each indivi
 
 ## Linked List Data Structures
 
-Linked List Data Structure:
+### Linked List Data Structure
 
-Linked lists are made up of two things, the list and nodes. Nodes are what store data and can have a pointer to the next and previous nodes (the last node in the list will point to `null` as it's next node). The list simply defines the extry point into the nodes with a `head` which points to the first node.
+Linked lists are made up of two things, the list and its nodes. Nodes are what store data and can have a pointer to the next and previous nodes (the last node in the list will point to `null` as it's next node, and the first node will point to `null` as it's previous node).
+
+The list simply defines the data type of the nodes and entry points into the nodes with a `head` and `tail` which points to the first and last nodes. It can also contain additional data such as the length.
 
 A list will look like this:
-`(HEAD) -> [0] -> [1] -> [2] -> [3] -> (null)`
+`(HEAD) ->/null <- [0] <-> [1] <-> [2] <-> [3] -> null/<- (TAIL)`
 
-The nodes that make it up will be of type Node<T> and contain a value, and a pointer to the next node.
+The nodes that make up the list will be of type `List(T).Node` and contain a value, and a pointer to the next and previous nodes.
 
 ```
-Node<T>
-  value: T
-  next: ?Node<T>
+Node
+  data: T
+  next: ?Node
+  prev: ?Node
 ```
 
-A doubly linked list will also have `prev: ?Node<T>` that points to the previous node (or null if the node is the first in the list).
+### Linked List Complexity
 
-Insertion and deletion into a linked list can be a very cheap operation as the nodes are individually alloctaed items in memory, and are not part of a contiguous data structure like an array.
+**Insertion and deletion** into a linked list can be a very cheap operation as the nodes are individually alloctaed items in memory, and are not part of a contiguous data structure like an array, where insertion would require copying the existing data with the addition of the inserted data.
 
-Instead an individual node can be inserted or deletion, by updating the next and prev pointers of the neigbouring nodes. These operations are O(1).
+Instead an individual node can be inserted or deletion, by updating the next and prev pointers of the neigbouring nodes and setting the next/prev pointers of the new node. These operations will only ever require changing or setting these 4 values, and so the time complexity is O(1) - constant time.
+
+If we **insert or delete a node part way into list** this incurs a O(N) operation as we need to walk to the position with a for loop before we can perform the indert or delete operation.
+
+**Getting the head or tail values** is O(1) as we can get these directly from the list, but if we need any other node we need to walk the list, which is based on how many nodes we need to transverse, so is therefore O(N).
+
+So, to summarise:
+Operations at the start (head) or end (tail) are very cheap: O(1).
+Operations within the list require tranversal to the node we are working with: O(N), but the operation itself is O(1).
+
+### Queue
+
+A queue is a specific implementation of a linked list which operates in a FIFO patters, the values we add to the list are first in, first out. We **enqueue** a value to the end of the list (append) and we **dequeue** a value from the start of the list (return the value of the node and then delete it).
+
+So if we had:
+
+`HEAD-> [A] <-> [B] <-> [C] <-TAIL`
+
+We would `enqueue(D)`:
+
+`HEAD-> [A] <-> [B] <-> [C] <-> [D] <-TAIL`
+
+And we would get and remove `A` with `dequeue()`:
+
+`HEAD-> [B] <-> [C] <-> [D] <-TAIL`
+
+Queues also have a `peek()` operation so you can get the value of the next item in the queue without removing it from the list.
+
+A good example of a queue would be a playlist, we enqueue tracks we want to listen to at the bottom of the playlist and we dequeue the next track that is played from the top of the playlist.
+
+All queue operations are O(1) as we only work with value at the start or end of the list.
+
+### Stack
+
+A stack is a another implementation of a linked list which operates in a FILO patters, the values we add to the list are first in, last out. We **push** a value to the end of the list (append) and we **pop** a value from the end of the list (return the value of the node and then delete it).
+
+So if we had:
+
+`HEAD-> [A] <-> [B] <-> [C] <-TAIL`
+
+We would `push(D)`:
+
+`HEAD-> [A] <-> [B] <-> [C] <-> [D] <-TAIL`
+
+And we would get and remove `D` with `pop()`:
+
+`HEAD-> [A] <-> [B] <-> [C] <-TAIL`
+
+Subsequent `pop()`s would return and remove `C`, `B` and then `A`.
+
+A good example of a stack would be a program calling functions recursively, the last function called will be the first to return.
+
+All queue operations are O(1) as we only work with value at the end of the list.
 
 ## Arrays
 

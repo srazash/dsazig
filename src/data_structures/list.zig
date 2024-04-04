@@ -210,6 +210,10 @@ pub fn LinkedList(comptime T: type) type {
             return data;
         }
 
+        pub fn stackPeek(self: *Self) ?T {
+            return self.*.tail.?.data;
+        }
+
         // queue functions
         pub fn enqueue(self: *Self, data: T) !void {
             try append(self, data);
@@ -220,6 +224,10 @@ pub fn LinkedList(comptime T: type) type {
             const data = self.at(i);
             try delete(self, i);
             return data;
+        }
+
+        pub fn queuePeek(self: *Self) ?T {
+            return self.*.head.?.data;
         }
     };
 }
