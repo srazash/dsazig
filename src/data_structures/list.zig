@@ -192,7 +192,7 @@ pub fn LinkedList(comptime T: type) type {
             var len: usize = 0;
             std.debug.print("START OF LIST...\n", .{});
             while (ptr != null) : (len += 1) {
-                std.debug.print("[{}] ({x}) -> data: {any}\tprev: {x}\tnext: {x}\n", .{ len, @intFromPtr(ptr), ptr.?.data, @intFromPtr(ptr.?.prev), @intFromPtr(ptr.?.next) });
+                std.debug.print("[{}] ({x:<8}) ->\tdata: {any}\tprev: {x:<8}\tnext: {x:<8}\n", .{ len, @intFromPtr(ptr), ptr.?.data, @intFromPtr(ptr.?.prev), @intFromPtr(ptr.?.next) });
                 ptr = ptr.?.next;
             }
             std.debug.print("...END OF LIST\n", .{});
