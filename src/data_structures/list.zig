@@ -58,6 +58,23 @@ pub fn LinkedList(comptime T: type) type {
             }
         }
 
+        pub fn prepend(self: *Self, data: T) !void {
+            const n = try Node.init(self.allocator, data);
+            n.data = data;
+            self.*.len += 1;
+            if (self.head == null) {
+                n.next = null;
+                n.prev = null;
+                self.*.head = n;
+                self.*.tail = n;
+            } else {
+                n.next = self.head;
+                n.prev = null;
+                n.next.?.prev = n;
+                self.*.head = n;
+            }
+        }
+
         pub fn delete(self: *Self, i: usize) !void {
             if (self.head == null and self.tail == null) return error.EmptyList;
 

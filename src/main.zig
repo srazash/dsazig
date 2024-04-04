@@ -339,3 +339,16 @@ test "linked list at: enqueue and dequeue" {
     try testing.expect(my_list.len == 0);
     try testing.expect(my_list.length() == 0);
 }
+
+test "linked list at: prepend" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.push(1);
+    try my_list.prepend(100);
+
+    try testing.expect(try my_list.at(0) == 100);
+    try testing.expect(try my_list.at(1) == 1);
+    try testing.expect(my_list.head == try my_list.addrOf(0));
+    try testing.expect(my_list.tail == try my_list.addrOf(1));
+}
