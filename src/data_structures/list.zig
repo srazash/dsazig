@@ -172,6 +172,19 @@ pub fn LinkedList(comptime T: type) type {
             return false;
         }
 
+        pub fn printList(self: *Self) !void {
+            if (self.head == null) return error.EmptyList;
+
+            var ptr = self.head;
+            var len: usize = 0;
+            std.debug.print("HEAD->", .{});
+            while (ptr != null) : (len += 1) {
+                std.debug.print("[{}]{any}->", .{ len, ptr.?.data });
+                ptr = ptr.?.next;
+            }
+            std.debug.print("TAIL\n", .{});
+        }
+
         // stack functions
         pub fn push(self: *Self, data: T) !void {
             try append(self, data);

@@ -108,6 +108,10 @@ pub fn main() !void {
     std.debug.print("my_list.len -> {}\n", .{my_list.len});
     std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
     std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
+
+    try my_list.insert(0, 15);
+    try my_list.insert(2, 35);
+    try my_list.printList();
 }
 
 fn sumCharCodes(n: []const u8) usize {
