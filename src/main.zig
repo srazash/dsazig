@@ -112,6 +112,7 @@ pub fn main() !void {
     try my_list.insert(0, 15);
     try my_list.insert(2, 35);
     try my_list.printList();
+    try my_list.printDetail();
 }
 
 fn sumCharCodes(n: []const u8) usize {

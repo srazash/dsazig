@@ -185,6 +185,19 @@ pub fn LinkedList(comptime T: type) type {
             std.debug.print("TAIL\n", .{});
         }
 
+        pub fn printDetail(self: *Self) !void {
+            if (self.head == null) return error.EmptyList;
+
+            var ptr = self.head;
+            var len: usize = 0;
+            std.debug.print("START OF LIST...\n", .{});
+            while (ptr != null) : (len += 1) {
+                std.debug.print("[{}] -> data: {any}\tprev: {x}\tnext: {x}\n", .{ len, ptr.?.data, @intFromPtr(ptr.?.prev), @intFromPtr(ptr.?.next) });
+                ptr = ptr.?.next;
+            }
+            std.debug.print("...END OF LIST\n", .{});
+        }
+
         // stack functions
         pub fn push(self: *Self, data: T) !void {
             try append(self, data);
