@@ -363,3 +363,22 @@ test "linked list: update" {
     try my_list.update(0, 100);
     try testing.expect(try my_list.at(0) == 100);
 }
+
+test "linked list: insert" {
+    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    defer my_list.deinit();
+
+    try my_list.append(10); // 0
+    try my_list.append(20); // 1
+    try my_list.append(30); // 2
+    try testing.expect(my_list.len == my_list.length());
+    try testing.expect(try my_list.at(1) == 20);
+
+    try my_list.insert(0, 15); // insert mid-list
+    try testing.expect(my_list.len == my_list.length());
+    try testing.expect(try my_list.at(1) == 15);
+
+    try my_list.insert(3, 35); // insert at end of list
+    try testing.expect(my_list.len == my_list.length());
+    try testing.expect(try my_list.at(4) == 35);
+}

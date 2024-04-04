@@ -44,7 +44,6 @@ pub fn LinkedList(comptime T: type) type {
         // basic list functions (CRUD)
         pub fn append(self: *Self, data: T) !void {
             const n = try Node.init(self.allocator, data);
-            n.data = data;
             self.*.len += 1;
             if (self.head == null) {
                 n.next = null;
@@ -61,7 +60,6 @@ pub fn LinkedList(comptime T: type) type {
 
         pub fn prepend(self: *Self, data: T) !void {
             const n = try Node.init(self.allocator, data);
-            n.data = data;
             self.*.len += 1;
             if (self.head == null) {
                 n.next = null;
@@ -73,6 +71,27 @@ pub fn LinkedList(comptime T: type) type {
                 n.prev = null;
                 n.next.?.prev = n;
                 self.*.head = n;
+            }
+        }
+
+        pub fn insert(self: *Self, i: usize, data: T) !void {
+            if (self.len == 0) return error.EmptyList;
+            if (i >= self.len) return error.OutOfBounds;
+
+            const n = try Node.init(self.allocator, data);
+            self.*.len += 1;
+            const ptr = try self.addrOf(i);
+
+            if (i == self.length() - 1) {
+                n.prev = ptr;
+                n.next = null;
+                ptr.?.next = n;
+                self.tail = n;
+            } else {
+                n.prev = ptr;
+                n.next = ptr.?.next;
+                n.prev.?.next = n;
+                n.next.?.prev = n;
             }
         }
 
