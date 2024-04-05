@@ -116,6 +116,10 @@ pub fn main() !void {
 
     std.debug.print("queue peek() -> {?}\n", .{my_list.queuePeek()});
     std.debug.print("stack peek() -> {?}\n", .{my_list.stackPeek()});
+
+    std.debug.print("\n", .{});
+
+    _ = algo.simpleRecursion(10);
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -389,4 +393,17 @@ test "linked list: insert" {
     try my_list.insert(3, 35); // insert at end of list
     try testing.expect(my_list.len == my_list.length());
     try testing.expect(try my_list.at(4) == 35);
+}
+
+test "simple recursion" {
+    const expect: usize = 1;
+
+    var result = algo.simpleRecursion(10);
+    try testing.expect(result == expect);
+
+    result = algo.simpleRecursion(100);
+    try testing.expect(result == expect);
+
+    result = algo.simpleRecursion(1000);
+    try testing.expect(result == expect);
 }

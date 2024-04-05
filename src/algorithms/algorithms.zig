@@ -2,3 +2,4 @@
 pub usingnamespace @import("search.zig");
 pub usingnamespace @import("crystal_ball.zig");
 pub usingnamespace @import("sort.zig");
+pub usingnamespace @import("recursion.zig");

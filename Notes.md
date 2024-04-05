@@ -326,6 +326,77 @@ The tail cannot exceed the head, as this is what defines the buffer. Resizing th
 
 ## Recursion
 
+A recursive function is a function that calls itself until it reaches a "base case", at which point it won't recurse any further and will return to the top of the call stack.
+
+A simple example:
+
+```zig
+const std = @import("std");
+
+pub fn main() !void {
+    _ = foo(10); // dispose the return
+}
+
+fn foo(n: usize) usize {
+    // base case
+    if (n == 1) {
+        std.debug.print("base case! {}\n", .{n});
+        return n;
+    }
+
+    // recurse case
+    std.debug.print("recurse case! {}\n", .{n});
+    return foo(n - 1);
+}
+```
+
+This will print:
+
+```
+recurse case! 10
+recurse case! 9
+recurse case! 8
+recurse case! 7
+recurse case! 6
+recurse case! 5
+recurse case! 4
+recurse case! 3
+recurse case! 2
+base case! 1
+```
+
+What is happening is that everytime we don't meet the base case, we print out `recurse case! n` (where `n` is the current number), and then the function will call itself passing `n - 1`. This will continue until `n` is 1, at which point we print out `base case! 1` and return to calling stack (the `main` function).
+
+We must *always* have a base case, otherwise our recursive functions would recurse forever (or until we ran out fo memory)!
+
+Our recurse case can be broken down into three steps:
+
+1. Pre - what we do before we recurse, in this example we print output.
+2. Recurse - the recurse step itself.
+3. Post - we can recurse to a variable, and perform additional steps before returning it.
+
+```zig
+// pre
+std.debug.print("recurse case! {}\n", .{n});
+
+// recurse
+const value = foo(n - 1);
+
+// post
+std.debug.print("recurse complete!\n", .{});
+
+// return recurse value
+return value;
+```
+
+No matter how many times the function recurses, the pre will *always* happen before the recurse, and the post will always happen after.
+
+So if we recursed three times, that would look like this:
+
+`PRE/RECURSE 1 -> PRE/RECURSE 2 -> PRE/RECURSE 3 -> POST/RETURN 3 -> POST/RETURN 2 -> POST/RETURN 1`
+
+Understanding this is key to trees and graphs.
+
 ## Quick Sort
 
 ## Doubly Linked List
