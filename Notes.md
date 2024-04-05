@@ -300,6 +300,30 @@ All queue operations are O(1) as we only work with value at the end of the list.
 
 ## Arrays
 
+### Arrays vs Linked Lists
+
+Arrays offer access by index, making reading and writing operations O(1) at any point in the array. In a linked list this is only true of the head or tail values, any other point in the list requires walking through the list until the value is arrived at.
+
+This also means the only way of searching a linked list is by using a linear search, as a list cannot be split like in a binary search.
+
+However, because an array must exist in a contiguous chunk of memory, inserts and deletion require moving and shifting of array data which is much slower O(N) than deleting and insertion in a list O(1).
+
+### ArrayList
+
+An array has a length (len), which when is full we cannot expand - we need to copy the contents to a new array with a larger length.
+
+An ArrayList has a length (len) and a capacity (cap), typically the capacity is kept larger than the length in order to allow the ArrayList to grow dynamically. This is done my copying the data of the ArrayList to another chunk of memory with a larger capacity, but unlike moving between arrays for more capacity, ArrayLists handle this dynamically and largely automatically, and they can employ strategies to ensure capacity is available at all times.
+
+This means ArrayLists can use regular array operations (writing data directly to an index) or use stack operations (pushing/popping). For queue operations an ArrayBuffer/Ring Buffer is the better option.
+
+### ArrayBuffers: Ring Buffers
+
+ArrayBuffers or Ring Buffers are similar to an ArrayList but have capacity ahead of index 0 as well as beyond the length. ArrayBuffers also loop around, meaning it it possible for the head to be at the end of the array and the tail be at the start of the array.
+
+Calculating the position of the head and tail can be done easily by `tail % len`or `head % len`.
+
+The tail cannot exceed the head, as this is what defines the buffer. Resizing the ArrayBuffer means copying all contents over to a new, larger array.
+
 ## Recursion
 
 ## Quick Sort
