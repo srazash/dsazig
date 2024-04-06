@@ -8,6 +8,30 @@ pub fn simpleRecursion(n: usize) usize {
     }
 
     // recurse case
-    std.debug.print("recurse case! {}\n", .{n});
-    return simpleRecursion(n - 1);
+    // pre
+    std.debug.print("pre: recurse case! {}\n", .{n});
+    // recurse
+    const rec = simpleRecursion(n - 1);
+    // post
+    std.debug.print("post: recurse case! {}\n", .{n});
+    return rec;
+}
+
+const Point = struct {
+    x: usize,
+    y: usize,
+};
+
+pub fn mazeSolver(maze: []const u8, wall: []const u8, start: Point, end: Point) []Point {}
+
+fn mazeWalker(maze: []const u8, wall: []const u8, current: Point, end: Point, seen: [][]bool) bool {
+    // base cases
+    // outside the bounds of the array
+    if (current.x < 0 or current.x >= maze[0].len or current.y < 0 or current.y >= maze.len) return false;
+    // on a wall
+    if (maze[current.y][current.x] == wall) return false;
+    // reached the end
+    if (current.x == end.x and current.y == end.y) return true;
+    // have we seen this point
+    if (seen[current.x][current.y]) return false;
 }

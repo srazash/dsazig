@@ -397,6 +397,37 @@ So if we recursed three times, that would look like this:
 
 Understanding this is key to trees and graphs.
 
+### Maze Solver
+
+We will start with an array of stings:
+
+```
+[
+    "#####E#",
+    "#     #",
+    "#S#####",
+]
+```
+
+- \# is a solid wall that cannot be passed through
+- S is the start
+- E is the end
+- we cannot leave the array
+- any other points can be walked
+
+How do we walk from S to E?
+
+We can transverse the maze with a recursive function.
+
+First we must establish our base case, assuming from S we can travel up, right, down or left UNLESS we encounter a barrier - we cannot travel through a wall (\#) and we cannot travel ouside the bounds of the array.
+
+Base case:
+
+1. is it a wall?
+2. is it outside the array?
+3. is the then end (E)?
+4. have we seen the space?
+
 ## Quick Sort
 
 ## Doubly Linked List
