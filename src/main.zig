@@ -120,6 +120,52 @@ pub fn main() !void {
     std.debug.print("\n", .{});
 
     _ = algo.simpleRecursion(10);
+
+    var maze = try allocator.create([5][5]u8);
+
+    // create a maze to solve:
+    // # # # # #
+    // #       E
+    // #   # # #
+    // #       #
+    // # # S # #
+
+    maze[0][0] = '#';
+    maze[0][1] = '#';
+    maze[0][2] = '#';
+    maze[0][3] = '#';
+    maze[0][4] = '#';
+
+    maze[1][0] = '#';
+    maze[1][1] = ' ';
+    maze[1][2] = ' ';
+    maze[1][3] = ' ';
+    maze[1][4] = 'E';
+
+    maze[2][0] = '#';
+    maze[2][1] = ' ';
+    maze[2][2] = '#';
+    maze[2][3] = '#';
+    maze[2][4] = '#';
+
+    maze[3][0] = '#';
+    maze[3][1] = ' ';
+    maze[3][2] = ' ';
+    maze[3][3] = ' ';
+    maze[3][4] = '#';
+
+    maze[4][0] = '#';
+    maze[4][1] = '#';
+    maze[4][2] = 'S';
+    maze[4][3] = '#';
+    maze[4][4] = '#';
+
+    for (maze, 0..) |_, x| {
+        for (maze, 0..) |_, y| {
+            std.debug.print("{u} ", .{maze[x][y]});
+        }
+        std.debug.print("\n", .{});
+    }
 }
 
 fn sumCharCodes(n: []const u8) usize {
