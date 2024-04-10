@@ -126,9 +126,9 @@ pub fn main() !void {
     // create a maze to solve:
     // # # # # #
     // #       E
-    // #   # # #
+    // # #   # #
     // #       #
-    // # # S # #
+    // # S # # #
 
     maze[0][0] = '#';
     maze[0][1] = '#';
@@ -143,8 +143,8 @@ pub fn main() !void {
     maze[1][4] = 'E';
 
     maze[2][0] = '#';
-    maze[2][1] = ' ';
-    maze[2][2] = '#';
+    maze[2][1] = '#';
+    maze[2][2] = ' ';
     maze[2][3] = '#';
     maze[2][4] = '#';
 
@@ -155,8 +155,8 @@ pub fn main() !void {
     maze[3][4] = '#';
 
     maze[4][0] = '#';
-    maze[4][1] = '#';
-    maze[4][2] = 'S';
+    maze[4][1] = 'S';
+    maze[4][2] = '#';
     maze[4][3] = '#';
     maze[4][4] = '#';
 
@@ -166,6 +166,10 @@ pub fn main() !void {
         }
         std.debug.print("\n", .{});
     }
+
+    var path = std.ArrayList(algo.Point).init(allocator);
+    try algo.mazeSolver(allocator, maze, .{ .x = 4, .y = 1 }, .{ .x = 1, .y = 4 }, &path);
+    for (path.items) |item| std.debug.print("{any}\n", .{item});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -452,4 +456,51 @@ test "simple recursion" {
 
     result = algo.simpleRecursion(1000);
     try testing.expect(result == expect);
+}
+
+test "recursive maze solver" {
+    const allocator = std.testing.allocator;
+    var maze = try allocator.create([5][5]u8);
+    defer allocator.destroy(maze);
+
+    maze[0][0] = '#';
+    maze[0][1] = '#';
+    maze[0][2] = '#';
+    maze[0][3] = '#';
+    maze[0][4] = '#';
+
+    maze[1][0] = '#';
+    maze[1][1] = ' ';
+    maze[1][2] = ' ';
+    maze[1][3] = ' ';
+    maze[1][4] = 'E';
+
+    maze[2][0] = '#';
+    maze[2][1] = '#';
+    maze[2][2] = ' ';
+    maze[2][3] = '#';
+    maze[2][4] = '#';
+
+    maze[3][0] = '#';
+    maze[3][1] = ' ';
+    maze[3][2] = ' ';
+    maze[3][3] = ' ';
+    maze[3][4] = '#';
+
+    maze[4][0] = '#';
+    maze[4][1] = 'S';
+    maze[4][2] = '#';
+    maze[4][3] = '#';
+    maze[4][4] = '#';
+
+    var path = std.ArrayList(algo.Point).init(allocator);
+    defer path.deinit();
+
+    const start: algo.Point = .{ .x = 4, .y = 1 };
+    const end: algo.Point = .{ .x = 1, .y = 4 };
+
+    try algo.mazeSolver(std.testing.allocator, maze, start, end, &path);
+
+    try testing.expect(std.meta.eql(path.items[0], start));
+    try testing.expect(std.meta.eql(path.items[6], end));
 }

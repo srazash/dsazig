@@ -402,18 +402,20 @@ Understanding this is key to trees and graphs.
 We will start with an array of stings:
 
 ```
-[
-    "#####E#",
-    "#     #",
-    "#S#####",
-]
+.{
+    .{ '#', '#', '#', '#', '#' },
+    .{ '#', ' ', ' ', ' ', 'E' },
+    .{ '#', '#', ' ', '#', '#' },
+    .{ '#', ' ', ' ', ' ', '#' },
+    .{ '#', 'S', '#', '#', '#' },
+}
 ```
 
-- \# is a solid wall that cannot be passed through
+- \# is a wall that cannot be passed through
 - S is the start
 - E is the end
-- we cannot leave the array
-- any other points can be walked
+- we cannot leave the bounds of the array
+- any other points (spaces in this example) can be walked
 
 How do we walk from S to E?
 
@@ -423,10 +425,18 @@ First we must establish our base case, assuming from S we can travel up, right, 
 
 Base case:
 
-1. is it a wall?
-2. is it outside the array?
-3. is the then end (E)?
-4. have we seen the space?
+1. is it a wall? Return false.
+2. is it outside the array? Return false.
+3. is the then end (E)? Return true.
+4. have we seen the space? Return false.
+
+Recurse case:
+
+1. Pre: Set our current position as seen and add our current position to our path.
+2. Recurse: For all four possible direction we can walk the maze, we recursively call our function and return true if it returns true.
+3. Post: If we reach post, we remove the current position from our path and return false.
+
+By recursevely running this function we will eventually end up with a list of moves that gives us our shortest path, from S to E.
 
 ## Quick Sort
 
