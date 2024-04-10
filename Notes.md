@@ -438,6 +438,12 @@ Recurse case:
 
 By recursevely running this function we will eventually end up with a list of moves that gives us our shortest path, from S to E.
 
+Always try to establish a well defined base case before moving on to recursion, it will massively reduce complexity and make the recurse case much simpler.
+
+There is a lot of crossover between recusion and looping, but there are cases where recursion is the better or only option. The maze solver is one such case where the complexity of implementing a solution as a loop would be impracticle, and recusion is the only option.
+
+The time complexity of a recursive function is O(N).
+
 ## Quick Sort
 
 ## Doubly Linked List
