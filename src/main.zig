@@ -170,6 +170,18 @@ pub fn main() !void {
     var path = std.ArrayList(algo.Point).init(allocator);
     try algo.mazeSolver(allocator, maze, .{ .x = 4, .y = 1 }, .{ .x = 1, .y = 4 }, &path);
     for (path.items) |item| std.debug.print("{any}\n", .{item});
+
+    // QUICK SORT
+    var my_unsorted_array = try allocator.alloc(u8, 512);
+
+    const rand = std.crypto.random;
+    for (my_unsorted_array, 0..) |_, i| my_unsorted_array[i] = rand.intRangeAtMost(u8, 0, 255);
+
+    std.debug.print("UNSORTED:\n{any}\n", .{my_unsorted_array});
+
+    algo.performQuickSort(@TypeOf(my_unsorted_array), my_unsorted_array);
+
+    std.debug.print("SORTED?:\n{any}\n", .{my_unsorted_array});
 }
 
 fn sumCharCodes(n: []const u8) usize {

@@ -18,7 +18,7 @@ Here we have a simple function that takes in a string (`[]const u8` in Zig) call
 
 The easiest way to assess what the Big-O complexity is, is to look for loops.
 
-Here we have a single loop which goes through each character of the input string, so our Big-O complexity is entirely dependant on the length of the input string. The longer the string the more loops have to run to complete the task.
+Here we have a single loop which goes through each character of the input string, so our Big-O complexity is entirely dependent on the length of the input string. The longer the string the more loops have to run to complete the task.
 
 Meaning this function is **O(N), or linear** - the longer the string the longer the time and greater the memory needed to loop over it.
 
@@ -37,7 +37,7 @@ fn sumCharCodesE(n: []const u8) usize {
 }
 ```
 
-In the above code example we return early if the current character is 'E'. Despit this the function still conforms to O(N) time complexity. This is because when we're assessing the Big-O time complexity we conform to the **worst case scenario**, here the worst case scenario is that we never encounter 'E'.
+In the above code example we return early if the current character is 'E'. Despite this the function still conforms to O(N) time complexity. This is because when we're assessing the Big-O time complexity we conform to the **worst case scenario**, here the worst case scenario is that we never encounter 'E'.
 
 This gives us three basic rules to follow when calculating Big-O time complexity:
 
@@ -48,7 +48,7 @@ This gives us three basic rules to follow when calculating Big-O time complexity
 Some common Big-O complexity:
 
 - O(1) execution time is always the same, no matter the size of the input.
-- O(logN) execution time is increase donly marginally by the input.
+- O(logN) execution time is increased only marginally by the input.
 - O(N) execution time grows linearly with the input.
 - O(NlogN) execution time begins to grow exponentially.
 - O(N^2) execution time grows rapidly in an exponential manner.
@@ -75,9 +75,9 @@ We could think of this like drawing a square, drawing out all the columns of an 
 
 Each row confirms to O(N) but as with have draw every column within that row we square our time complexity, and therefore it is O(N^2).
 
-Likewise, if we were to introduce a third dimention and work with a matrix our complexity would be O(N^3).
+Likewise, if we were to introduce a third dimension and work with a matrix our complexity would be O(N^3).
 
-Quicksort conforms to O(NlogN).
+Quick sort conforms to O(NlogN).
 
 Binary tree search conforms to O(logN).
 
@@ -133,11 +133,11 @@ binarySearch(haystack, needle)
 
 > Given two crystal balls that will break if dropped from a high enough distance, determine the exact spot in which it will break in the most optimised way.
 
-If we think of this in terms of a 100 storey building, what we're trying to establish is the lowest floor at which a crystal ball will break.
+If we think of this in terms of a 100 story building, what we're trying to establish is the lowest floor at which a crystal ball will break.
 
 In DSA terms, we're looking at an array:
 
-`0 [ f, f . . . f, t, . . . ] n`
+`0 [ . . . f, t, . . . ] n`
 
 At some point in the array, the value that represents a crystal ball breaking will switch from false to true. We are trying to find that point in the most efficient way possible.
 
@@ -147,7 +147,7 @@ An effective approach that is more efficient than a O(N) approach would be to ju
 
 A convenient way to do this would be to calculate the square root of N and jump through it that way. While this is not recognised as a standard Big-O notation, it would confirm to O(sqrtN).
 
-This is beacuse at most we jump though the array in blocks of sqrt of N, jump back once a sqrt of N and then check a single block of sqrt of N in a linear fashion.
+This is because at most we jump though the array in blocks of sqrt of N, jump back once a sqrt of N and then check a single block of sqrt of N in a linear fashion.
 
 ```zig
 // take in a type (T) and an array of type T (breaks)
@@ -200,7 +200,7 @@ If at any point it encounters a value that is not greater than or equal to itsel
              ^
 ```
 
-In our example array, once we have reached the second to last position and swapped any values that didn't conform to `Xi <= Xi+1` we have a **more** sorted array, but not a fully sorted array. Once thing we can guarantee is that the largest itemn in our array will be at the end of the array after one iteration, so we can then disregard the last element, and for each iteration we can disregard one less element.
+In our example array, once we have reached the second to last position and swapped any values that didn't conform to `Xi <= Xi+1` we have a **more** sorted array, but not a fully sorted array. Once thing we can guarantee is that the largest item in our array will be at the end of the array after one iteration, so we can then disregard the last element, and for each iteration we can disregard one less element.
 
 ```
 0 [ 1, 3, 4, 2 | 7 ] n
@@ -218,7 +218,7 @@ And we start the next iteration ignoring the last 2 elements, and so on until th
 
 I terms of time complexity, as we progress through our sort we start by going through all elements, N elements, and for each subsequent iteration we go through N-1, N-2, N-3, N-... and so on, until we get to N - N + 1, the final element.
 
-This functions similarly to having a loop within a loop, in that for each individual elemen, we must run through the length of the array to perform the sort. Meaning this algorithm conforms to O(N^2).
+This functions similarly to having a loop within a loop, in that for each individual element, we must run through the length of the array to perform the sort. Meaning this algorithm conforms to O(N^2).
 
 ## Linked List Data Structures
 
@@ -242,17 +242,17 @@ Node
 
 ### Linked List Complexity
 
-**Insertion and deletion** into a linked list can be a very cheap operation as the nodes are individually alloctaed items in memory, and are not part of a contiguous data structure like an array, where insertion would require copying the existing data with the addition of the inserted data.
+**Insertion and deletion** into a linked list can be a very cheap operation as the nodes are individually allocated items in memory, and are not part of a contiguous data structure like an array, where insertion would require copying the existing data with the addition of the inserted data.
 
-Instead an individual node can be inserted or deletion, by updating the next and prev pointers of the neigbouring nodes and setting the next/prev pointers of the new node. These operations will only ever require changing or setting these 4 values, and so the time complexity is O(1) - constant time.
+Instead an individual node can be inserted or deletion, by updating the next and prev pointers of the neighbouring nodes and setting the next/prev pointers of the new node. These operations will only ever require changing or setting these 4 values, and so the time complexity is O(1) - constant time.
 
-If we **insert or delete a node part way into list** this incurs a O(N) operation as we need to walk to the position with a for loop before we can perform the indert or delete operation.
+If we **insert or delete a node part way into list** this incurs a O(N) operation as we need to walk to the position with a for loop before we can perform the insert or delete operation.
 
 **Getting the head or tail values** is O(1) as we can get these directly from the list, but if we need any other node we need to walk the list, which is based on how many nodes we need to transverse, so is therefore O(N).
 
 So, to summarise:
 Operations at the start (head) or end (tail) are very cheap: O(1).
-Operations within the list require tranversal to the node we are working with: O(N), but the operation itself is O(1).
+Operations within the list require transversal to the node we are working with: O(N), but the operation itself is O(1).
 
 ### Queue
 
@@ -365,7 +365,7 @@ recurse case! 2
 base case! 1
 ```
 
-What is happening is that everytime we don't meet the base case, we print out `recurse case! n` (where `n` is the current number), and then the function will call itself passing `n - 1`. This will continue until `n` is 1, at which point we print out `base case! 1` and return to calling stack (the `main` function).
+What is happening is that every time we don't meet the base case, we print out `recurse case! n` (where `n` is the current number), and then the function will call itself passing `n - 1`. This will continue until `n` is 1, at which point we print out `base case! 1` and return to calling stack (the `main` function).
 
 We must *always* have a base case, otherwise our recursive functions would recurse forever (or until we ran out fo memory)!
 
@@ -421,7 +421,7 @@ How do we walk from S to E?
 
 We can transverse the maze with a recursive function.
 
-First we must establish our base case, assuming from S we can travel up, right, down or left UNLESS we encounter a barrier - we cannot travel through a wall (\#) and we cannot travel ouside the bounds of the array.
+First we must establish our base case, assuming from S we can travel up, right, down or left UNLESS we encounter a barrier - we cannot travel through a wall (\#) and we cannot travel outside the bounds of the array.
 
 Base case:
 
@@ -436,15 +436,45 @@ Recurse case:
 2. Recurse: For all four possible direction we can walk the maze, we recursively call our function and return true if it returns true.
 3. Post: If we reach post, we remove the current position from our path and return false.
 
-By recursevely running this function we will eventually end up with a list of moves that gives us our shortest path, from S to E.
+By recursively running this function we will eventually end up with a list of moves that gives us our shortest path, from S to E.
 
 Always try to establish a well defined base case before moving on to recursion, it will massively reduce complexity and make the recurse case much simpler.
 
-There is a lot of crossover between recusion and looping, but there are cases where recursion is the better or only option. The maze solver is one such case where the complexity of implementing a solution as a loop would be impracticle, and recusion is the only option.
+There is a lot of crossover between recursion and looping, but there are cases where recursion is the better or only option. The maze solver is one such case where the complexity of implementing a solution as a loop would be impractical, and recursion is the only option.
 
 The time complexity of a recursive function is O(N).
 
 ## Quick Sort
+
+Quick Sort is an example of the principle of divide and conquer.
+
+Divide and conquer allows us to divide our workload into smaller and smaller chunks and perform a task on those chunks, until we reach a point where we have divided to such a point that our task is complete.
+
+Sorting is a good example of this, we can subdivide and sort, and repeat until everything is sorted.
+
+Quick sorting is achieved by taking a list of unsorted values:
+
+```
+0 [ ....................... ] N
+```
+
+And we pick a pivot point, a single value in the middle of the list:
+
+```
+0 [ ...........|........... ] N
+               ^
+```
+
+Any values on the right side of the pivot point which are <= the pivot point are moved to left side, and any values on the left which are >= the pivot point are moved to the right side.
+
+```
+0 [ .....|.....|.....|..... ] N
+         ^     x     ^
+```
+
+Once this is done another pivot point is picked halfway through the left and right sides, but excluding the original pivot point, and the process is repeated, until there is only one or no value on either side of the pivot point, at this stage we can say the list is completely sorted.
+
+Generally a quick sort is O(NlogN) which isn't great, but if our array was in exactly reverse order and we picked the last element as our pivot point our operation would be O(N^2) which is pretty bad.
 
 ## Doubly Linked List
 
