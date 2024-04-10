@@ -125,8 +125,8 @@ pub fn main() !void {
 
     // create a maze to solve:
     // # # # # #
-    // #       E
-    // # #   # #
+    // #   #   E
+    // #   #   #
     // #       #
     // # S # # #
 
@@ -138,14 +138,14 @@ pub fn main() !void {
 
     maze[1][0] = '#';
     maze[1][1] = ' ';
-    maze[1][2] = ' ';
+    maze[1][2] = '#';
     maze[1][3] = ' ';
     maze[1][4] = 'E';
 
     maze[2][0] = '#';
-    maze[2][1] = '#';
-    maze[2][2] = ' ';
-    maze[2][3] = '#';
+    maze[2][1] = ' ';
+    maze[2][2] = '#';
+    maze[2][3] = ' ';
     maze[2][4] = '#';
 
     maze[3][0] = '#';

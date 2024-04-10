@@ -64,7 +64,15 @@ fn mazeWalker(maze: *[5][5]u8, current: Point, end: Point, seen: *[5][5]bool, pa
     seen[x][y] = true;
     try path.append(.{ .x = current.x, .y = current.y });
     // recurse
-    for (dir) |d| {
+    for (dir, 0..) |d, i| {
+        switch (i) {
+            0 => std.debug.print("UP\n", .{}),
+            1 => std.debug.print("RIGHT\n", .{}),
+            2 => std.debug.print("DOWN\n", .{}),
+            3 => std.debug.print("LEFT\n", .{}),
+            else => unreachable,
+        }
+
         if (try mazeWalker(maze, .{ .x = current.x + d.x, .y = current.y + d.y }, end, seen, path)) return true;
     }
     // post
