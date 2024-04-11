@@ -476,6 +476,71 @@ Once this is done another pivot point is picked halfway through the left and rig
 
 Generally a quick sort is O(NlogN) which isn't great, but if our array was in exactly reverse order and we picked the last element as our pivot point our operation would be O(N^2) which is pretty bad.
 
+### Implementing quick sort
+
+Quicksort is a popular sorting algorithm that works by partitioning the input array into two parts based on a chosen "pivot" element, and then recursively sorting the two partitions. Here's a step-by-step explanation of how to implement Quicksort, with pseudocode examples:
+
+**Step 1: Choose a pivot element**
+The first step in Quicksort is to choose a pivot element from the array. The pivot can be chosen in different ways, such as the first, last, or middle element of the array, or a random element. For this example, let's choose the first element as the pivot.
+
+**Step 2: Partition the array**
+The next step is to partition the array into two parts: one part with elements less than the pivot, and the other part with elements greater than or equal to the pivot. This can be done using the following pseudocode:
+
+```
+function partition(arr, low, high):
+    pivot = arr[low]
+    i = low + 1
+    j = high
+
+    while i <= j:
+        if arr[i] < pivot:
+            i = i + 1
+        else:
+            arr[i], arr[j] = arr[j], arr[i]
+            j = j - 1
+
+    arr[low], arr[j] = arr[j], arr[low]
+    return j
+```
+
+In this pseudocode, `low` and `high` represent the indices of the start and end of the current partition, respectively. The pivot is chosen as the first element in the partition (`arr[low]`). The two pointers `i` and `j` are used to partition the array. The `i` pointer starts at the second element and moves forward until it finds an element greater than or equal to the pivot. The `j` pointer starts at the end of the partition and moves backward until it finds an element less than the pivot. When such elements are found, they are swapped. This process continues until `i` is greater than `j`, at which point the pivot is placed in its correct position (the `j` index) and the function returns the index of the pivot.
+
+**Step 3: Recursively sort the partitions**
+After partitioning the array, the next step is to recursively sort the two partitions created by the pivot element. This can be done using the following pseudocode:
+
+```
+function quicksort(arr, low, high):
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quicksort(arr, low, pivot_index - 1)
+        quicksort(arr, pivot_index + 1, high)
+```
+
+In this pseudocode, the `quicksort` function takes an array `arr` and the indices `low` and `high` representing the current partition. If the partition has at least two elements (`low < high`), the `partition` function is called to find the pivot index, and then the function recursively calls itself on the left and right partitions.
+
+**Example**
+Let's consider an example to illustrate how Quicksort works. Suppose we have the following array:
+
+```
+arr = [5, 2, 4, 6, 1, 3, 2, 6]
+```
+
+1. Choose the first element as the pivot: `pivot = 5`.
+2. Partition the array:
+   - `i = 1`, `j = 7`
+   - `arr[i] = 2 < pivot`, so `i = 2`
+   - `arr[j] = 6 >= pivot`, so `j = 6`
+   - `arr[i] = 4 < pivot`, so `i = 3`
+   - `arr[j] = 3 < pivot`, so `j = 5`
+   - `arr[i] = 6 >= pivot`, so `i = 4`, `j = 4`
+   - Swap `arr[i]` and `arr[j]`, the array becomes `[5, 2, 4, 6, 1, 2, 6, 3]`
+   - The pivot is placed at index 4, so the partition index is 4.
+3. Recursively sort the left partition (`[2, 1, 2, 3]`) and the right partition (`[6, 6]`).
+
+The final sorted array is `[1, 2, 2, 3, 4, 5, 6, 6]`.
+
+This step-by-step explanation covers the basic implementation of Quicksort. There are several variations and optimizations that can be made to this algorithm, such as using different pivot selection strategies or implementing the recursion iteratively instead of recursively. However, the core idea of partitioning the array and recursively sorting the partitions remains the same.
+
 ## Doubly Linked List
 
 ## Trees
