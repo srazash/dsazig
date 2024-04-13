@@ -516,3 +516,18 @@ test "recursive maze solver" {
     try testing.expect(std.meta.eql(path.items[0], start));
     try testing.expect(std.meta.eql(path.items[6], end));
 }
+
+test "quick sort" {
+    var my_array = try std.testing.allocator.alloc(u8, 5);
+    defer std.testing.allocator.free(my_array);
+
+    const rand = std.crypto.random;
+    for (my_array, 0..) |_, i| my_array[i] = rand.intRangeAtMost(u8, 0, 255);
+
+    algo.quickSort(@TypeOf(my_array), my_array, 0, my_array.len - 1);
+
+    try testing.expect(my_array[0] <= my_array[1]);
+    try testing.expect(my_array[1] <= my_array[2]);
+    try testing.expect(my_array[2] <= my_array[3]);
+    try testing.expect(my_array[3] <= my_array[4]);
+}
