@@ -478,10 +478,10 @@ Generally a quick sort is O(NlogN) which isn't great, but if our array was in ex
 
 ### Implementing quick sort
 
-Quicksort is a popular sorting algorithm that works by partitioning the input array into two parts based on a chosen "pivot" element, and then recursively sorting the two partitions. Here's a step-by-step explanation of how to implement Quicksort, with pseudocode examples:
+Quick sort is a popular sorting algorithm that works by partitioning the input array into two parts based on a chosen "pivot" element, and then recursively sorting the two partitions. Here's a step-by-step explanation of how to implement Quick sort, with pseudocode examples:
 
 **Step 1: Choose a pivot element**
-The first step in Quicksort is to choose a pivot element from the array. The pivot can be chosen in different ways, such as the first, last, or middle element of the array, or a random element. For this example, let's choose the first element as the pivot.
+The first step in Quick sort is to choose a pivot element from the array. The pivot can be chosen in different ways, such as the first, last, or middle element of the array, or a random element. For this example, let's choose the first element as the pivot.
 
 **Step 2: Partition the array**
 The next step is to partition the array into two parts: one part with elements less than the pivot, and the other part with elements greater than or equal to the pivot. This can be done using the following pseudocode:
@@ -503,7 +503,7 @@ function partition(arr, low, high):
     return j
 ```
 
-In this pseudocode, `low` and `high` represent the indices of the start and end of the current partition, respectively. The pivot is chosen as the first element in the partition (`arr[low]`). The two pointers `i` and `j` are used to partition the array. The `i` pointer starts at the second element and moves forward until it finds an element greater than or equal to the pivot. The `j` pointer starts at the end of the partition and moves backward until it finds an element less than the pivot. When such elements are found, they are swapped. This process continues until `i` is greater than `j`, at which point the pivot is placed in its correct position (the `j` index) and the function returns the index of the pivot.
+In this pseudocode, `low` and `high` represent the indexes of the start and end of the current partition, respectively. The pivot is chosen as the first element in the partition (`arr[low]`). The two pointers `i` and `j` are used to partition the array. The `i` pointer starts at the second element and moves forward until it finds an element greater than or equal to the pivot. The `j` pointer starts at the end of the partition and moves backward until it finds an element less than the pivot. When such elements are found, they are swapped. This process continues until `i` is greater than `j`, at which point the pivot is placed in its correct position (the `j` index) and the function returns the index of the pivot.
 
 **Step 3: Recursively sort the partitions**
 After partitioning the array, the next step is to recursively sort the two partitions created by the pivot element. This can be done using the following pseudocode:
@@ -512,14 +512,15 @@ After partitioning the array, the next step is to recursively sort the two parti
 function quicksort(arr, low, high):
     if low < high:
         pivot_index = partition(arr, low, high)
-        quicksort(arr, low, pivot_index - 1)
+        if (pivot_index > 0):
+            quicksort(arr, low, pivot_index - 1)
         quicksort(arr, pivot_index + 1, high)
 ```
 
 In this pseudocode, the `quicksort` function takes an array `arr` and the indices `low` and `high` representing the current partition. If the partition has at least two elements (`low < high`), the `partition` function is called to find the pivot index, and then the function recursively calls itself on the left and right partitions.
 
 **Example**
-Let's consider an example to illustrate how Quicksort works. Suppose we have the following array:
+Let's consider an example to illustrate how quick sort works. Suppose we have the following array:
 
 ```
 arr = [5, 2, 4, 6, 1, 3, 2, 6]
@@ -539,11 +540,31 @@ arr = [5, 2, 4, 6, 1, 3, 2, 6]
 
 The final sorted array is `[1, 2, 2, 3, 4, 5, 6, 6]`.
 
-This step-by-step explanation covers the basic implementation of Quicksort. There are several variations and optimizations that can be made to this algorithm, such as using different pivot selection strategies or implementing the recursion iteratively instead of recursively. However, the core idea of partitioning the array and recursively sorting the partitions remains the same.
-
-## Doubly Linked List
+This step-by-step explanation covers the basic implementation of quick sort. There are several variations and optimizations that can be made to this algorithm, such as using different pivot selection strategies or implementing the recursion iteratively instead of recursively. However, the core idea of partitioning the array and recursively sorting the partitions remains the same.
 
 ## Trees
+
+Trees are a very common data structure in computer science:
+
+- File systems are tress
+- The DOM on a web page is a tree
+- In programming, the AST - abstract syntax tree is a tree data structure
+
+A good way to think of a tree is like a linked list, but instead of next and previous nodes, we would have a parent node and child nodes. Tree's always have a root or parent node.
+
+A very common type of tree is a binary tree, where each node has 2 child nodes at most. These have a parent node and a left and right (or left child and right child) node.
+
+Terminology:
+
+- root - the first parent node
+- height - the longest path from the root to lowest level child node
+- binary tree - a tree structure where each node has up to two child nodes
+- general tree - a tree with zero or more child nodes
+- binary search tree - a binary tree with a specific ordering to the nodes
+- leaf or leaves - a node with no children
+- balanced - a tree is perfectly balanced when all nodes children have the same height
+- branching factor - the amount of children a tree has
+
 
 ## Tree Search
 
