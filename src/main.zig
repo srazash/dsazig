@@ -179,7 +179,7 @@ pub fn main() !void {
 
     std.debug.print("UNSORTED:\n{any}\n", .{my_unsorted_array});
 
-    algo.performQuickSort(@TypeOf(my_unsorted_array), my_unsorted_array);
+    algo.quickSort(@TypeOf(my_unsorted_array), my_unsorted_array, 0, my_unsorted_array.len - 1);
 
     std.debug.print("SORTED?:\n{any}\n", .{my_unsorted_array});
 }

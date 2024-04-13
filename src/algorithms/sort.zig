@@ -13,38 +13,28 @@ pub fn bubbleSort(comptime T: type, array: T) void {
     }
 }
 
-pub fn performQuickSort(comptime T: type, array: T) void {
-    quickSort(T, array, 0, array.len - 1);
-}
-
-fn quickSort(comptime T: type, array: T, low: usize, high: usize) void {
-    if (low >= high) return;
-
-    var pivotIdx: isize = @intCast(quickSortPartition(T, array, low, high));
-    pivotIdx -= 1;
-    quickSort(T, array, low, @intCast(pivotIdx));
-    quickSort(T, array, @intCast(pivotIdx), high);
+pub fn quickSort(comptime T: type, array: T, low: usize, high: usize) void {
+    if (low < high) {
+        var pivot_idx = quickSortPartition(T, array, low, high);
+        if (pivot_idx > 0) quickSort(T, array, low, pivot_idx - 1);
+        quickSort(T, array, pivot_idx + 1, high);
+    }
 }
 
 fn quickSortPartition(comptime T: type, array: T, low: usize, high: usize) usize {
-    const pivot: usize = array[high];
+    var pivot = array[low];
+    var i: usize = low + 1;
+    var j: usize = high;
 
-    var idx: isize = @intCast(low);
-    idx -= 1;
-
-    var i: usize = low;
-    while (i < high) : (i += 1) {
-        if (array[i] <= pivot) {
-            idx += 1;
-            const tmp = array[i];
-            array[i] = array[@intCast(idx)];
-            array[@intCast(idx)] = tmp;
+    while (i <= j) {
+        if (array[i] < pivot) {
+            i += 1;
+        } else {
+            std.mem.swap(@TypeOf(array[0]), &array[i], &array[j]);
+            j -= 1;
         }
     }
 
-    idx += 1;
-    array[high] = array[@intCast(idx)];
-    array[@intCast(idx)] = @intCast(pivot);
-
-    return @intCast(idx);
+    std.mem.swap(@TypeOf(array[0]), &array[low], &array[j]);
+    return j;
 }
