@@ -565,6 +565,15 @@ Terminology:
 - balanced - a tree is perfectly balanced when all nodes children have the same height
 - branching factor - the amount of children a tree has
 
+### Traversals
+
+There are different ways we can visit the nodes of a tree:
+
+- pre order: the root node value is the first we return
+- in order: the root is the middle value we return
+- post order: the root value is the last we return
+
+The time complexity of traversing a tree is O(N).
 
 ## Tree Search
 
