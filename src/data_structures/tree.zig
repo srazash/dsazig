@@ -37,5 +37,17 @@ pub fn BinaryTree(comptime T: type) type {
         pub fn deinit(self: *Self) void {
             if (self.root != null) self.root.?.deinit(self.allocator);
         }
+
+        pub fn insert(self: *Self, data: T) void {
+            const n = try Node.init(self.allocator, data);
+
+            if (self.root == null) {
+                self.*.root = n;
+                return;
+            }
+
+            // transverse all nodes until the first null child is found
+            // insert the new node `n` there!
+        }
     };
 }
