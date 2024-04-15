@@ -38,16 +38,29 @@ pub fn BinaryTree(comptime T: type) type {
             if (self.root != null) self.root.?.deinit(self.allocator);
         }
 
-        pub fn insert(self: *Self, data: T) void {
+        pub fn insert(self: *Self, data: T) !void {
             const n = try Node.init(self.allocator, data);
 
             if (self.root == null) {
-                self.*.root = n;
+                self.root = n;
                 return;
             }
 
-            // transverse all nodes until the first null child is found
-            // insert the new node `n` there!
+            var curr = self.*.root;
+
+            while (true) {
+                if (curr.?.right != null and curr.?.left != null) {
+                    curr = curr.?.left;
+                    continue;
+                } else if (curr.?.right == null and curr.?.left != null) {
+                    curr.?.right = n;
+                    break;
+                } else {
+                    curr.?.left = n;
+                    break;
+                }
+                return;
+            }
         }
     };
 }

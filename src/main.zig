@@ -182,6 +182,15 @@ pub fn main() !void {
     algo.quickSort(@TypeOf(my_unsorted_array), my_unsorted_array, 0, my_unsorted_array.len - 1);
 
     std.debug.print("SORTED?:\n{any}\n", .{my_unsorted_array});
+
+    // TREES
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
+    try my_tree.insert(23);
+    try my_tree.insert(14);
+    try my_tree.insert(9);
+    try my_tree.insert(99);
+
+    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -530,4 +539,19 @@ test "quick sort" {
     try testing.expect(my_array[1] <= my_array[2]);
     try testing.expect(my_array[2] <= my_array[3]);
     try testing.expect(my_array[3] <= my_array[4]);
+}
+
+test "basic tree test" {
+    var my_tree = try ds.BinaryTree(usize).init(std.testing.allocator);
+    defer my_tree.deinit();
+
+    try my_tree.insert(1);
+    try my_tree.insert(2);
+    try my_tree.insert(3);
+    try my_tree.insert(4);
+
+    try std.testing.expect(my_tree.root.?.data == 1);
+    try std.testing.expect(my_tree.root.?.left.?.data == 2);
+    try std.testing.expect(my_tree.root.?.right.?.data == 3);
+    try std.testing.expect(my_tree.root.?.left.?.left.?.data == 4);
 }
