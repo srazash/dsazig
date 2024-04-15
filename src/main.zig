@@ -185,12 +185,14 @@ pub fn main() !void {
 
     // TREES
     var my_tree = try ds.BinaryTree(u8).init(allocator);
-    try my_tree.insert(23);
-    try my_tree.insert(14);
-    try my_tree.insert(9);
-    try my_tree.insert(99);
+    const my_tree_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
 
-    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    for (my_tree_nums) |num| try my_tree.insert(num);
+
+    //std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.data});
+    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.data});
+    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.right.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {

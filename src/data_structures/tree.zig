@@ -46,7 +46,7 @@ pub fn BinaryTree(comptime T: type) type {
                 return;
             }
 
-            var curr = self.*.root;
+            var curr = self.root;
 
             while (true) {
                 if (curr.?.right != null and curr.?.left != null) {
@@ -55,7 +55,7 @@ pub fn BinaryTree(comptime T: type) type {
                 } else if (curr.?.right == null and curr.?.left != null) {
                     curr.?.right = n;
                     break;
-                } else {
+                } else if (curr.?.right != null and curr.?.left == null) {
                     curr.?.left = n;
                     break;
                 }
