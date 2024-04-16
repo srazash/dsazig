@@ -39,28 +39,14 @@ pub fn BinaryTree(comptime T: type) type {
         }
 
         pub fn insert(self: *Self, data: T) !void {
-            const n = try Node.init(self.allocator, data);
+            self.root = try self.insertOnNode(self.root, data);
+        }
 
-            if (self.root == null) {
-                self.root = n;
-                return;
-            }
-
-            var curr = self.root;
-
-            while (true) {
-                if (curr.?.right != null and curr.?.left != null) {
-                    curr = curr.?.left;
-                    continue;
-                } else if (curr.?.right == null and curr.?.left != null) {
-                    curr.?.right = n;
-                    break;
-                } else if (curr.?.right != null and curr.?.left == null) {
-                    curr.?.left = n;
-                    break;
-                }
-                return;
-            }
+        fn insertOnNode(self: *Self, node: ?*Node, data: T) !?*Node {
+            if (node == null) return try Node.init(self.allocator, data);
+            if (node.?.left == null) node.?.left = try self.insertOnNode(node.?.left, data);
+            if (node.?.right == null) node.?.right = try self.insertOnNode(node.?.right, data);
+            return node;
         }
     };
 }
