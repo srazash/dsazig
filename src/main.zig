@@ -190,10 +190,15 @@ pub fn main() !void {
     for (my_tree_nums) |num| try my_tree.insert(num);
 
     std.debug.print("root -> {?}\n", .{my_tree.root.?.data});
+
     std.debug.print("root.left -> {?}\n", .{my_tree.root.?.left.?.data});
     std.debug.print("root.right -> {?}\n", .{my_tree.root.?.right.?.data});
 
-    //std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    std.debug.print("root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
+
+    //std.debug.print("root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
+    //std.debug.print("root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
