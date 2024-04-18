@@ -185,20 +185,22 @@ pub fn main() !void {
 
     // TREES
     var my_tree = try ds.BinaryTree(u8).init(allocator);
-    const my_tree_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
 
-    for (my_tree_nums) |num| try my_tree.insert(num);
+    my_tree.root = try my_tree.new(7);
+    my_tree.root.?.left = try my_tree.new(23);
+    my_tree.root.?.right = try my_tree.new(3);
+    my_tree.root.?.left.?.left = try my_tree.new(5);
+    my_tree.root.?.left.?.right = try my_tree.new(4);
+    my_tree.root.?.right.?.left = try my_tree.new(18);
+    my_tree.root.?.right.?.right = try my_tree.new(21);
 
     std.debug.print("root -> {?}\n", .{my_tree.root.?.data});
-
     std.debug.print("root.left -> {?}\n", .{my_tree.root.?.left.?.data});
     std.debug.print("root.right -> {?}\n", .{my_tree.root.?.right.?.data});
-
     std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
     std.debug.print("root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
-
-    //std.debug.print("root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
-    //std.debug.print("root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
+    std.debug.print("root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
+    std.debug.print("root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -553,13 +555,11 @@ test "basic tree test" {
     var my_tree = try ds.BinaryTree(usize).init(std.testing.allocator);
     defer my_tree.deinit();
 
-    try my_tree.insert(1);
-    try my_tree.insert(2);
-    try my_tree.insert(3);
-    try my_tree.insert(4);
+    my_tree.root = try my_tree.new(1);
+    my_tree.root.?.left = try my_tree.new(2);
+    my_tree.root.?.right = try my_tree.new(3);
 
     try std.testing.expect(my_tree.root.?.data == 1);
     try std.testing.expect(my_tree.root.?.left.?.data == 2);
     try std.testing.expect(my_tree.root.?.right.?.data == 3);
-    try std.testing.expect(my_tree.root.?.left.?.left.?.data == 4);
 }
