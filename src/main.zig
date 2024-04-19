@@ -194,13 +194,24 @@ pub fn main() !void {
     my_tree.root.?.right.?.left = try my_tree.new(18);
     my_tree.root.?.right.?.right = try my_tree.new(21);
 
-    std.debug.print("root -> {?}\n", .{my_tree.root.?.data});
-    std.debug.print("root.left -> {?}\n", .{my_tree.root.?.left.?.data});
-    std.debug.print("root.right -> {?}\n", .{my_tree.root.?.right.?.data});
-    std.debug.print("root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
-    std.debug.print("root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
-    std.debug.print("root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
-    std.debug.print("root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
+    std.debug.print("new root -> {?}\n", .{my_tree.root.?.data});
+    std.debug.print("new root.left -> {?}\n", .{my_tree.root.?.left.?.data});
+    std.debug.print("new root.right -> {?}\n", .{my_tree.root.?.right.?.data});
+    std.debug.print("new root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    std.debug.print("new root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
+    std.debug.print("new root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
+    std.debug.print("new root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
+
+    var my_new_tree = try ds.BinaryTree(u8).init(allocator);
+    var my_new_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
+    for (my_new_nums) |n| try my_new_tree.insert(n);
+    std.debug.print("insert root -> {?}\n", .{my_new_tree.root.?.data});
+    std.debug.print("insert root.left -> {?}\n", .{my_new_tree.root.?.left.?.data});
+    std.debug.print("insert root.right -> {?}\n", .{my_new_tree.root.?.right.?.data});
+    std.debug.print("insert root.left.left -> {?}\n", .{my_new_tree.root.?.left.?.left.?.data});
+    std.debug.print("insert root.left.right -> {?}\n", .{my_new_tree.root.?.left.?.right.?.data});
+    std.debug.print("insert root.right.left -> {?}\n", .{my_new_tree.root.?.right.?.left.?.data});
+    std.debug.print("insert root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {
