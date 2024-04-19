@@ -216,6 +216,14 @@ pub fn main() !void {
     var my_pre_path = std.ArrayList(u8).init(allocator);
     try my_new_tree.preOrderSearch(&my_pre_path);
     std.debug.print("my_pre_path -> {any}\n", .{my_pre_path.items});
+
+    var my_inorder_path = std.ArrayList(u8).init(allocator);
+    try my_new_tree.inOrderSearch(&my_inorder_path);
+    std.debug.print("my_pre_path -> {any}\n", .{my_inorder_path.items});
+
+    var my_post_path = std.ArrayList(u8).init(allocator);
+    try my_new_tree.postOrderSearch(&my_post_path);
+    std.debug.print("my_pre_path -> {any}\n", .{my_post_path.items});
 }
 
 fn sumCharCodes(n: []const u8) usize {

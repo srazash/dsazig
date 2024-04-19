@@ -78,5 +78,29 @@ pub fn BinaryTree(comptime T: type) type {
             try preSearch(current.?.left, path);
             try preSearch(current.?.right, path);
         }
+
+        pub fn inOrderSearch(self: *Self, path: *std.ArrayList(T)) !void {
+            try inSearch(self.root, path);
+        }
+
+        fn inSearch(current: ?*Node, path: *std.ArrayList(T)) !void {
+            if (current == null) return;
+
+            try inSearch(current.?.left, path);
+            try path.append(current.?.data); // in order
+            try inSearch(current.?.right, path);
+        }
+
+        pub fn postOrderSearch(self: *Self, path: *std.ArrayList(T)) !void {
+            try postSearch(self.root, path);
+        }
+
+        fn postSearch(current: ?*Node, path: *std.ArrayList(T)) !void {
+            if (current == null) return;
+
+            try postSearch(current.?.left, path);
+            try postSearch(current.?.right, path);
+            try path.append(current.?.data); // post
+        }
     };
 }
