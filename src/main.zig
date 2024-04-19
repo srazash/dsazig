@@ -212,6 +212,10 @@ pub fn main() !void {
     std.debug.print("insert root.left.right -> {?}\n", .{my_new_tree.root.?.left.?.right.?.data});
     std.debug.print("insert root.right.left -> {?}\n", .{my_new_tree.root.?.right.?.left.?.data});
     std.debug.print("insert root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
+
+    var my_pre_path = std.ArrayList(u8).init(allocator);
+    try my_new_tree.preOrderSearch(&my_pre_path);
+    std.debug.print("my_pre_path -> {any}\n", .{my_pre_path.items});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -573,4 +577,19 @@ test "basic tree test" {
     try std.testing.expect(my_tree.root.?.data == 1);
     try std.testing.expect(my_tree.root.?.left.?.data == 2);
     try std.testing.expect(my_tree.root.?.right.?.data == 3);
+}
+
+test "pre order search" {
+    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree.deinit();
+    var my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    for (my_nums) |n| try my_tree.insert(n);
+
+    var my_pre_path = std.ArrayList(u8).init(std.testing.allocator);
+    defer my_pre_path.deinit();
+
+    try my_tree.preOrderSearch(&my_pre_path);
+
+    try std.testing.expect(my_pre_path.items[0] == 1);
+    try std.testing.expect(my_pre_path.items[6] == 7);
 }

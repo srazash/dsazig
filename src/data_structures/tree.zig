@@ -66,5 +66,17 @@ pub fn BinaryTree(comptime T: type) type {
         pub fn new(self: *Self, data: T) !?*Node {
             return try Node.init(self.allocator, data);
         }
+
+        pub fn preOrderSearch(self: *Self, path: *std.ArrayList(T)) !void {
+            try preSearch(self.root, path);
+        }
+
+        fn preSearch(current: ?*Node, path: *std.ArrayList(T)) !void {
+            if (current == null) return;
+
+            try path.append(current.?.data);
+            try preSearch(current.?.left, path);
+            try preSearch(current.?.right, path);
+        }
     };
 }
