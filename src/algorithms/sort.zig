@@ -15,14 +15,14 @@ pub fn bubbleSort(comptime T: type, array: T) void {
 
 pub fn quickSort(comptime T: type, array: T, low: usize, high: usize) void {
     if (low < high) {
-        var pivot_idx = quickSortPartition(T, array, low, high);
+        const pivot_idx = quickSortPartition(T, array, low, high);
         if (pivot_idx > 0) quickSort(T, array, low, pivot_idx - 1);
         quickSort(T, array, pivot_idx + 1, high);
     }
 }
 
 fn quickSortPartition(comptime T: type, array: T, low: usize, high: usize) usize {
-    var pivot = array[low];
+    const pivot = array[low];
     var i: usize = low + 1;
     var j: usize = high;
 

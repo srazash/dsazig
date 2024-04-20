@@ -203,7 +203,7 @@ pub fn main() !void {
     std.debug.print("new root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
 
     var my_new_tree = try ds.BinaryTree(u8).init(allocator);
-    var my_new_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
+    const my_new_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
     for (my_new_nums) |n| try my_new_tree.insert(n);
     var my_pre_path = std.ArrayList(u8).init(allocator);
     try my_new_tree.preOrderSearch(&my_pre_path);
@@ -582,7 +582,7 @@ test "basic tree test" {
 test "pre order search" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    var my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
@@ -597,7 +597,7 @@ test "pre order search" {
 test "in order search" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    var my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
@@ -613,7 +613,7 @@ test "in order search" {
 test "post order search" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    var my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
