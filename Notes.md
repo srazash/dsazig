@@ -577,6 +577,35 @@ The time complexity of traversing a tree is O(N).
 
 ## Tree Search
 
+### Breadth-First Search
+
+Unlike a depth-first search (like our pre order, in order and post order transversal functions) a breadth-first search will return the nodes of our binary tree, from left to right, one layer at a time.
+
+In this example, a breadth-first transversal would give us:
+
+```
+       (7)
+      /   \
+  (23)     (8)
+  / \      / \
+(5) (4) (21) (15)
+
+7, 23, 8, 5, 4, 21, 15
+```
+
+To achieve this, rather than using a stack-based algorithm (our pre, in and post order recursive functions on the stack behave like a stack data structure - first in, last out) we pass our nodes into a queue (a first in, first out data structure).
+
+The basic pattern is this:
+
+1. enqueue a node to the queue (starting with the root node)
+2. check for child nodes, and enqueue them if they exist
+3. dequeue the node and move to the next item in the queue
+4. repeat
+
+The end result of this is that our binary data structure has been read in a breadth-first manner, left to right. The queue guarantees the desired order, and we can do whatever operation needed based on the enqueue/dequeue pattern outlined above, such as printing the value of our nodes to the console as we dequeue them.
+
+The time complexity of this is O(N^2), this is because (assuming our binary tree is full - assuming the worst case) for every layer of our tree we enqueue, we have an equal number of nodes (plus one, but we ignore this - drop constants) to enqueue for the next layer. The first layer is 1, then 2, then 4, 8, 16... and so on.
+
 ## Heap
 
 ## Graphs
