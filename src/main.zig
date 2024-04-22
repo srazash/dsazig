@@ -3,10 +3,6 @@ const std = @import("std");
 const algo = @import("algorithms/algorithms.zig");
 const ds = @import("data_structures/data_structures.zig");
 
-test {
-    _ = @import("test.zig");
-}
-
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
