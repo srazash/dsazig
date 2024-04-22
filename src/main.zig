@@ -11,6 +11,8 @@ pub fn main() !void {
     defer arena.deinit();
     const allocator = arena.allocator();
 
+    const stdout = std.io.getStdOut().writer();
+
     var my_array = try allocator.alloc(isize, 1024); // create a 1kb array of isize
 
     var counter: u16 = 0;
@@ -20,26 +22,26 @@ pub fn main() !void {
         my_array[i] = counter;
     }
 
-    std.debug.print("my_array data type -> {}\n", .{@TypeOf(my_array)});
-    std.debug.print("my_array[0] data type -> {}\n", .{@TypeOf(my_array[0])});
-    std.debug.print("my_array -> {any}\n", .{my_array});
+    try stdout.print("my_array data type -> {}\n", .{@TypeOf(my_array)});
+    try stdout.print("my_array[0] data type -> {}\n", .{@TypeOf(my_array[0])});
+    try stdout.print("my_array -> {any}\n", .{my_array});
 
-    std.debug.print("{}\n", .{sumCharCodes("Ryan")});
+    try stdout.print("{}\n", .{sumCharCodes("Ryan")});
 
-    std.debug.print("linearSearch: 492 in my_array? -> {}\n", .{algo.linearSearch(@TypeOf(my_array), my_array, 492)});
+    try stdout.print("linearSearch: 492 in my_array? -> {}\n", .{algo.linearSearch(@TypeOf(my_array), my_array, 492)});
 
-    std.debug.print("binarySearch: 492 in my_array? -> {}\n", .{algo.binarySearch(@TypeOf(my_array), my_array, 492)});
+    try stdout.print("binarySearch: 492 in my_array? -> {}\n", .{algo.binarySearch(@TypeOf(my_array), my_array, 492)});
 
     var mut_array = [_]u8{ 1, 2, 3, 4, 5 };
     const imu_array = [_]u8{ 1, 2, 3, 4, 5 };
 
-    std.debug.print("linearSearch: 3 in mut_array? -> {}\n", .{algo.linearSearch(@TypeOf(&mut_array), &mut_array, 3)});
+    try stdout.print("linearSearch: 3 in mut_array? -> {}\n", .{algo.linearSearch(@TypeOf(&mut_array), &mut_array, 3)});
 
-    std.debug.print("linearSearch: 3 in imu_array? -> {}\n", .{algo.linearSearch(@TypeOf(&imu_array), &imu_array, 3)});
+    try stdout.print("linearSearch: 3 in imu_array? -> {}\n", .{algo.linearSearch(@TypeOf(&imu_array), &imu_array, 3)});
 
-    std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array))});
+    try stdout.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array))});
 
-    std.debug.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array)).Array.child});
+    try stdout.print("type info? -> {}\n", .{@typeInfo(@TypeOf(mut_array)).Array.child});
 
     var my_breaks = try allocator.alloc(bool, 100);
 
@@ -52,8 +54,8 @@ pub fn main() !void {
         }
     }
 
-    std.debug.print("breakpoint set to {} -> {any}\n", .{ breakpoint, my_breaks });
-    std.debug.print("breakpoint? -> {?}\n", .{algo.twoCrystalBalls(@TypeOf(my_breaks), my_breaks)});
+    try stdout.print("breakpoint set to {} -> {any}\n", .{ breakpoint, my_breaks });
+    try stdout.print("breakpoint? -> {?}\n", .{algo.twoCrystalBalls(@TypeOf(my_breaks), my_breaks)});
 
     var unsorted_array = try allocator.alloc(u8, 10);
     unsorted_array[0] = 10;
@@ -67,9 +69,9 @@ pub fn main() !void {
     unsorted_array[8] = 1;
     unsorted_array[9] = 8;
 
-    std.debug.print("unsorted_array before bubble sort -> {any}\n", .{unsorted_array});
+    try stdout.print("unsorted_array before bubble sort -> {any}\n", .{unsorted_array});
     algo.bubbleSort(@TypeOf(unsorted_array), unsorted_array);
-    std.debug.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
+    try stdout.print("unsorted_array after bubble sort -> {any}\n", .{unsorted_array});
 
     var my_list = try ds.LinkedList(usize).init(allocator);
 
@@ -77,47 +79,47 @@ pub fn main() !void {
     try my_list.push(20);
     try my_list.push(30);
 
-    std.debug.print("my_list.len -> {}\n", .{my_list.len});
-    std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
-    std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
+    try stdout.print("my_list.len -> {}\n", .{my_list.len});
+    try stdout.print("my_list.length() -> {}\n", .{my_list.length()});
+    try stdout.print("len matches length? -> {}\n", .{my_list.validateLength()});
 
-    std.debug.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
-    std.debug.print("&my_list.head -> {?*}\n", .{my_list.head});
+    try stdout.print("my_list.head.data -> {}\n", .{my_list.head.?.data});
+    try stdout.print("&my_list.head -> {?*}\n", .{my_list.head});
 
-    std.debug.print("my_list.tail.data -> {}\n", .{my_list.tail.?.data});
-    std.debug.print("&my_list.tail -> {?*}\n", .{my_list.tail});
+    try stdout.print("my_list.tail.data -> {}\n", .{my_list.tail.?.data});
+    try stdout.print("&my_list.tail -> {?*}\n", .{my_list.tail});
 
-    std.debug.print("my_list.head.next.data -> {}\n", .{my_list.head.?.next.?.data});
-    std.debug.print("&my_list.head.next -> {?*}\n", .{my_list.head.?.next});
+    try stdout.print("my_list.head.next.data -> {}\n", .{my_list.head.?.next.?.data});
+    try stdout.print("&my_list.head.next -> {?*}\n", .{my_list.head.?.next});
 
-    std.debug.print("&my_list.head.prev -> {?*}\n", .{my_list.head.?.prev});
-    std.debug.print("&my_list.tail.next -> {?*}\n", .{my_list.tail.?.next});
+    try stdout.print("&my_list.head.prev -> {?*}\n", .{my_list.head.?.prev});
+    try stdout.print("&my_list.tail.next -> {?*}\n", .{my_list.tail.?.next});
 
-    std.debug.print("my_list.at(0) -> {} ({})\n", .{ try my_list.at(0), @TypeOf(try my_list.at(0)) });
-    std.debug.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
-    std.debug.print("my_list.at(2) -> {} ({})\n", .{ try my_list.at(2), @TypeOf(try my_list.at(2)) });
+    try stdout.print("my_list.at(0) -> {} ({})\n", .{ try my_list.at(0), @TypeOf(try my_list.at(0)) });
+    try stdout.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
+    try stdout.print("my_list.at(2) -> {} ({})\n", .{ try my_list.at(2), @TypeOf(try my_list.at(2)) });
 
-    std.debug.print("my_list.addrOf(0) -> {?*}\n", .{try my_list.addrOf(0)});
-    std.debug.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
-    std.debug.print("my_list.addrOf(2) -> {?*}\n", .{try my_list.addrOf(2)});
+    try stdout.print("my_list.addrOf(0) -> {?*}\n", .{try my_list.addrOf(0)});
+    try stdout.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
+    try stdout.print("my_list.addrOf(2) -> {?*}\n", .{try my_list.addrOf(2)});
 
     try my_list.delete(1);
-    std.debug.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
-    std.debug.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
+    try stdout.print("my_list.at(1) -> {} ({})\n", .{ try my_list.at(1), @TypeOf(try my_list.at(1)) });
+    try stdout.print("my_list.addrOf(1) -> {?*}\n", .{try my_list.addrOf(1)});
 
-    std.debug.print("my_list.len -> {}\n", .{my_list.len});
-    std.debug.print("my_list.length() -> {}\n", .{my_list.length()});
-    std.debug.print("len matches length? -> {}\n", .{my_list.validateLength()});
+    try stdout.print("my_list.len -> {}\n", .{my_list.len});
+    try stdout.print("my_list.length() -> {}\n", .{my_list.length()});
+    try stdout.print("len matches length? -> {}\n", .{my_list.validateLength()});
 
     try my_list.insert(0, 15);
     try my_list.insert(2, 35);
     try my_list.printList();
     try my_list.printDetail();
 
-    std.debug.print("queue peek() -> {?}\n", .{my_list.queuePeek()});
-    std.debug.print("stack peek() -> {?}\n", .{my_list.stackPeek()});
+    try stdout.print("queue peek() -> {?}\n", .{my_list.queuePeek()});
+    try stdout.print("stack peek() -> {?}\n", .{my_list.stackPeek()});
 
-    std.debug.print("\n", .{});
+    try stdout.print("\n", .{});
 
     _ = algo.simpleRecursion(10);
 
@@ -162,14 +164,14 @@ pub fn main() !void {
 
     for (maze, 0..) |_, x| {
         for (maze, 0..) |_, y| {
-            std.debug.print("{u} ", .{maze[x][y]});
+            try stdout.print("{u} ", .{maze[x][y]});
         }
-        std.debug.print("\n", .{});
+        try stdout.print("\n", .{});
     }
 
     var path = std.ArrayList(algo.Point).init(allocator);
     try algo.mazeSolver(allocator, maze, .{ .x = 4, .y = 1 }, .{ .x = 1, .y = 4 }, &path);
-    for (path.items) |item| std.debug.print("{any}\n", .{item});
+    for (path.items) |item| try stdout.print("{any}\n", .{item});
 
     // QUICK SORT
     var my_unsorted_array = try allocator.alloc(u8, 512);
@@ -177,11 +179,11 @@ pub fn main() !void {
     const rand = std.crypto.random;
     for (my_unsorted_array, 0..) |_, i| my_unsorted_array[i] = rand.intRangeAtMost(u8, 0, 255);
 
-    std.debug.print("UNSORTED:\n{any}\n", .{my_unsorted_array});
+    try stdout.print("UNSORTED:\n{any}\n", .{my_unsorted_array});
 
     algo.quickSort(@TypeOf(my_unsorted_array), my_unsorted_array, 0, my_unsorted_array.len - 1);
 
-    std.debug.print("SORTED?:\n{any}\n", .{my_unsorted_array});
+    try stdout.print("SORTED?:\n{any}\n", .{my_unsorted_array});
 
     // TREES
     var my_tree = try ds.BinaryTree(u8).init(allocator);
@@ -194,28 +196,32 @@ pub fn main() !void {
     my_tree.root.?.right.?.left = try my_tree.new(18);
     my_tree.root.?.right.?.right = try my_tree.new(21);
 
-    std.debug.print("new root -> {?}\n", .{my_tree.root.?.data});
-    std.debug.print("new root.left -> {?}\n", .{my_tree.root.?.left.?.data});
-    std.debug.print("new root.right -> {?}\n", .{my_tree.root.?.right.?.data});
-    std.debug.print("new root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
-    std.debug.print("new root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
-    std.debug.print("new root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
-    std.debug.print("new root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
+    try stdout.print("new root -> {?}\n", .{my_tree.root.?.data});
+    try stdout.print("new root.left -> {?}\n", .{my_tree.root.?.left.?.data});
+    try stdout.print("new root.right -> {?}\n", .{my_tree.root.?.right.?.data});
+    try stdout.print("new root.left.left -> {?}\n", .{my_tree.root.?.left.?.left.?.data});
+    try stdout.print("new root.left.right -> {?}\n", .{my_tree.root.?.left.?.right.?.data});
+    try stdout.print("new root.right.left -> {?}\n", .{my_tree.root.?.right.?.left.?.data});
+    try stdout.print("new root.right.right -> {?}\n", .{my_tree.root.?.right.?.right.?.data});
 
     var my_new_tree = try ds.BinaryTree(u8).init(allocator);
     const my_new_nums: [7]u8 = .{ 7, 23, 3, 5, 4, 18, 21 };
     for (my_new_nums) |n| try my_new_tree.insert(n);
     var my_pre_path = std.ArrayList(u8).init(allocator);
     try my_new_tree.preOrderSearch(&my_pre_path);
-    std.debug.print("my_pre_path -> {any}\n", .{my_pre_path.items});
+    try stdout.print("my_pre_path -> {any}\n", .{my_pre_path.items});
 
     var my_inorder_path = std.ArrayList(u8).init(allocator);
     try my_new_tree.inOrderSearch(&my_inorder_path);
-    std.debug.print("my_in_order_path -> {any}\n", .{my_inorder_path.items});
+    try stdout.print("my_in_order_path -> {any}\n", .{my_inorder_path.items});
 
     var my_post_path = std.ArrayList(u8).init(allocator);
     try my_new_tree.postOrderSearch(&my_post_path);
-    std.debug.print("my_post_path -> {any}\n", .{my_post_path.items});
+    try stdout.print("my_post_path -> {any}\n", .{my_post_path.items});
+
+    // BREADTH-FIRST SEARCH
+    try stdout.print("my_tree contains 99? -> {}\n", .{try my_tree.breadthFirstSearch(99)});
+    try stdout.print("my_tree contains 5? -> {}\n", .{try my_tree.breadthFirstSearch(5)});
 }
 
 fn sumCharCodes(n: []const u8) usize {
@@ -579,7 +585,7 @@ test "basic tree test" {
     try std.testing.expect(my_tree.root.?.right.?.data == 3);
 }
 
-test "pre order search" {
+test "pre order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
@@ -594,7 +600,7 @@ test "pre order search" {
     try std.testing.expect(my_path.items[6] == 7);
 }
 
-test "in order search" {
+test "in order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
@@ -610,7 +616,7 @@ test "in order search" {
     try std.testing.expect(my_path.items[6] == 7);
 }
 
-test "post order search" {
+test "post order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
@@ -624,4 +630,16 @@ test "post order search" {
     try std.testing.expect(my_path.items[0] == 2);
     try std.testing.expect(my_path.items[5] == 3);
     try std.testing.expect(my_path.items[6] == 1);
+}
+
+test "breadth-first search" {
+    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree.deinit();
+
+    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    for (my_nums) |n| try my_tree.insert(n);
+
+    try std.testing.expect(try my_tree.breadthFirstSearch(7));
+    try std.testing.expect(try my_tree.breadthFirstSearch(1));
+    try std.testing.expect(try my_tree.breadthFirstSearch(99) == false);
 }

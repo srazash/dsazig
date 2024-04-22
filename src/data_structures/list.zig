@@ -173,29 +173,33 @@ pub fn LinkedList(comptime T: type) type {
         }
 
         pub fn printList(self: *Self) !void {
+            const stdout = std.io.getStdOut().writer();
+
             if (self.head == null) return error.EmptyList;
 
             var ptr = self.head;
             var len: usize = 0;
-            std.debug.print("HEAD->", .{});
+            try stdout.print("HEAD->", .{});
             while (ptr != null) : (len += 1) {
-                std.debug.print("[{}]{any}->", .{ len, ptr.?.data });
+                try stdout.print("[{}]{any}->", .{ len, ptr.?.data });
                 ptr = ptr.?.next;
             }
-            std.debug.print("TAIL\n", .{});
+            try stdout.print("TAIL\n", .{});
         }
 
         pub fn printDetail(self: *Self) !void {
+            const stdout = std.io.getStdOut().writer();
+
             if (self.head == null) return error.EmptyList;
 
             var ptr = self.head;
             var len: usize = 0;
-            std.debug.print("START OF LIST...\n", .{});
+            try stdout.print("START OF LIST...\n", .{});
             while (ptr != null) : (len += 1) {
-                std.debug.print("[{}] ({x:<8}) ->\tdata: {any}\tprev: {x:<8}\tnext: {x:<8}\n", .{ len, @intFromPtr(ptr), ptr.?.data, @intFromPtr(ptr.?.prev), @intFromPtr(ptr.?.next) });
+                try stdout.print("[{}] ({x:<8}) ->\tdata: {any}\tprev: {x:<8}\tnext: {x:<8}\n", .{ len, @intFromPtr(ptr), ptr.?.data, @intFromPtr(ptr.?.prev), @intFromPtr(ptr.?.next) });
                 ptr = ptr.?.next;
             }
-            std.debug.print("...END OF LIST\n", .{});
+            try stdout.print("...END OF LIST\n", .{});
         }
 
         // stack functions

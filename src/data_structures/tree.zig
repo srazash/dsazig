@@ -102,5 +102,25 @@ pub fn BinaryTree(comptime T: type) type {
             try postSearch(current.?.right, path);
             try path.append(current.?.data); // post
         }
+
+        pub fn breadthFirstSearch(self: *Self, needle: T) !bool {
+            if (self.root == null) return error.EmptyTree;
+
+            var queue = std.ArrayList(?*Node).init(self.allocator);
+            defer queue.deinit();
+
+            try queue.append(self.root);
+
+            while (queue.items.len > 0) {
+                const current = queue.orderedRemove(0);
+
+                if (current.?.data == needle) return true;
+
+                if (current.?.left != null) try queue.append(current.?.left);
+                if (current.?.right != null) try queue.append(current.?.right);
+            }
+
+            return false;
+        }
     };
 }

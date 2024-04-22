@@ -340,12 +340,12 @@ pub fn main() !void {
 fn foo(n: usize) usize {
     // base case
     if (n == 1) {
-        std.debug.print("base case! {}\n", .{n});
+        try stdout.print("base case! {}\n", .{n});
         return n;
     }
 
     // recurse case
-    std.debug.print("recurse case! {}\n", .{n});
+    try stdout.print("recurse case! {}\n", .{n});
     return foo(n - 1);
 }
 ```
@@ -377,13 +377,13 @@ Our recurse case can be broken down into three steps:
 
 ```zig
 // pre
-std.debug.print("recurse case! {}\n", .{n});
+try stdout.print("recurse case! {}\n", .{n});
 
 // recurse
 const value = foo(n - 1);
 
 // post
-std.debug.print("recurse complete!\n", .{});
+try stdout.print("recurse complete!\n", .{});
 
 // return recurse value
 return value;

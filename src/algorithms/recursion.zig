@@ -3,17 +3,17 @@ const std = @import("std");
 pub fn simpleRecursion(n: usize) usize {
     // base case
     if (n == 1) {
-        //std.debug.print("base case! {}\n", .{n});
+        //try stdout.print("base case! {}\n", .{n});
         return n;
     }
 
     // recurse case
     // pre
-    //std.debug.print("pre: recurse case! {}\n", .{n});
+    //try stdout.print("pre: recurse case! {}\n", .{n});
     // recurse
     const rec = simpleRecursion(n - 1);
     // post
-    //std.debug.print("post: recurse case! {}\n", .{n});
+    //try stdout.print("post: recurse case! {}\n", .{n});
     return rec;
 }
 
@@ -43,6 +43,8 @@ pub fn mazeSolver(allocator: std.mem.Allocator, maze: *[5][5]u8, start: Point, e
 }
 
 fn mazeWalker(maze: *[5][5]u8, current: Point, end: Point, seen: *[5][5]bool, path: *std.ArrayList(Point)) !bool {
+    const stdout = std.io.getStdOut().writer();
+
     const x: usize = @intCast(current.x);
     const y: usize = @intCast(current.y);
 
@@ -66,10 +68,10 @@ fn mazeWalker(maze: *[5][5]u8, current: Point, end: Point, seen: *[5][5]bool, pa
     // recurse
     for (dir, 0..) |d, i| {
         switch (i) {
-            0 => std.debug.print("UP\n", .{}),
-            1 => std.debug.print("RIGHT\n", .{}),
-            2 => std.debug.print("DOWN\n", .{}),
-            3 => std.debug.print("LEFT\n", .{}),
+            0 => try stdout.print("UP\n", .{}),
+            1 => try stdout.print("RIGHT\n", .{}),
+            2 => try stdout.print("DOWN\n", .{}),
+            3 => try stdout.print("LEFT\n", .{}),
             else => unreachable,
         }
 
