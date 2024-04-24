@@ -404,3 +404,20 @@ test "breadth-first search" {
     try std.testing.expect(try my_tree.breadthFirstSearch(1));
     try std.testing.expect(try my_tree.breadthFirstSearch(99) == false);
 }
+
+test "depth-first compare" {
+    var my_tree_a = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree_a.deinit();
+
+    var my_tree_b = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree_b.deinit();
+
+    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    for (my_nums) |n| try my_tree_a.insert(n);
+    for (my_nums) |n| try my_tree_b.insert(n);
+
+    try std.testing.expect(try my_tree_a.compare(my_tree_b));
+
+    my_tree_b.root.?.data = 99;
+    try std.testing.expect(try my_tree_a.compare(my_tree_b) == false);
+}

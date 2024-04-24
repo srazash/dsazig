@@ -122,5 +122,21 @@ pub fn BinaryTree(comptime T: type) type {
 
             return false;
         }
+
+        pub fn compare(self: *Self, tree: BinaryTree(T)) !bool {
+            if (@TypeOf(self.root.?.data) != @TypeOf(tree.root.?.data)) return error.TypeMismatch;
+            return depthFirstCompare(self.root, tree.root);
+        }
+
+        fn depthFirstCompare(a: ?*Node, b: ?*Node) bool {
+            // shape check
+            if (a == null and b == null) return true;
+            if (a == null or b == null) return false;
+
+            // value check
+            if (a.?.data != b.?.data) return false;
+
+            return depthFirstCompare(a.?.left, b.?.left) and depthFirstCompare(a.?.right, b.?.right);
+        }
     };
 }

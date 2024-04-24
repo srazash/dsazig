@@ -606,6 +606,32 @@ The end result of this is that our binary data structure has been read in a brea
 
 The time complexity of this is O(N^2), this is because (assuming our binary tree is full - assuming the worst case) for every layer of our tree we enqueue, we have an equal number of nodes (plus one, but we ignore this - drop constants) to enqueue for the next layer. The first layer is 1, then 2, then 4, 8, 16... and so on.
 
+### Depth-First Comparison
+
+When comparing trees we no only want to compare the data in the nodes but also the shape of the tree.
+
+If we attempted to perform a breadth-first comparison of these trees:
+
+```
+   (1)
+   / \
+(2)   (3)
+
+        (1)
+       /
+    (2)
+   /
+(3)
+```
+
+We would end up comparing `1, 2, 3` to `1, 2, 3` with no regard for the shape of the tree, only the data in the order we get to in each node.
+
+With a depth-first search we specifically compare the root data to the root data, it's left and right child with a left and right child.
+
+So in our example, we'd compare the root data of `1`, and the left child of the root data of `2` successfully, but we would then compare the right child of the root, which would fail as on is non-null, and contains data (`3`) while the other is null, resulting in a failed comparison based on shape.
+
+The time complexity of this is O(N).
+
 ## Heap
 
 ## Graphs
