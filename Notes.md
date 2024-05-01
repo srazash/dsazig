@@ -632,6 +632,31 @@ So in our example, we'd compare the root data of `1`, and the left child of the 
 
 The time complexity of this is O(N).
 
+### Depth-First Find: Binary Search Tree
+
+Often abbreviated to BST.
+
+In a BST all values on the left of the parent must be < the value of the parent, and all values on the right must be >= the value of the parent.
+
+All values must conform to this rule in order for the BST to function correctly, as the parent functions as a pivot point like in quick sort.
+
+So each time we recurse into the left or right child nodes we half our possibilities.
+
+This would look like:
+
+```
+find(node, value) bool
+    if node == null // no values to find
+        return false
+    if node.value == value // value found
+        return true
+    if node.value < value // node value is less than value to find
+        return find(node.right, value)
+    return find(node.left, value) // node value is equal to/greater than node value
+```
+
+Time complexity is O(logN).
+
 ## Heap
 
 ## Graphs
