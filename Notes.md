@@ -655,7 +655,11 @@ find(node, value) bool
     return find(node.left, value) // node value is equal to/greater than node value
 ```
 
-Time complexity is O(logN).
+Time complexity is O(logN), but can be up to O(N) in an absolute worst case scenario.
+
+### Depth-First Insert
+
+
 
 ## Heap
 
