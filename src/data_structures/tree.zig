@@ -38,28 +38,29 @@ pub fn BinaryTree(comptime T: type) type {
             if (self.root != null) self.root.?.deinit(self.allocator);
         }
 
-        pub fn insert(self: *Self, data: T) !void {
+        pub fn insert(self: *Self, value: T) !void {
             if (self.root == null) {
-                self.root = try Node.init(self.allocator, data);
+                self.root = try Node.init(self.allocator, value);
                 return;
             }
 
-            try self.insertOnNode(self.root, data);
+            try self.insertNode(self.root, value);
         }
 
-        fn insertOnNode(self: *Self, current: ?*Node, data: T) !void {
-            if (current.?.left == null) {
-                current.?.left = try Node.init(self.allocator, data);
-                return;
-            } else if (current.?.right == null) {
-                current.?.right = try Node.init(self.allocator, data);
-                return;
+        fn insertNode(self: *Self, node: ?*Node, value: T) !void {
+            if (node.?.data < value) {
+                if (node.?.right == null) {
+                    node.?.right = try Node.init(self.allocator, value);
+                    return;
+                }
+                try self.insertNode(node.?.right, value);
             }
-
-            if (data < current.?.data) {
-                try self.insertOnNode(current.?.left, data);
-            } else {
-                try self.insertOnNode(current.?.right, data);
+            if (node.?.data >= value) {
+                if (node.?.left == null) {
+                    node.?.left = try Node.init(self.allocator, value);
+                    return;
+                }
+                try self.insertNode(node.?.left, value);
             }
         }
 

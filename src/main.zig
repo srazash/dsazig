@@ -235,6 +235,16 @@ pub fn main() !void {
 
     try stdout.print("my_ordered_tree contains 11? -> {}\n", .{my_ordered_tree.find(11)});
     try stdout.print("my_ordered_tree contains 20? -> {}\n", .{my_ordered_tree.find(20)});
+
+    // DEPTH-FIRST INSERT
+    var my_insert_tree = try ds.BinaryTree(u8).init(allocator);
+
+    try my_insert_tree.insert(50);
+    try my_insert_tree.insert(25);
+    try my_insert_tree.insert(75);
+    try my_insert_tree.insert(99);
+
+    try stdout.print("my_insert_tree root.right.right -> {}\n", .{my_insert_tree.root.?.right.?.right.?.data});
 }
 
 fn sumCharCodes(n: []const u8) usize {

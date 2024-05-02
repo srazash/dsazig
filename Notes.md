@@ -636,7 +636,7 @@ The time complexity of this is O(N).
 
 Often abbreviated to BST.
 
-In a BST all values on the left of the parent must be < the value of the parent, and all values on the right must be >= the value of the parent.
+In a BST all values on the left of the parent must be <= the value of the parent, and all values on the right must be > the value of the parent.
 
 All values must conform to this rule in order for the BST to function correctly, as the parent functions as a pivot point like in quick sort.
 
@@ -659,7 +659,23 @@ Time complexity is O(logN), but can be up to O(N) in an absolute worst case scen
 
 ### Depth-First Insert
 
+An insert is very similar to finding, in that we conform to the rules of values <= the current node got to the left, and any values greater than the current node go to the right.
 
+And we continue to follow this until we reach a null node we can insert the value into.
+
+```
+insert(node, value) void
+    if node.value < value
+        if (node.right == null)
+            create(value)
+        insert(node.right, value)
+    else if node.value >= value
+        if (node.left == null)
+            create(value)
+        insert(node.left, value)
+```
+
+The time complexity of the insert operation is O(logN). Like find, it can be up to O(N) in the worst case scenario (where every value is in ascending or descending order).
 
 ## Heap
 

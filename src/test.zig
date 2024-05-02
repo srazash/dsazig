@@ -437,3 +437,17 @@ test "depth-first find" {
     try std.testing.expect(my_tree.find(11));
     try std.testing.expect(my_tree.find(20) == false);
 }
+
+test "depth-first insert" {
+    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree.deinit();
+
+    try my_tree.insert(50);
+    try my_tree.insert(25);
+    try my_tree.insert(75);
+    try my_tree.insert(0);
+    try my_tree.insert(100);
+
+    try std.testing.expect(my_tree.root.?.left.?.left.?.data == 0);
+    try std.testing.expect(my_tree.root.?.right.?.right.?.data == 100);
+}
