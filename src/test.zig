@@ -421,3 +421,19 @@ test "depth-first compare" {
     my_tree_b.root.?.data = 99;
     try std.testing.expect(try my_tree_a.compare(my_tree_b) == false);
 }
+
+test "depth-first find" {
+    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    defer my_tree.deinit();
+
+    my_tree.root = try my_tree.new(10);
+    my_tree.root.?.left = try my_tree.new(7);
+    my_tree.root.?.right = try my_tree.new(13);
+    my_tree.root.?.left.?.left = try my_tree.new(3);
+    my_tree.root.?.left.?.right = try my_tree.new(9);
+    my_tree.root.?.right.?.left = try my_tree.new(11);
+    my_tree.root.?.right.?.right = try my_tree.new(15);
+
+    try std.testing.expect(my_tree.find(11));
+    try std.testing.expect(my_tree.find(20) == false);
+}

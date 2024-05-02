@@ -221,6 +221,20 @@ pub fn main() !void {
     // BREADTH-FIRST SEARCH
     try stdout.print("my_tree contains 99? -> {}\n", .{try my_tree.breadthFirstSearch(99)});
     try stdout.print("my_tree contains 5? -> {}\n", .{try my_tree.breadthFirstSearch(5)});
+
+    // DEPTH-FIRST FIND
+    var my_ordered_tree = try ds.BinaryTree(u8).init(allocator);
+
+    my_ordered_tree.root = try my_ordered_tree.new(10);
+    my_ordered_tree.root.?.left = try my_ordered_tree.new(7);
+    my_ordered_tree.root.?.right = try my_ordered_tree.new(13);
+    my_ordered_tree.root.?.left.?.left = try my_ordered_tree.new(3);
+    my_ordered_tree.root.?.left.?.right = try my_ordered_tree.new(9);
+    my_ordered_tree.root.?.right.?.left = try my_ordered_tree.new(11);
+    my_ordered_tree.root.?.right.?.right = try my_ordered_tree.new(15);
+
+    try stdout.print("my_ordered_tree contains 11? -> {}\n", .{my_ordered_tree.find(11)});
+    try stdout.print("my_ordered_tree contains 20? -> {}\n", .{my_ordered_tree.find(20)});
 }
 
 fn sumCharCodes(n: []const u8) usize {

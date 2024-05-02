@@ -138,5 +138,16 @@ pub fn BinaryTree(comptime T: type) type {
 
             return depthFirstCompare(a.?.left, b.?.left) and depthFirstCompare(a.?.right, b.?.right);
         }
+
+        pub fn find(self: *Self, value: T) bool {
+            return depthFirstFind(self.root, value);
+        }
+
+        fn depthFirstFind(node: ?*Node, value: T) bool {
+            if (node == null) return false;
+            if (node.?.data == value) return true;
+            if (node.?.data < value) return depthFirstFind(node.?.right, value);
+            return depthFirstFind(node.?.left, value);
+        }
     };
 }
