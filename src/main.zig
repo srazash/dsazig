@@ -245,6 +245,22 @@ pub fn main() !void {
     try my_insert_tree.insert(99);
 
     try stdout.print("my_insert_tree root.right.right -> {}\n", .{my_insert_tree.root.?.right.?.right.?.data});
+
+    var my_ttree = try ds.BinaryTree(u8).init(allocator);
+    const my_nnums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
+    for (my_nnums) |n| try my_ttree.insert(n);
+
+    var my_ppath = std.ArrayList(u8).init(allocator);
+    try my_ttree.preOrderSearch(&my_ppath);
+    try stdout.print("preo -> {any}\n", .{my_ppath.items});
+
+    my_ppath.clearRetainingCapacity();
+    try my_ttree.inOrderSearch(&my_ppath);
+    try stdout.print("ino -> {any}\n", .{my_ppath.items});
+
+    my_ppath.clearRetainingCapacity();
+    try my_ttree.postOrderSearch(&my_ppath);
+    try stdout.print("posto -> {any}\n", .{my_ppath.items});
 }
 
 fn sumCharCodes(n: []const u8) usize {
