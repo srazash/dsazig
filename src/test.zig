@@ -349,7 +349,7 @@ test "basic tree test" {
 test "pre order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
@@ -357,14 +357,15 @@ test "pre order transversal" {
 
     try my_tree.preOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 1);
-    try std.testing.expect(my_path.items[6] == 7);
+    try std.testing.expect(my_path.items[0] == 10);
+    try std.testing.expect(my_path.items[3] == 9);
+    try std.testing.expect(my_path.items[6] == 15);
 }
 
 test "in order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
@@ -372,15 +373,15 @@ test "in order transversal" {
 
     try my_tree.inOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 2);
-    try std.testing.expect(my_path.items[1] == 1);
-    try std.testing.expect(my_path.items[6] == 7);
+    try std.testing.expect(my_path.items[0] == 3);
+    try std.testing.expect(my_path.items[3] == 10);
+    try std.testing.expect(my_path.items[6] == 15);
 }
 
 test "post order transversal" {
     var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
     defer my_tree.deinit();
-    const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
+    const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
     var my_path = std.ArrayList(u8).init(std.testing.allocator);
@@ -388,9 +389,9 @@ test "post order transversal" {
 
     try my_tree.postOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 2);
-    try std.testing.expect(my_path.items[5] == 3);
-    try std.testing.expect(my_path.items[6] == 1);
+    try std.testing.expect(my_path.items[0] == 3);
+    try std.testing.expect(my_path.items[3] == 11);
+    try std.testing.expect(my_path.items[6] == 10);
 }
 
 test "breadth-first search" {
