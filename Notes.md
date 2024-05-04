@@ -677,6 +677,35 @@ insert(node, value) void
 
 The time complexity of the insert operation is O(logN). Like find, it can be up to O(N) in the worst case scenario (where every value is in ascending or descending order).
 
+### Depth-First Delete
+
+Deleting nodes from our binary tree is a bit more complex than other operations but it still breaks down to one of several basic conditions:
+
+1. The node we wish to delete has no children, in which case we can set the parent link to null and freely delete it.
+2. The node we wish to delete has one child, in which case we can set the parent to point to the child and delete the node.
+3. The node we wish to delete has two children, in this case we replace it with the value of the LARGEST node on the left child tree. This also works for the right child tree, we find the value of the SMALLEST node.
+
+This can be beneficial if we maintain the height of the tree at each node and wish to shorten the longest child tree to improve overall time complexity.
+
+We can also look at [AVL Trees](https://en.wikipedia.org/wiki/AVL_tree) and [Red-Black Trees](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree) for optimising our binary tree structure, even if we aren't deleting nodes from the tree.
+
+### Depth-First Search: Binary Search
+
+A binary search is a very simple operation, again it's achieved with a recursive function:
+
+```
+binarySearch(current, needle)
+    if (node == null)
+        return false
+    if (node.vale == needle)
+        return true
+    if (node.value < needle)
+        return binarySearch(current.right, needle)
+    return binarySearch(current.left, needle)
+```
+
+The time complexity of this search is O(logN), assuming a balanced tree, but could be up to O(N).
+
 ## Heap
 
 ## Graphs

@@ -150,5 +150,16 @@ pub fn BinaryTree(comptime T: type) type {
             if (node.?.data < value) return depthFirstFind(node.?.right, value);
             return depthFirstFind(node.?.left, value);
         }
+
+        pub fn search(self: *Self, needle: T) bool {
+            return binarySearch(self.root, needle);
+        }
+
+        fn binarySearch(current: ?*Node, needle: T) bool {
+            if (current == null) return false;
+            if (current.?.data == needle) return true;
+            if (current.?.data < needle) return binarySearch(current.?.right, needle);
+            return binarySearch(current.?.left, needle);
+        }
     };
 }

@@ -3,6 +3,23 @@ const std = @import("std");
 const algo = @import("algorithms/algorithms.zig");
 const ds = @import("data_structures/data_structures.zig");
 
+fn sumCharCodes(n: []const u8) usize {
+    // example of a O(N) or linear operation
+    var sum: usize = 0;
+    for (n) |char| sum += char;
+    return sum;
+}
+
+fn sumCharCodesE(n: []const u8) usize {
+    // another example of a O(N) or linear operation
+    var sum: usize = 0;
+    for (n) |char| {
+        if (char == 69) return sum; // return if char is 'E'
+        sum += char;
+    }
+    return sum;
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
@@ -261,21 +278,8 @@ pub fn main() !void {
     my_ppath.clearRetainingCapacity();
     try my_ttree.postOrderSearch(&my_ppath);
     try stdout.print("posto -> {any}\n", .{my_ppath.items});
-}
 
-fn sumCharCodes(n: []const u8) usize {
-    // example of a O(N) or linear operation
-    var sum: usize = 0;
-    for (n) |char| sum += char;
-    return sum;
-}
-
-fn sumCharCodesE(n: []const u8) usize {
-    // another example of a O(N) or linear operation
-    var sum: usize = 0;
-    for (n) |char| {
-        if (char == 69) return sum; // return if char is 'E'
-        sum += char;
-    }
-    return sum;
+    // DEPTH-FIRST SEARCH
+    try stdout.print("my_ttree contain 100 -> {}\n", .{my_ttree.search(100)});
+    try stdout.print("my_ttree contain 11 -> {}\n", .{my_ttree.search(11)});
 }
