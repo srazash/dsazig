@@ -708,6 +708,88 @@ The time complexity of this search is O(logN), assuming a balanced tree, but cou
 
 ## Heap
 
+Sometimes called a Priority Queue, but generally called a heap, this data structure is a binary tree where all child nodes are either smaller (called a MaxHeap) or larger (called a MinHeap).
+
+This means that when we add or delete a new node we have to adjust the tree.
+
+There is no tree transversal.
+
+Heaps maintain weak ordering, so we can guarantee that the children of the current node are smaller or larger than it, but this may not hold true when comparing the children of different nodes.
+
+This is because new nodes are added strictly breadth-first, from left to right. And the value we're adding is only assessed based on the current parent node, not the entire tree.
+
+These rules are referred to as the Heap Condition.
+
+In a MaxHeap, all nodes below the current node must be smaller than it.
+
+In a MinHeap, all nodes below the current node must be larger than it.
+
+This guarantees an O(1) operation if we wanted to find the smallest item in a MinHeap, or the largest item in a MaxHeap, as all we need to do is peek at the root node.
+
+We can also guarantee that our tree is complete, since new nodes are added strictly breadth-first, from left to right, there cannot be any empty spaces between nodes.
+
+### Adding a node
+
+Depending on whether our tree is a MaxHeap or a MinHeap depends on how we need to add node, but the basic principle remains the same:
+
+1. We add a new node (this is guaranteed to be inserted in the first empty node - breadth-first, left to right)
+2. Then depending on if our tree is a MaxHeap or a MinHeap we compare our new nodes value to the value of the parent node, if it is bigger (for a MaxHeap) or smaller (for a MinHeap) we swap the values - bubbling the  value up the tree until it is in a balanced position based on it's value.
+
+This guarantees weak ordering is maintained as every node follow this same rule when being added.
+
+### Storing a heap
+
+Unlike the other trees we've worked with, a heap is not made up of nodes in the same sense, because a heap is generally stored in an array, or an array-like structure. It's logically a tree structure, we use it like a tree, but it's values are stored in an array.
+
+```
+           0(50)
+           /    \
+       1(71)   2(100)
+        /  \    /   \
+ 3/4(101) (80)(200) (101)5/6
+    /
+7(200)
+
+...
+
+   0 . . . . . . . . . . . . . . . 7
+[ 50, 71, 100, 101, 80, 200, 101, 200 ]
+```
+
+Here we've indexed each "node", 0...7, like in an array and mapped the values to how they would actually be stored in an array.
+
+But since these aren't "nodes" and therefore cannot have fields defining left ot right child, and they aren't in a tree "struct" that defines a root node, we need to be abl;e to define these things using a formula.
+
+The easiest to define is the root node, this will always be element 0 of the array.
+
+We can also define the left and right children of any node with a simple formula:
+
+- 2 * index + 1 = left child
+- 2 * index + 2 = right child
+
+Referring to our earlier heap example:
+
+Starting at our root node (index 0), the right child is 2 * 0 + 2, which gives us 2.
+
+If we wanted to find the left child of the "node" at index 2, that is 2 * 2 + 1, which gives us 5.
+
+Likewise, we can also come up with a simple formula to identify our parent "node":
+
+- If index is odd: (i - 1) / 2
+- If index is even: (i - 2) / 2
+
+So if our index is 4, we would calculate our parent with (4 - 2) / 2, which gives us 1.
+
+If our index was 5, (5 - 1) / 2, which gives us 2.
+
+An finally, to identify the next free "node" we can insert a value into, we just use the length of the array as the index.
+
+### Quick summary
+
+- Self balancing
+- It can be used for priority (priority queue)
+- Easy to get wrong (double check the formula!)
+
 ## Graphs
 
 ## Maps & LRU
