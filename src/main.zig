@@ -282,4 +282,11 @@ pub fn main() !void {
     // DEPTH-FIRST SEARCH
     try stdout.print("my_ttree contain 100 -> {}\n", .{my_ttree.search(100)});
     try stdout.print("my_ttree contain 11 -> {}\n", .{my_ttree.search(11)});
+
+    // HEAP / PRIORITY QUEUE
+    var my_heap = ds.Heap(u8).init(allocator);
+    for (my_nnums) |n| try my_heap.add(n);
+
+    try stdout.print("my_heap length -> {}\n", .{my_heap.length});
+    try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
 }

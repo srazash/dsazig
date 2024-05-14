@@ -22,34 +22,78 @@ pub fn Heap(comptime T: type) type {
 
         pub fn add(self: *Self, data: T) !void {
             try self.data.append(data);
+            try heapifyUp(self, self.length);
             self.length += 1;
         }
 
-        fn getParent(current: usize) !usize {
-            if (current == 0) return 0;
+        pub fn delete(self: *Self) !T {
+            if (self.length == 0) return error.NothingToDelete;
 
-            if (try std.math.mod(usize, current, 2) == 0)
-                return (current - 2) / 2;
+            const v = self.data.items[0];
 
-            return (current - 1) / 2;
+            if (self.length == 1) {
+                self.length -= 1;
+                return v;
+            }
+
+            self.length -= 1;
+            self.data.items[0] = self.data.items[self.length - 1];
+            heapifyDown(0);
+            return v;
         }
 
-        fn getLeftChild(self: *Self, current: usize) !usize {
-            if (self.length < 2) return 0;
+        fn heapifyUp(self: *Self, index: usize) !void {
+            if (index == 0) return;
 
-            const index = (2 * current) + 1;
+            const p = try getParent(index);
+            const pv = self.data.items[p];
+            const v = self.data.items[index];
 
-            if (index < self.length) return index;
-            return error.OutOfBounds;
+            if (pv > v) {
+                self.data.items[index] = pv;
+                self.data.items[p] = v;
+                try heapifyUp(self, p);
+            }
+
+            return;
         }
 
-        fn getRightChild(self: *Self, current: usize) !usize {
-            if (self.length < 2) return 0;
+        fn heapifyDown(self: *Self, index: usize) void {
+            if (index >= self.length) return;
 
-            const index = (2 * current) + 2;
+            const l = getLeftChild(index);
+            const r = getRightChild(index);
 
-            if (index < self.length) return index;
-            return error.OutOfBounds;
+            if (l >= self.length) return;
+
+            const v = self.data.items[index];
+            const lv = self.data.items[l];
+            const rv = self.data.items[r];
+
+            if (lv > rv and v > rv) {
+                self.data.items[index] = rv;
+                self.data.items[r] = v;
+                heapifyDown(r);
+            } else if (rv > lv and v > lv) {
+                self.data.items[index] = lv;
+                self.data.items[l] = v;
+                heapifyDown(l);
+            }
+        }
+
+        fn getParent(index: usize) !usize {
+            if (try std.math.mod(usize, index, 2) == 0)
+                return (index - 2) / 2;
+
+            return (index - 1) / 2;
+        }
+
+        fn getLeftChild(index: usize) usize {
+            return (2 * index) + 1;
+        }
+
+        fn getRightChild(index: usize) usize {
+            return (2 * index) + 2;
         }
     };
 }
