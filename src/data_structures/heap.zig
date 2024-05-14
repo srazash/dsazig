@@ -37,8 +37,8 @@ pub fn Heap(comptime T: type) type {
             }
 
             self.length -= 1;
-            self.data.items[0] = self.data.items[self.length - 1];
-            heapifyDown(0);
+            _ = self.data.swapRemove(0);
+            heapifyDown(self, 0);
             return v;
         }
 
@@ -73,11 +73,11 @@ pub fn Heap(comptime T: type) type {
             if (lv > rv and v > rv) {
                 self.data.items[index] = rv;
                 self.data.items[r] = v;
-                heapifyDown(r);
+                heapifyDown(self, r);
             } else if (rv > lv and v > lv) {
                 self.data.items[index] = lv;
                 self.data.items[l] = v;
-                heapifyDown(l);
+                heapifyDown(self, l);
             }
         }
 

@@ -466,3 +466,19 @@ test "depth-first search" {
     try std.testing.expect(my_tree.search(100));
     try std.testing.expect(my_tree.search(101) == false);
 }
+
+test "heap" {
+    var my_heap = ds.Heap(u8).init(std.testing.allocator);
+    defer my_heap.deinit();
+
+    const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
+    for (my_nums) |n| try my_heap.add(n);
+
+    try std.testing.expect(my_heap.length == 7);
+
+    _ = try my_heap.delete();
+    _ = try my_heap.delete();
+
+    try std.testing.expect(my_heap.length == 5);
+    try std.testing.expect(my_heap.data.items[4] > my_heap.data.items[0]);
+}
