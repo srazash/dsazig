@@ -789,6 +789,47 @@ An finally, to identify the next free "node" we can insert a value into, we just
 - Self balancing
 - It can be used for priority (priority queue)
 - Easy to get wrong (double check the formula!)
+- Be careful about garbage (items left over in the array)!
+
+The time complexity of a heap is O(logN).
+
+### Tries
+
+If the heap isn't a priority queue it's a "trie" (pronounced like "tree" and it comes from reTRIEval trees), sometimes also referred to as a try tree, prefix tree or a digital tree.
+
+An example of a trie tree is an autocomplete.
+
+As an example, a trie that looks up English words would be a tree structure where each node can have up to 26 children.
+
+If we were to look up the word CAT, for example:
+
+```
+           (root)--26 children for all letters
+          /
+        (C)
+       /
+    (A)
+   /
+(T)--isWord
+   \
+    (S)--isWord
+```
+
+Here, we start with the letter 'C' which would have children for all possible next letters in a word.
+
+Next we select 'A', again we have children for all possible next letters for words beginning 'CA'.
+
+Finally we select 'T', there are more words that begin with the letters 'CAT' but because it is a full word we have a boolean field to indicate this.
+
+We can continue, and select 'S' to get CATS. Again, it's a full word so it has that boolean flag to indicate so.
+
+So long as we perform a depth-first, pre-order traversal we will always get words in alphabetical order.
+
+We can also apply a score or weight field to our nodes to prioritise certain words over others if they are similarly spelled, but one is more common.
+
+For example, if we search for S-I... SIZE or SITE are alphabetically later than SIRE, but they are far more common words so it makes sense to give them a greater weight and prioritise them.
+
+The time complexity is O(N), the lookup of any given word is entirely dependent on the word - it may be a 3 letter word or a 13 letter word.
 
 ## Graphs
 
