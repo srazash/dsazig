@@ -33,6 +33,7 @@ pub fn Heap(comptime T: type) type {
 
             if (self.length == 1) {
                 self.length -= 1;
+                _ = self.data.pop();
                 return v;
             }
 
@@ -64,7 +65,7 @@ pub fn Heap(comptime T: type) type {
             const l = getLeftChild(index);
             const r = getRightChild(index);
 
-            if (l >= self.length) return;
+            if (l >= self.length or r >= self.length) return;
 
             const v = self.data.items[index];
             const lv = self.data.items[l];

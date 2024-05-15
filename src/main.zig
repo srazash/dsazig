@@ -290,8 +290,11 @@ pub fn main() !void {
     try stdout.print("my_heap length -> {}\n", .{my_heap.length});
     try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
 
-    _ = try my_heap.delete();
-    _ = try my_heap.delete();
+    for (0..7) |_| {
+        _ = try my_heap.delete();
+    }
+
+    for (my_nnums) |n| try my_heap.add(n);
 
     try stdout.print("my_heap length -> {}\n", .{my_heap.length});
     try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
