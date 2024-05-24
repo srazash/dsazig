@@ -833,4 +833,27 @@ The time complexity is O(N), the lookup of any given word is entirely dependent 
 
 ## Graphs
 
+Graphs are a series of nodes with some number of connections between them, unlike a tree structure, there are no rules that define how a graph is structured other than the nodes must be connected to be part of the graph.
+
+**All trees are graphs, but not all graphs are trees!**
+
+### Common graph terminology
+
+- cycle: a traversal of 3 or more nodes that arrives back ar the original node
+- acyclic: a graph which contains no cycles is **acyclic**
+- connected: every node connects to all other nodes in the graph
+- directed: when links between nodes has a direction (a one-way link between nodes)
+- undirected: when links between nodes can go both ways
+- weighted: when links between nodes have a weight depending on the direction, weight can be symmetrical (equal weight in both directions) or asymmetrical (differing weight depending on direction)
+- DAG: a directed, acyclic graph
+
+### Implementation terms
+
+- vertex: a node or point on the graph
+- edge: the link or connection between two nodes
+
+### Big O Time Complexity
+
+The Big O time complexity of a graph is calculated as: O(V*E), where V is the number of vertexes and E is the number of edges.
+
 ## Maps & LRU
