@@ -856,4 +856,53 @@ Graphs are a series of nodes with some number of connections between them, unlik
 
 The Big O time complexity of a graph is calculated as: O(V*E), where V is the number of vertexes and E is the number of edges.
 
+### Implementing a graph
+
+Typically graphs are represented in one of two ways:
+
+1. An *adjacency list*, or;
+2. An *adjacency matrix*
+
+Typically an adjacency list is used as the time complexity for an adjacency matrix is O(V^2).
+
+If we have a graph that looks like this:
+
+![A basic graph](graph.png)
+
+We would represent it using an adjacency list like this:
+
+```
+[
+    0: [{to: 1, weight: 10}, {to: 3, weight: null}],
+    1: [ ],
+    2: [{to: 1, weight: null}],
+    3: [{to: 1, weight: null}, {to: 2, weight: null}],
+]
+```
+
+We represent the list as an array, containing sub-arrays for each vertex that contains all of the edges of that vertex.
+
+So in our list, element 0 corresponds to node 0 in our example graph. And it has two edges, one to node 1 which is weighted 10, and one to node 3 which does not have a weight (in a language like Zig we could represent the edges with a struct). And so on for all subsequent vertexes in our graph and their edges.
+
+An adjacency matrix is similar but it must represent every **possible** edge, even if one doesn't exist.
+
+```
+[        0,  1,  2,  3
+    0: [ 0, 10,  0,  1 ],
+    1: [ 0,  0,  0,  0 ],
+    2: [ 1,  0,  0,  0 ],
+    3: [ 0,  1,  1,  0 ],
+]
+```
+
+Again we represent our graph using an array of arrays but each sub-array (representing our edges) is as large as the parent array (representing our vertexes). And as our number of vertexes grows, so does the size of our sub-arrays.
+
+So here we have a graph of 4 vertexes, which has a total of 16 possible edges (minus the number of vertexes, as a vertex cannot connect to itself). If we added more vertexes, say 10, the total number of possible edges we needed to represent would grow to 100: O(V^2).
+
+For the matrix, memory use would also grow quadratically. When using the list we only need as much memory as is required to represent all of our edges. In a matrix we also need to represent non-existent edges.
+
+### Searching a graph
+
+We can still perform breadth-first (stack) and depth-first (queue) searches on a graph like we did on trees as all trees are graphs.
+
 ## Maps & LRU
