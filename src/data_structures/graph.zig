@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub fn GraphAL(vertex: usize) type {
+pub fn GraphAL(comptime T: type) type {
     return struct {
         const Edge = struct {
             to: usize,
@@ -8,10 +8,19 @@ pub fn GraphAL(vertex: usize) type {
         };
 
         const Self = @This();
+
+        allocator: std.mem.Allocator,
+        size: usize,
+        data: std.ArrayList(T),
+        list: std.ArrayList(std.ArrayList(Edge)),
+
+        pub fn init() void {}
+
+        pub fn deinit() void {}
     };
 }
 
-pub fn GraphAM(vertex: usize) type {
+pub fn GraphAM(comptime T: type) type {
     return struct {
         const Self = @This();
     };
