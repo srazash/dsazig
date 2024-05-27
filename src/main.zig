@@ -298,4 +298,17 @@ pub fn main() !void {
 
     try stdout.print("my_heap length -> {}\n", .{my_heap.length});
     try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
+
+    // GRAPHS
+    var my_graph_al = try ds.GraphAL(usize).init(allocator, 3);
+
+    my_graph_al.setData(0, 10);
+    my_graph_al.setData(1, 5);
+    my_graph_al.setData(2, 15);
+
+    my_graph_al.defineEdge(0, 1, null);
+    my_graph_al.defineEdge(1, 0, 10);
+    my_graph_al.defineEdge(2, 1, null);
+
+    //try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 }
