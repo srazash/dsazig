@@ -9,8 +9,6 @@ pub fn GraphAL(comptime T: type) type {
 
         const Self = @This();
 
-        const GraphList = std.ArrayList(std.ArrayList(Edge));
-
         allocator: std.mem.Allocator,
         size: usize,
         data: std.ArrayList(T),
@@ -22,7 +20,7 @@ pub fn GraphAL(comptime T: type) type {
             for (0..size) |_|
                 try data.append(0);
 
-            var list = try GraphList.initCapacity(allocator, size);
+            var list = try std.ArrayList(std.ArrayList(Edge)).initCapacity(allocator, size);
 
             for (0..size) |_| {
                 const item = std.ArrayList(Edge).init(allocator);
