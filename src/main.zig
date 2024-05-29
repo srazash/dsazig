@@ -302,13 +302,18 @@ pub fn main() !void {
     // GRAPHS
     var my_graph_al = try ds.GraphAL(usize).init(allocator, 3);
 
-    my_graph_al.setData(0, 10);
-    my_graph_al.setData(1, 5);
-    my_graph_al.setData(2, 15);
+    try stdout.print("my_graph_al len, cap, size -> {}, {}, {}\n", .{ my_graph_al.data.items.len, my_graph_al.data.capacity, my_graph_al.size });
 
-    my_graph_al.defineEdge(0, 1, null);
-    my_graph_al.defineEdge(1, 0, 10);
-    my_graph_al.defineEdge(2, 1, null);
+    try my_graph_al.setData(0, 10);
+    try my_graph_al.setData(1, 5);
+    try my_graph_al.setData(2, 15);
 
-    //try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
+    try my_graph_al.defineEdge(0, 1, null);
+    try my_graph_al.defineEdge(1, 0, 10);
+    try my_graph_al.defineEdge(2, 1, null);
+
+    try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
+
+    for (my_graph_al.list.items, 0..) |item, i|
+        try stdout.print("my_graph_al list for data {} -> {any}\n", .{ i, item });
 }
