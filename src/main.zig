@@ -310,10 +310,12 @@ pub fn main() !void {
 
     try my_graph_al.defineEdge(0, 1, null);
     try my_graph_al.defineEdge(1, 0, 10);
+    try my_graph_al.defineEdge(1, 2, 5);
     try my_graph_al.defineEdge(2, 1, null);
 
     try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 
-    for (my_graph_al.list.items, 0..) |item, i|
-        try stdout.print("my_graph_al list for data {} -> {any}\n", .{ i, item });
+    for (my_graph_al.list.items, 0..) |from, i|
+        for (from.items) |to|
+            try stdout.print("{} -> {}, weight:{?}\n", .{ i, to.to, to.weight });
 }
