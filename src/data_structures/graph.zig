@@ -94,5 +94,14 @@ pub fn GraphAM(comptime T: type) type {
             self.matrix.deinit();
             self.data.deinit();
         }
+
+        pub fn printAdjacencyMatrix(self: *Self) !void {
+            const stdout = std.io.getStdOut().writer();
+
+            try stdout.print("adjacency matrix:\n", .{});
+
+            for (self.matrix.items, 0..) |row, i|
+                try stdout.print("{:2} {any}\n", .{ i, row.items });
+        }
     };
 }

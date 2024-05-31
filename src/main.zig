@@ -324,4 +324,6 @@ pub fn main() !void {
     my_graph_am.data.items[0] = 1;
 
     try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
+
+    try my_graph_am.printAdjacencyMatrix();
 }
