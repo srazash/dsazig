@@ -62,17 +62,27 @@ pub fn GraphAM(comptime T: type) type {
         data: std.ArrayList(T),
         matrix: std.ArrayList(std.ArrayList(usize)),
 
-        pub fn init(allocator: std.mem.Allocator, size: usize) !void {
+        pub fn init(allocator: std.mem.Allocator, size: usize) !Self {
+            var data = try std.ArrayList(T).initCapacity(allocator, size);
+
+            for (0..size) |_|
+                try data.append(0);
+
             var matrix = try std.ArrayList(std.ArrayList(usize)).initCapacity(allocator, size);
 
             for (0..size) |_| {
-                matrix.append(try std.ArrayList(usize).initCapacity(allocator, size));
+                var row = try std.ArrayList(usize).initCapacity(allocator, size);
+
+                for (0..size) |_|
+                    try row.append(0);
+
+                try matrix.append(row);
             }
 
             return .{
                 .allocator = allocator,
                 .size = size,
-                .data = std.ArrayList(T).initCapacity(allocator, size),
+                .data = data,
                 .matrix = matrix,
             };
         }

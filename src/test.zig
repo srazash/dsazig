@@ -499,3 +499,12 @@ test "graph adjacency list" {
     try std.testing.expect(my_graph.data.items[1] == 5);
     try std.testing.expect(my_graph.list.items[1].items[0].weight == 10);
 }
+
+test "graph adjacency matrix" {
+    var my_graph = try ds.GraphAM(usize).init(std.testing.allocator, 3);
+    defer my_graph.deinit();
+
+    my_graph.data.items[0] = 1;
+
+    try std.testing.expect(my_graph.size == 3);
+}

@@ -318,4 +318,10 @@ pub fn main() !void {
     for (my_graph_al.list.items, 0..) |from, i|
         for (from.items) |to|
             try stdout.print("{} -> {}, weight:{?}\n", .{ i, to.to, to.weight });
+
+    var my_graph_am = try ds.GraphAM(usize).init(allocator, 3);
+
+    my_graph_am.data.items[0] = 1;
+
+    try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
 }
