@@ -482,3 +482,20 @@ test "heap" {
     try std.testing.expect(my_heap.length == 5);
     try std.testing.expect(my_heap.data.items[4] > my_heap.data.items[0]);
 }
+
+test "graph adjacency list" {
+    var my_graph = try ds.GraphAL(usize).init(std.testing.allocator, 3);
+    defer my_graph.deinit();
+
+    try my_graph.setData(0, 10);
+    try my_graph.setData(1, 5);
+    try my_graph.setData(2, 15);
+
+    try my_graph.defineEdge(0, 1, null);
+    try my_graph.defineEdge(1, 0, 10);
+    try my_graph.defineEdge(1, 2, 5);
+    try my_graph.defineEdge(2, 1, null);
+
+    try std.testing.expect(my_graph.data.items[1] == 5);
+    try std.testing.expect(my_graph.list.items[1].items[0].weight == 10);
+}
