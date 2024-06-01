@@ -50,6 +50,16 @@ pub fn GraphAL(comptime T: type) type {
         pub fn defineEdge(self: *Self, from: usize, to: usize, weight: ?usize) !void {
             try self.list.items[from].append(.{ .to = to, .weight = weight });
         }
+
+        pub fn printAdjacencyList(self: *Self) !void {
+            const stdout = std.io.getStdOut().writer();
+
+            try stdout.print("adjacency list:\n", .{});
+
+            for (self.list.items, 0..) |from, i|
+                for (from.items) |to|
+                    try stdout.print("{} -> {}, weight:{?}\n", .{ i, to.to, to.weight });
+        }
     };
 }
 

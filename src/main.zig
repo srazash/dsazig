@@ -315,9 +315,7 @@ pub fn main() !void {
 
     try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 
-    for (my_graph_al.list.items, 0..) |from, i|
-        for (from.items) |to|
-            try stdout.print("{} -> {}, weight:{?}\n", .{ i, to.to, to.weight });
+    try my_graph_al.printAdjacencyList();
 
     var my_graph_am = try ds.GraphAM(usize).init(allocator, 3);
 
