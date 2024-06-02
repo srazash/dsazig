@@ -323,5 +323,11 @@ pub fn main() !void {
 
     try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
 
+    try my_graph_am.setData(1, 10);
+
+    try my_graph_am.defineEdge(0, 1, 1);
+
+    try stdout.print("my_graph_am data -> {any}\n", .{my_graph_am.data.items});
+
     try my_graph_am.printAdjacencyMatrix();
 }

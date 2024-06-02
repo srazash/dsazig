@@ -504,7 +504,16 @@ test "graph adjacency matrix" {
     var my_graph = try ds.GraphAM(usize).init(std.testing.allocator, 3);
     defer my_graph.deinit();
 
-    my_graph.data.items[0] = 1;
+    try my_graph.setData(0, 10);
+    try my_graph.setData(1, 5);
+    try my_graph.setData(2, 15);
+
+    try my_graph.defineEdge(0, 1, 1);
+    try my_graph.defineEdge(1, 0, 10);
+    try my_graph.defineEdge(1, 2, 5);
+    try my_graph.defineEdge(2, 1, 1);
 
     try std.testing.expect(my_graph.size == 3);
+    try std.testing.expect(my_graph.data.items[1] == 5);
+    try std.testing.expect(my_graph.matrix.items[1].items[0] == 10);
 }
