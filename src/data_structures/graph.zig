@@ -44,10 +44,16 @@ pub fn GraphAL(comptime T: type) type {
         }
 
         pub fn setData(self: *Self, vertex: usize, data: T) !void {
+            if (vertex >= self.size)
+                return error.InvalidVertex;
+
             self.data.items[vertex] = data;
         }
 
         pub fn defineEdge(self: *Self, from: usize, to: usize, weight: ?usize) !void {
+            if (from >= self.size or to >= self.size or from == to)
+                return error.InvalidFromOrTo;
+
             try self.list.items[from].append(.{ .to = to, .weight = weight });
         }
 
@@ -103,6 +109,20 @@ pub fn GraphAM(comptime T: type) type {
             }
             self.matrix.deinit();
             self.data.deinit();
+        }
+
+        pub fn setData(self: *Self, vertex: usize, data: T) !void {
+            if (vertex >= self.size)
+                return error.InvalidVertex;
+
+            self.data.items[vertex] = data;
+        }
+
+        pub fn defineEdge(self: *Self, from: usize, to: usize, weight: usize) !void {
+            if (from >= self.size or to >= self.size or from == to)
+                return error.InvalidFromOrTo;
+
+            self.matrix.items[from].items[to] = weight;
         }
 
         pub fn printAdjacencyMatrix(self: *Self) !void {
