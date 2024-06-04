@@ -517,3 +517,17 @@ test "graph adjacency matrix" {
     try std.testing.expect(my_graph.data.items[1] == 5);
     try std.testing.expect(my_graph.matrix.items[1].items[0] == 10);
 }
+
+test "graph adjacency matrix bfs" {
+    var my_graph = try ds.GraphAM(usize).init(std.testing.allocator, 5);
+    defer my_graph.deinit();
+
+    for (0..5) |value| try my_graph.setData(value, value + 1);
+
+    try my_graph.defineEdge(0, 1, 1);
+    try my_graph.defineEdge(0, 2, 4);
+    try my_graph.defineEdge(0, 3, 5);
+    try my_graph.defineEdge(1, 1, 1);
+    try my_graph.defineEdge(2, 3, 2);
+    try my_graph.defineEdge(3, 4, 5);
+}

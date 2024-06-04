@@ -300,32 +300,39 @@ pub fn main() !void {
     try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
 
     // GRAPHS
-    var my_graph_al = try ds.GraphAL(usize).init(allocator, 3);
+    var my_graph_al = try ds.GraphAL(usize).init(allocator, 4);
 
     try stdout.print("my_graph_al len, cap, size -> {}, {}, {}\n", .{ my_graph_al.data.items.len, my_graph_al.data.capacity, my_graph_al.size });
 
-    try my_graph_al.setData(0, 10);
-    try my_graph_al.setData(1, 5);
-    try my_graph_al.setData(2, 15);
+    try my_graph_al.setData(0, 1);
+    try my_graph_al.setData(1, 2);
+    try my_graph_al.setData(2, 3);
+    try my_graph_al.setData(3, 4);
 
-    try my_graph_al.defineEdge(0, 1, null);
-    try my_graph_al.defineEdge(1, 0, 10);
-    try my_graph_al.defineEdge(1, 2, 5);
-    try my_graph_al.defineEdge(2, 1, null);
+    try my_graph_al.defineEdge(0, 1, 10);
+    try my_graph_al.defineEdge(0, 3, 5);
+    try my_graph_al.defineEdge(2, 0, null);
+    try my_graph_al.defineEdge(3, 1, null);
+    try my_graph_al.defineEdge(3, 2, null);
 
     try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 
     try my_graph_al.printAdjacencyList();
 
-    var my_graph_am = try ds.GraphAM(usize).init(allocator, 3);
-
-    my_graph_am.data.items[0] = 1;
+    var my_graph_am = try ds.GraphAM(usize).init(allocator, 4);
 
     try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
 
-    try my_graph_am.setData(1, 10);
+    try my_graph_am.setData(0, 1);
+    try my_graph_am.setData(1, 2);
+    try my_graph_am.setData(2, 3);
+    try my_graph_am.setData(3, 4);
 
-    try my_graph_am.defineEdge(0, 1, 1);
+    try my_graph_am.defineEdge(0, 1, 10);
+    try my_graph_am.defineEdge(0, 3, 5);
+    try my_graph_am.defineEdge(2, 0, 1);
+    try my_graph_am.defineEdge(3, 1, 1);
+    try my_graph_am.defineEdge(3, 2, 1);
 
     try stdout.print("my_graph_am data -> {any}\n", .{my_graph_am.data.items});
 

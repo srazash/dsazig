@@ -133,5 +133,29 @@ pub fn GraphAM(comptime T: type) type {
             for (self.matrix.items, 0..) |row, i|
                 try stdout.print("{:2} {any}\n", .{ i, row.items });
         }
+
+        pub fn breadthFirstSeach(self: *Self, source: usize, needle: T) !?[]usize {
+            var prev = std.ArrayList(usize).init(self.allocator);
+            defer prev.deinit();
+
+            var seen = std.ArrayList(bool).init(self.allocator);
+            defer seen.deinit();
+
+            var queue = std.ArrayList(usize).init(self.allocator);
+            defer queue.deinit();
+
+            try seen.append(true);
+            try queue.append(source);
+
+            while (queue.items.len) {
+                const current = queue.swapRemove(0);
+
+                if (self.data.items[current] == needle)
+                    break;
+                
+                for (self.matrix.items[current]) |i|
+                    
+            }
+        }
     };
 }
