@@ -135,26 +135,39 @@ pub fn GraphAM(comptime T: type) type {
         }
 
         pub fn breadthFirstSeach(self: *Self, source: usize, needle: T) !?[]usize {
-            var prev = std.ArrayList(usize).init(self.allocator);
-            defer prev.deinit();
-
-            var seen = std.ArrayList(bool).init(self.allocator);
+            var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.matrix.items.len);
             defer seen.deinit();
+            for (0..self.matrix.items.len) |i|
+                seen.items[i] = false;
+
+            var prev = try std.ArrayList(isize).initCapacity(self.allocator, self.matrix.items.len);
+            defer prev.deinit();
+            for (0..self.matrix.items.len) |i|
+                prev.items[i] = -1;
+
+            seen.items[source] = true;
 
             var queue = std.ArrayList(usize).init(self.allocator);
             defer queue.deinit();
 
-            try seen.append(true);
             try queue.append(source);
 
             while (queue.items.len) {
-                const current = queue.swapRemove(0);
+                const current = queue.orderedRemove(0);
 
                 if (self.data.items[current] == needle)
                     break;
-                
-                for (self.matrix.items[current]) |i|
+
+
+                for (self.matrix.items[current].items) |i| {
+                    if (i == 0)
+                        continue;
                     
+                    if 
+                }
+                
+                seen.items[current] = true;
+                                    
             }
         }
     };
