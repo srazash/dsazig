@@ -527,7 +527,9 @@ test "graph adjacency matrix bfs" {
     try my_graph.defineEdge(0, 1, 1);
     try my_graph.defineEdge(0, 2, 4);
     try my_graph.defineEdge(0, 3, 5);
-    try my_graph.defineEdge(1, 1, 1);
+    try my_graph.defineEdge(2, 1, 1);
     try my_graph.defineEdge(2, 3, 2);
     try my_graph.defineEdge(3, 4, 5);
+
+    try std.testing.expect(my_graph.size == 5);
 }

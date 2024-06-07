@@ -163,7 +163,7 @@ pub fn GraphAM(comptime T: type) type {
                     if (i == 0)
                         continue;
                     
-                    if 
+                    //if 
                 }
                 
                 seen.items[current] = true;
