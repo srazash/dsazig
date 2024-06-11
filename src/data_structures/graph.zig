@@ -137,13 +137,16 @@ pub fn GraphAM(comptime T: type) type {
         pub fn bfs(self: *Self, source: usize, needle: T) !?std.ArrayList(T) {
             var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.matrix.items.len);
             defer seen.deinit();
-            for (0..self.matrix.items.len) |i|
-                seen.items[i] = false;
+            for (0..self.matrix.items.len) |_|
+                try seen.append(false);
 
             var prev = try std.ArrayList(isize).initCapacity(self.allocator, self.matrix.items.len);
             defer prev.deinit();
-            for (0..self.matrix.items.len) |i|
-                prev.items[i] = -1;
+            for (0..self.matrix.items.len) |_|
+                try prev.append(-1);
+
+            std.debug.print("seen len and cap {} {}\n", .{ seen.items.len, seen.capacity });
+            std.debug.print("prev len and cap {} {}\n", .{ prev.items.len, prev.capacity });
 
             seen.items[source] = true;
 
@@ -185,7 +188,7 @@ pub fn GraphAM(comptime T: type) type {
             }
 
             if (out.items.len > 0) {
-                return out;
+                return out; // this needs reversing before returning!!!
             } else {
                 return null;
             }
