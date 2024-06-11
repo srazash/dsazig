@@ -319,22 +319,25 @@ pub fn main() !void {
 
     try my_graph_al.printAdjacencyList();
 
-    var my_graph_am = try ds.GraphAM(usize).init(allocator, 4);
+    var my_graph_am = try ds.GraphAM(usize).init(allocator, 5);
 
     try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
 
-    try my_graph_am.setData(0, 1);
-    try my_graph_am.setData(1, 2);
-    try my_graph_am.setData(2, 3);
-    try my_graph_am.setData(3, 4);
+    for (0..5) |value| try my_graph_am.setData(value, value + 1);
 
-    try my_graph_am.defineEdge(0, 1, 10);
+    try my_graph_am.defineEdge(0, 1, 1);
+    try my_graph_am.defineEdge(0, 2, 4);
     try my_graph_am.defineEdge(0, 3, 5);
-    try my_graph_am.defineEdge(2, 0, 1);
-    try my_graph_am.defineEdge(3, 1, 1);
-    try my_graph_am.defineEdge(3, 2, 1);
+    try my_graph_am.defineEdge(2, 1, 1);
+    try my_graph_am.defineEdge(2, 3, 2);
+    try my_graph_am.defineEdge(3, 4, 5);
 
     try stdout.print("my_graph_am data -> {any}\n", .{my_graph_am.data.items});
 
     try my_graph_am.printAdjacencyMatrix();
+
+    var results: ?std.ArrayList(usize) = std.ArrayList(usize).init(allocator);
+    results = try my_graph_am.bfs(0, 5);
+
+    try stdout.print("my_graph_am bfs results -> {any}\n", .{results});
 }

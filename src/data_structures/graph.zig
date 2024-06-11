@@ -152,7 +152,7 @@ pub fn GraphAM(comptime T: type) type {
 
             try queue.append(source);
 
-            while (queue.items.len) {
+            while (queue.items.len > 0) {
                 const current = queue.orderedRemove(0);
 
                 if (self.data.items[current] == needle)
@@ -162,13 +162,13 @@ pub fn GraphAM(comptime T: type) type {
                     if (item == 0)
                         continue;
 
-                    if (seen[i])
+                    if (seen.items[i])
                         continue;
 
-                    seen[i] = true;
-                    prev[i] = current;
+                    seen.items[i] = true;
+                    prev.items[i] = @intCast(current);
 
-                    queue.append(item);
+                    try queue.append(item);
                 }
 
                 seen.items[current] = true;
@@ -179,12 +179,12 @@ pub fn GraphAM(comptime T: type) type {
             var out = std.ArrayList(usize).init(self.allocator);
             defer queue.deinit();
 
-            while (prev[current] != -1) {
-                out.append(current);
-                current = prev[current];
+            while (prev.items[current] != -1) {
+                try out.append(current);
+                current = @intCast(prev.items[current]);
             }
 
-            if (out.items.len) {
+            if (out.items.len > 0) {
                 return out;
             } else {
                 return null;
