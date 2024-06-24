@@ -193,5 +193,12 @@ pub fn GraphAM(comptime T: type) type {
                 return null;
             }
         }
+
+        pub fn bfs2(self: *Self, source: usize, needle: T) !?usize {
+            var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.matrix.items.len);
+            defer visited.deinit();
+            for (0..self.matrix.items.len) |_|
+                try visited.append(false);
+        }
     };
 }
