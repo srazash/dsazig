@@ -194,11 +194,20 @@ pub fn GraphAM(comptime T: type) type {
             }
         }
 
-        pub fn bfs2(self: *Self, source: usize, needle: T) !?usize {
-            var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.matrix.items.len);
+        pub fn bfs2(self: *Self, source: usize, target: usize) !?*[]usize {
+            if (source >= self.size or target >= self.size)
+                return error.InvalidSourceOrTarget;
+
+            if (source == target)
+                return error.SourceIsTarget;
+
+            var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
             defer visited.deinit();
             for (0..self.matrix.items.len) |_|
                 try visited.append(false);
+
+            var queue = try std.ArrayList(usize).init(self.allocator);
+            defer queue.deinit();
         }
     };
 }
