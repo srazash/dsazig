@@ -9,8 +9,9 @@ pub fn main() !void {
 
     const arr = try arrTest(allocator, 10);
     defer allocator.free(arr);
-    try stdout.print("arr len -> {}, arr ptr -> {*}({s})\n", .{ arr.len, arr.ptr, arr.ptr });
-    try stdout.print("{any}\n", .{arr});
+
+    try stdout.print("arr len -> {}, arr ptr -> {*}\n", .{ arr.len, arr.ptr });
+    try stdout.print("arr -> {any}\n", .{arr});
 }
 
 fn arrTest(allocator: std.mem.Allocator, count: usize) ![]usize {
