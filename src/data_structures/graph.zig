@@ -134,80 +134,30 @@ pub fn GraphAM(comptime T: type) type {
                 try stdout.print("{:2} {any}\n", .{ i, row.items });
         }
 
-        pub fn bfs(self: *Self, source: usize, needle: T) !?std.ArrayList(T) {
-            var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.matrix.items.len);
-            defer seen.deinit();
-            for (0..self.matrix.items.len) |_|
-                try seen.append(false);
-
-            var prev = try std.ArrayList(isize).initCapacity(self.allocator, self.matrix.items.len);
-            defer prev.deinit();
-            for (0..self.matrix.items.len) |_|
-                try prev.append(-1);
-
-            std.debug.print("seen len and cap {} {}\n", .{ seen.items.len, seen.capacity });
-            std.debug.print("prev len and cap {} {}\n", .{ prev.items.len, prev.capacity });
-
-            seen.items[source] = true;
-
-            var queue = std.ArrayList(usize).init(self.allocator);
-            defer queue.deinit();
-
-            try queue.append(source);
-
-            while (queue.items.len > 0) {
-                const current = queue.orderedRemove(0);
-
-                if (self.data.items[current] == needle)
-                    break;
-
-                for (self.matrix.items[current].items, 0..) |item, i| {
-                    if (item == 0)
-                        continue;
-
-                    if (seen.items[i])
-                        continue;
-
-                    seen.items[i] = true;
-                    prev.items[i] = @intCast(current);
-
-                    try queue.append(item);
-                }
-
-                seen.items[current] = true;
-            }
-
-            var current = needle;
-
-            var out = std.ArrayList(usize).init(self.allocator);
-            defer queue.deinit();
-
-            while (prev.items[current] != -1) {
-                try out.append(current);
-                current = @intCast(prev.items[current]);
-            }
-
-            if (out.items.len > 0) {
-                return out; // this needs reversing before returning!!!
-            } else {
-                return null;
-            }
-        }
-
-        pub fn bfs2(self: *Self, source: usize, target: usize) !?*[]usize {
+        pub fn bfs(self: *Self, source: usize, target: usize) !?[]usize {
             if (source >= self.size or target >= self.size)
                 return error.InvalidSourceOrTarget;
 
             if (source == target)
-                return error.SourceIsTarget;
+                return null;
 
             var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
             defer visited.deinit();
             for (0..self.matrix.items.len) |_|
                 try visited.append(false);
 
+            var path = try std.ArrayList(usize).init(self.allocator);
+            defer path.deinit();
+
             var queue = try std.ArrayList(usize).init(self.allocator);
             defer queue.deinit();
+
+            try queue.append(source);
+            visited.items[source] = true;
+
+            while (queue.items.len > 0) {
+                // loop something!
+            }
         }
     };
 }

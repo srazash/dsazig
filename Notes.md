@@ -901,6 +901,50 @@ So here we have a graph of 4 vertexes, which has a total of 16 possible edges (m
 
 For the matrix, memory use would also grow quadratically. When using the list we only need as much memory as is required to represent all of our edges. In a matrix we also need to represent non-existent edges.
 
+### Graph Adjacency Matrix BFS Recipe
+
+Let's outline the steps for implementing BFS:
+
+1. Input validation:
+   - Check if source and destination vertex indices are valid (less than graph size).
+   - Check if source and destination are the same (optional, depends on your requirements).
+
+2. Initialize data structures:
+   - Create a queue to store vertices to visit.
+   - Create a boolean array to mark visited vertices.
+   - Create an array to store the parent of each vertex (for path reconstruction).
+
+3. BFS algorithm:
+   - Enqueue the source vertex and mark it as visited.
+   - While the queue is not empty:
+     - Dequeue a vertex.
+     - If it's the destination vertex, stop the search.
+     - For each adjacent vertex (check the row in the adjacency matrix):
+       - If the vertex is not visited:
+         - Mark it as visited.
+         - Set its parent to the current vertex.
+         - Enqueue it.
+
+4. Path reconstruction:
+   - If the destination was reached:
+     - Start from the destination and follow the parent links back to the source.
+     - Reverse this path to get the correct order from source to destination.
+   - If the destination was not reached, return null or an empty path.
+
+5. Return the result:
+   - If a path was found, return it as a slice of vertex indices.
+   - If no path was found, return null or an appropriate indicator.
+
+Additional considerations:
+
+- For an adjacency matrix, checking adjacent vertices involves iterating through the entire row of the current vertex in the matrix.
+- You might want to use a dynamic array or ArrayList to build the path, then convert it to a slice for the return value.
+- Consider how you want to handle memory allocation for the returned path.
+
+Remember that BFS guarantees the shortest path in terms of the number of edges for unweighted graphs. If your graph is weighted and you need the shortest path by weight, you'd need to use a different algorithm like Dijkstra's.
+
+This approach should give you a good starting point for implementing BFS on your adjacency matrix graph structure. Let me know if you need any clarification on any of these steps!
+
 ### Searching a graph
 
 We can still perform breadth-first (stack) and depth-first (queue) searches on a graph like we did on trees as all trees are graphs.
