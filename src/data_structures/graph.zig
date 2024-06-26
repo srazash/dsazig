@@ -134,30 +134,49 @@ pub fn GraphAM(comptime T: type) type {
                 try stdout.print("{:2} {any}\n", .{ i, row.items });
         }
 
-        pub fn bfs(self: *Self, source: usize, target: usize) !?[]usize {
+        pub fn bfs(self: *Self, source: usize, target: usize) ![]usize {
             if (source >= self.size or target >= self.size)
                 return error.InvalidSourceOrTarget;
 
             if (source == target)
-                return null;
+                return error.SourceIsTarget;
 
             var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
             defer visited.deinit();
-            for (0..self.matrix.items.len) |_|
+            for (0..self.size) |_|
                 try visited.append(false);
 
-            var path = try std.ArrayList(usize).init(self.allocator);
+            var path = std.ArrayList(usize).init(self.allocator);
             defer path.deinit();
 
-            var queue = try std.ArrayList(usize).init(self.allocator);
+            var queue = std.ArrayList(usize).init(self.allocator);
             defer queue.deinit();
 
             try queue.append(source);
             visited.items[source] = true;
 
+            var current = queue.orderedRemove(0);
+
             while (queue.items.len > 0) {
-                // loop something!
+                if (current == target)
+                    break;
+
+                for (self.matrix.items[current].items, 0..) |_, i| {
+                    if (!visited.items[i]) {
+                        visited.items[i] = true;
+                        current = i;
+                        try queue.append(i);
+                    }
+                }
             }
+
+            while (queue.items.len > 0) {
+                try path.append(queue.pop());
+            }
+
+            std.debug.print("path.items -> {any}\n", .{path.items});
+
+            return path.toOwnedSlice();
         }
     };
 }

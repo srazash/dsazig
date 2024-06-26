@@ -336,8 +336,8 @@ pub fn main() !void {
 
     try my_graph_am.printAdjacencyMatrix();
 
-    var results: ?std.ArrayList(usize) = std.ArrayList(usize).init(allocator);
-    results = try my_graph_am.bfs(0, 5);
+    const results = try my_graph_am.bfs(0, 1);
+    //defer allocator.free(results);
 
     try stdout.print("my_graph_am bfs results -> {any}\n", .{results});
 }
