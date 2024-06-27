@@ -155,13 +155,17 @@ pub fn GraphAM(comptime T: type) type {
             try queue.append(source);
             visited.items[source] = true;
 
-            var current = queue.orderedRemove(0);
+            var current: usize = 0;
 
             while (queue.items.len > 0) {
+                current = queue.orderedRemove(0);
+
                 if (current == target)
                     break;
 
                 for (self.matrix.items[current].items, 0..) |_, i| {
+                    if (i == current)
+                        continue;
                     if (!visited.items[i]) {
                         visited.items[i] = true;
                         current = i;
@@ -173,8 +177,6 @@ pub fn GraphAM(comptime T: type) type {
             while (queue.items.len > 0) {
                 try path.append(queue.pop());
             }
-
-            std.debug.print("path.items -> {any}\n", .{path.items});
 
             return path.toOwnedSlice();
         }

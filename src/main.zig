@@ -336,7 +336,7 @@ pub fn main() !void {
 
     try my_graph_am.printAdjacencyMatrix();
 
-    const results = try my_graph_am.bfs(0, 1);
+    const results = try my_graph_am.bfs(0, 3);
     //defer allocator.free(results);
 
     try stdout.print("my_graph_am bfs results -> {any}\n", .{results});
