@@ -134,7 +134,7 @@ pub fn GraphAM(comptime T: type) type {
                 try stdout.print("{:2} {any}\n", .{ i, row.items });
         }
 
-        pub fn bfs(self: *Self, source: usize, target: usize) ![]usize {
+        pub fn bfs(self: *Self, source: usize, target: usize) !?[]usize {
             if (source >= self.size or target >= self.size)
                 return error.InvalidSourceOrTarget;
 
@@ -175,17 +175,25 @@ pub fn GraphAM(comptime T: type) type {
                 }
             }
 
+            queue.clearRetainingCapacity();
+
             current = target;
+
+            while (prev.items[current] != -1) {
+                try queue.append(current);
+                current = @intCast(prev.items[current]);
+            }
+            if (queue.items.len == 0)
+                return null;
+            try queue.append(source);
+
             var out = std.ArrayList(usize).init(self.allocator);
             defer out.deinit();
 
-            while (prev.items[current] != -1) {
-                try out.append(current);
-                current = @intCast(prev.items[current]);
-            }
-            try out.append(source);
+            while (queue.items.len > 0)
+                try out.append(queue.pop());
 
-            return out.toOwnedSlice();
+            return try out.toOwnedSlice();
         }
     };
 }

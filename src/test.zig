@@ -527,9 +527,24 @@ test "graph adjacency matrix bfs" {
     try my_graph.defineEdge(0, 1, 1);
     try my_graph.defineEdge(0, 2, 4);
     try my_graph.defineEdge(0, 3, 5);
-    try my_graph.defineEdge(2, 1, 1);
+    try my_graph.defineEdge(1, 0, 1);
     try my_graph.defineEdge(2, 3, 2);
     try my_graph.defineEdge(3, 4, 5);
 
     try std.testing.expect(my_graph.size == 5);
+
+    var result = try my_graph.bfs(0, 4);
+    const expect = &[_]usize{ 0, 3, 4 };
+    try std.testing.expectEqualSlices(usize, expect, result.?);
+    if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.bfs(1, 4);
+    const expect2 = &[_]usize{ 1, 0, 3, 4 };
+    try std.testing.expectEqualSlices(usize, expect2, result.?);
+    if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.bfs(1, 0);
+    const expect3 = &[_]usize{ 1, 0 };
+    try std.testing.expectEqualSlices(usize, expect3, result.?);
+    if (result) |r| std.testing.allocator.free(r);
 }
