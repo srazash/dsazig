@@ -141,19 +141,21 @@ pub fn GraphAM(comptime T: type) type {
             if (source == target)
                 return error.SourceIsTarget;
 
-            var visited = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
-            defer visited.deinit();
+            var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
+            defer seen.deinit();
             for (0..self.size) |_|
-                try visited.append(false);
+                try seen.append(false);
 
-            var path = std.ArrayList(usize).init(self.allocator);
-            defer path.deinit();
+            var prev = try std.ArrayList(isize).initCapacity(self.allocator, self.size);
+            defer prev.deinit();
+            for (0..self.size) |_|
+                try prev.append(-1);
 
             var queue = std.ArrayList(usize).init(self.allocator);
             defer queue.deinit();
 
             try queue.append(source);
-            visited.items[source] = true;
+            seen.items[source] = true;
 
             var current: usize = 0;
 
@@ -163,22 +165,27 @@ pub fn GraphAM(comptime T: type) type {
                 if (current == target)
                     break;
 
-                for (self.matrix.items[current].items, 0..) |_, i| {
-                    if (i == current)
+                for (self.matrix.items[current].items, 0..) |item, i| {
+                    if (item == 0 or seen.items[i])
                         continue;
-                    if (!visited.items[i]) {
-                        visited.items[i] = true;
-                        current = i;
-                        try queue.append(i);
-                    }
+
+                    seen.items[i] = true;
+                    prev.items[i] = @intCast(current);
+                    try queue.append(i);
                 }
             }
 
-            while (queue.items.len > 0) {
-                try path.append(queue.pop());
-            }
+            current = target;
+            var out = std.ArrayList(usize).init(self.allocator);
+            defer out.deinit();
 
-            return path.toOwnedSlice();
+            while (prev.items[current] != -1) {
+                try out.append(current);
+                current = @intCast(prev.items[current]);
+            }
+            try out.append(source);
+
+            return out.toOwnedSlice();
         }
     };
 }

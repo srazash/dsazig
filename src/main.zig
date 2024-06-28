@@ -328,7 +328,7 @@ pub fn main() !void {
     try my_graph_am.defineEdge(0, 1, 1);
     try my_graph_am.defineEdge(0, 2, 4);
     try my_graph_am.defineEdge(0, 3, 5);
-    try my_graph_am.defineEdge(2, 1, 1);
+    try my_graph_am.defineEdge(1, 0, 1);
     try my_graph_am.defineEdge(2, 3, 2);
     try my_graph_am.defineEdge(3, 4, 5);
 
@@ -336,7 +336,7 @@ pub fn main() !void {
 
     try my_graph_am.printAdjacencyMatrix();
 
-    const results = try my_graph_am.bfs(0, 3);
+    const results = try my_graph_am.bfs(1, 4);
     //defer allocator.free(results);
 
     try stdout.print("my_graph_am bfs results -> {any}\n", .{results});
