@@ -547,4 +547,8 @@ test "graph adjacency matrix bfs" {
     const expect3 = &[_]usize{ 1, 0 };
     try std.testing.expectEqualSlices(usize, expect3, result.?);
     if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.bfs(2, 0);
+    try std.testing.expect(result == null);
+    if (result) |r| std.testing.allocator.free(r);
 }
