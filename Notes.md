@@ -907,4 +907,12 @@ We can still perform breadth-first (queue) and depth-first (stack) searches on a
 
 The depth-first search is almost identical to the DFS we performed on the maze solver, in fact, the problem is almost ideantical!
 
+### Graph search running times
+
+The running time of performing a search using either DFS or BFS is O(V+E), as in a worst case scenario we would need to check every edge and vertex before finding the node we were looking for.
+
+## Dijkstra's Shortest Path
+
+Dijkstra's Shortest Path (DSP) calculates all possible paths between all nodes in a graph and will return the shortest for any path we are looking for.
+
 ## Maps & LRU
