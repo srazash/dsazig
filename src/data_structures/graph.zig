@@ -66,6 +66,42 @@ pub fn GraphAL(comptime T: type) type {
                 for (from.items) |to|
                     try stdout.print("{} -> {}, weight:{?}\n", .{ i, to.to, to.weight });
         }
+
+        pub fn dfs(self: *Self, source: usize, target: usize) !?[]usize {
+            var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
+            defer seen.deinit();
+            for (0..self.size) |_|
+                try seen.append(false);
+
+            var path = std.ArrayList(usize).init(self.allocator);
+            defer path.deinit();
+
+            _ = try dfsWalker(self, source, target, &seen, &path);
+
+            if (path.items.len == 0)
+                return null;
+
+            return try path.toOwnedSlice();
+        }
+
+        fn dfsWalker(self: *Self, current: usize, target: usize, seen: *std.ArrayList(bool), path: *std.ArrayList(usize)) !bool {
+            if (seen.items[current])
+                return false;
+            seen.items[current] = true;
+
+            try path.append(current);
+
+            if (current == target)
+                return true;
+
+            for (self.list.items[current].items) |edge| {
+                if (try dfsWalker(self, edge.to, target, seen, path))
+                    return true;
+            }
+            _ = path.pop();
+
+            return false;
+        }
     };
 }
 

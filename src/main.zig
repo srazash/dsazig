@@ -300,25 +300,30 @@ pub fn main() !void {
     try stdout.print("my_heap -> {any}\n", .{my_heap.data.items});
 
     // GRAPHS
-    var my_graph_al = try ds.GraphAL(usize).init(allocator, 4);
+    // adjacency list
+    var my_graph_al = try ds.GraphAL(usize).init(allocator, 5);
 
     try stdout.print("my_graph_al len, cap, size -> {}, {}, {}\n", .{ my_graph_al.data.items.len, my_graph_al.data.capacity, my_graph_al.size });
 
-    try my_graph_al.setData(0, 1);
-    try my_graph_al.setData(1, 2);
-    try my_graph_al.setData(2, 3);
-    try my_graph_al.setData(3, 4);
+    for (0..5) |value| try my_graph_al.setData(value, value + 1);
 
-    try my_graph_al.defineEdge(0, 1, 10);
+    try my_graph_al.defineEdge(0, 1, 1);
+    try my_graph_al.defineEdge(0, 2, 4);
     try my_graph_al.defineEdge(0, 3, 5);
-    try my_graph_al.defineEdge(2, 0, null);
-    try my_graph_al.defineEdge(3, 1, null);
-    try my_graph_al.defineEdge(3, 2, null);
+    try my_graph_al.defineEdge(1, 0, 1);
+    try my_graph_al.defineEdge(2, 3, 2);
+    try my_graph_al.defineEdge(3, 4, 5);
 
     try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 
     try my_graph_al.printAdjacencyList();
 
+    const al_results = try my_graph_al.dfs(1, 4);
+    //defer allocator.free(results);
+
+    try stdout.print("my_graph_al dfs results -> {any}\n", .{al_results});
+
+    // adjacency matrix
     var my_graph_am = try ds.GraphAM(usize).init(allocator, 5);
 
     try stdout.print("my_graph_am size -> {}\n", .{my_graph_am.size});
@@ -336,7 +341,7 @@ pub fn main() !void {
 
     try my_graph_am.printAdjacencyMatrix();
 
-    const results = try my_graph_am.bfs(3, 0);
+    const results = try my_graph_am.bfs(1, 4);
     //defer allocator.free(results);
 
     try stdout.print("my_graph_am bfs results -> {any}\n", .{results});

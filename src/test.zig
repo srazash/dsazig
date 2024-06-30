@@ -552,3 +552,38 @@ test "graph adjacency matrix bfs" {
     try std.testing.expect(result == null);
     if (result) |r| std.testing.allocator.free(r);
 }
+
+test "graph adjacency list dfs" {
+    var my_graph = try ds.GraphAL(usize).init(std.testing.allocator, 5);
+    defer my_graph.deinit();
+
+    for (0..5) |value| try my_graph.setData(value, value + 1);
+
+    try my_graph.defineEdge(0, 1, 1);
+    try my_graph.defineEdge(0, 2, 4);
+    try my_graph.defineEdge(0, 3, 5);
+    try my_graph.defineEdge(1, 0, 1);
+    try my_graph.defineEdge(2, 3, 2);
+    try my_graph.defineEdge(3, 4, 5);
+
+    try std.testing.expect(my_graph.size == 5);
+
+    var result = try my_graph.dfs(0, 4);
+    const expect = &[_]usize{ 0, 2, 3, 4 };
+    try std.testing.expectEqualSlices(usize, expect, result.?);
+    if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.dfs(1, 4);
+    const expect2 = &[_]usize{ 1, 0, 2, 3, 4 };
+    try std.testing.expectEqualSlices(usize, expect2, result.?);
+    if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.dfs(1, 0);
+    const expect3 = &[_]usize{ 1, 0 };
+    try std.testing.expectEqualSlices(usize, expect3, result.?);
+    if (result) |r| std.testing.allocator.free(r);
+
+    result = try my_graph.dfs(2, 0);
+    try std.testing.expect(result == null);
+    if (result) |r| std.testing.allocator.free(r);
+}

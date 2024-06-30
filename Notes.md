@@ -367,7 +367,7 @@ base case! 1
 
 What is happening is that every time we don't meet the base case, we print out `recurse case! n` (where `n` is the current number), and then the function will call itself passing `n - 1`. This will continue until `n` is 1, at which point we print out `base case! 1` and return to calling stack (the `main` function).
 
-We must *always* have a base case, otherwise our recursive functions would recurse forever (or until we ran out fo memory)!
+We must _always_ have a base case, otherwise our recursive functions would recurse forever (or until we ran out fo memory)!
 
 Our recurse case can be broken down into three steps:
 
@@ -389,7 +389,7 @@ try stdout.print("recurse complete!\n", .{});
 return value;
 ```
 
-No matter how many times the function recurses, the pre will *always* happen before the recurse, and the post will always happen after.
+No matter how many times the function recurses, the pre will _always_ happen before the recurse, and the post will always happen after.
 
 So if we recursed three times, that would look like this:
 
@@ -733,7 +733,7 @@ We can also guarantee that our tree is complete, since new nodes are added stric
 Depending on whether our tree is a MaxHeap or a MinHeap depends on how we need to add node, but the basic principle remains the same:
 
 1. We add a new node (this is guaranteed to be inserted in the first empty node - breadth-first, left to right)
-2. Then depending on if our tree is a MaxHeap or a MinHeap we compare our new nodes value to the value of the parent node, if it is bigger (for a MaxHeap) or smaller (for a MinHeap) we swap the values - bubbling the  value up the tree until it is in a balanced position based on it's value.
+2. Then depending on if our tree is a MaxHeap or a MinHeap we compare our new nodes value to the value of the parent node, if it is bigger (for a MaxHeap) or smaller (for a MinHeap) we swap the values - bubbling the value up the tree until it is in a balanced position based on it's value.
 
 This guarantees weak ordering is maintained as every node follow this same rule when being added.
 
@@ -764,14 +764,14 @@ The easiest to define is the root node, this will always be element 0 of the arr
 
 We can also define the left and right children of any node with a simple formula:
 
-- 2 * index + 1 = left child
-- 2 * index + 2 = right child
+- 2 \* index + 1 = left child
+- 2 \* index + 2 = right child
 
 Referring to our earlier heap example:
 
-Starting at our root node (index 0), the right child is 2 * 0 + 2, which gives us 2.
+Starting at our root node (index 0), the right child is 2 \* 0 + 2, which gives us 2.
 
-If we wanted to find the left child of the "node" at index 2, that is 2 * 2 + 1, which gives us 5.
+If we wanted to find the left child of the "node" at index 2, that is 2 \* 2 + 1, which gives us 5.
 
 Likewise, we can also come up with a simple formula to identify our parent "node":
 
@@ -854,14 +854,14 @@ Graphs are a series of nodes with some number of connections between them, unlik
 
 ### Big O Time Complexity
 
-The Big O time complexity of a graph is calculated as: O(V*E), where V is the number of vertexes and E is the number of edges.
+The Big O time complexity of a graph is calculated as: O(V\*E), where V is the number of vertexes and E is the number of edges.
 
 ### Implementing a graph
 
 Typically graphs are represented in one of two ways:
 
-1. An *adjacency list*, or;
-2. An *adjacency matrix*
+1. An _adjacency list_, or;
+2. An _adjacency matrix_
 
 Typically an adjacency list is used as the time complexity for an adjacency matrix is O(V^2).
 
@@ -901,52 +901,10 @@ So here we have a graph of 4 vertexes, which has a total of 16 possible edges (m
 
 For the matrix, memory use would also grow quadratically. When using the list we only need as much memory as is required to represent all of our edges. In a matrix we also need to represent non-existent edges.
 
-### Graph Adjacency Matrix BFS Recipe
-
-Let's outline the steps for implementing BFS:
-
-1. Input validation:
-   - Check if source and destination vertex indices are valid (less than graph size).
-   - Check if source and destination are the same (optional, depends on your requirements).
-
-2. Initialize data structures:
-   - Create a queue to store vertices to visit.
-   - Create a boolean array to mark visited vertices.
-   - Create an array to store the parent of each vertex (for path reconstruction).
-
-3. BFS algorithm:
-   - Enqueue the source vertex and mark it as visited.
-   - While the queue is not empty:
-     - Dequeue a vertex.
-     - If it's the destination vertex, stop the search.
-     - For each adjacent vertex (check the row in the adjacency matrix):
-       - If the vertex is not visited:
-         - Mark it as visited.
-         - Set its parent to the current vertex.
-         - Enqueue it.
-
-4. Path reconstruction:
-   - If the destination was reached:
-     - Start from the destination and follow the parent links back to the source.
-     - Reverse this path to get the correct order from source to destination.
-   - If the destination was not reached, return null or an empty path.
-
-5. Return the result:
-   - If a path was found, return it as a slice of vertex indices.
-   - If no path was found, return null or an appropriate indicator.
-
-Additional considerations:
-
-- For an adjacency matrix, checking adjacent vertices involves iterating through the entire row of the current vertex in the matrix.
-- You might want to use a dynamic array or ArrayList to build the path, then convert it to a slice for the return value.
-- Consider how you want to handle memory allocation for the returned path.
-
-Remember that BFS guarantees the shortest path in terms of the number of edges for unweighted graphs. If your graph is weighted and you need the shortest path by weight, you'd need to use a different algorithm like Dijkstra's.
-
-This approach should give you a good starting point for implementing BFS on your adjacency matrix graph structure. Let me know if you need any clarification on any of these steps!
-
 ### Searching a graph
 
-We can still perform breadth-first (stack) and depth-first (queue) searches on a graph like we did on trees as all trees are graphs.
+We can still perform breadth-first (queue) and depth-first (stack) searches on a graph like we did on trees as all trees are graphs.
+
+The depth-first search is almost identical to the DFS we performed on the maze solver, in fact, the problem is almost ideantical!
 
 ## Maps & LRU
