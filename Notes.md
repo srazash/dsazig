@@ -905,7 +905,7 @@ For the matrix, memory use would also grow quadratically. When using the list we
 
 We can still perform breadth-first (queue) and depth-first (stack) searches on a graph like we did on trees as all trees are graphs.
 
-The depth-first search is almost identical to the DFS we performed on the maze solver, in fact, the problem is almost ideantical!
+The depth-first search is almost identical to the DFS we performed on the maze solver, in fact, the problem is almost identical!
 
 ### Graph search running times
 
@@ -915,7 +915,7 @@ The running time of performing a search using either DFS or BFS is O(V+E), as in
 
 Dijkstra's Shortest Path (DSP) calculates all possible paths between the vertexes in a graph and will return the shortest for any path we are looking for.
 
-DSP is a "greedy algoritm".
+DSP is a "greedy algorithm".
 
 We'll create a new graph with specific weighting on all edges.
 
@@ -954,5 +954,19 @@ dijkstra(source, target): // here our source and target are: 0, 4
                 prev[edge] = low
                 dists[edge] = dist
 ```
+
+### DSP time complexity
+
+Dijkstra's shortest path needs breaking down to understand the time complexity:
+
+Starting with our three arrays, these require O(V) - because we initialise them with values matching the number orf vertexes our graph has.
+
+Our while loop alone has a running time of O(V), but the hasUnvisited() and getLowestUnseen() functions have running times of O(V), meaning our time complexity has increased to O(V^2).
+
+BUT! We have *another* loop, our `for` loop, which has to check potentially every edge in our graph, so the time complexity for this is O(E).
+
+This comes out, overall, to O(V^2 + E).
+
+BUT! We can improved this by using a minheap. By using a minimum heap we can remove vertexes which have been seen (so we no longer need our seen array), this reduces our overall time complexity from O(V^2 + E) to O(logV(V+E)).
 
 ## Maps & LRU
