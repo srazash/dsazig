@@ -915,19 +915,23 @@ The running time of performing a search using either DFS or BFS is O(V+E), as in
 
 Dijkstra's Shortest Path (DSP) calculates all possible paths between the vertexes in a graph and will return the shortest for any path we are looking for.
 
+DSP is a "greedy algoritm".
+
 We'll create a new graph with specific weighting on all edges.
 
-![A new graph](images/dijkstragraph.png)
+![A new graph](images/dijkstra.png)
 
 > NOTE! It's important that none of the weights are a negative values, think of the weights as distances between places on a map, none would be (or should be) negative!
 
-### Basic Dijkstra algorithm
+### Basic Dijkstra implementation
 
 Given our new graph, if we wanted to get from vertex 0 to vertex 4 there are 3 possible paths:
 
 - `0 -> 2 -> 4`, with a total weight of 6
 - `0 -> 1 -> 2 -> 4`, with a total weight of 9
-- `0 -> 1 -> 3 -> 2 -> 4`, with a total weight of 9
+- `0 -> 1 -> 3 -> 2 -> 4`, with a total weight of 7
+
+So we can see more vertexes != a greater weight value.
 
 With `0 -> 2 -> 4`, having a weight of 6, being the obvious shortest path.
 
@@ -935,12 +939,20 @@ With `0 -> 2 -> 4`, having a weight of 6, being the obvious shortest path.
 dijkstra(source, target): // here our source and target are: 0, 4
     prev[int] = [-1, -1, ...] // previous array initialised to all -1s
     seen[bool] = [false, false, ...] // seen array initialised to all falses
-    dists[uint] = [inf...0]
+    dists[uint] = [inf, inf, ...]
 
     // find the nearest unseen node
-    while (hasUnvisited())
-        low = getLowestUnseen()
+    while (hasUnvisited()) // while some elements of seen[] are false
+        low = getLowestUnseen() // gets the unseen node with the lowest weight
         seen[low] = true
+
+        for (edge in low)
+            if seen[edge]
+                continue
+            dist = dists[low] + edge.weight
+            if dist < dists[edge]
+                prev[edge] = low
+                dists[edge] = dist
 ```
 
 ## Maps & LRU

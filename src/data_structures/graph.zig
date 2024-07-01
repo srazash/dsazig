@@ -4,7 +4,7 @@ pub fn GraphAL(comptime T: type) type {
     return struct {
         const Edge = struct {
             to: usize,
-            weight: ?usize,
+            weight: usize,
         };
 
         const Self = @This();
@@ -50,7 +50,7 @@ pub fn GraphAL(comptime T: type) type {
             self.data.items[vertex] = data;
         }
 
-        pub fn defineEdge(self: *Self, from: usize, to: usize, weight: ?usize) !void {
+        pub fn defineEdge(self: *Self, from: usize, to: usize, weight: usize) !void {
             if (from >= self.size or to >= self.size or from == to)
                 return error.InvalidFromOrTo;
 

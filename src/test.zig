@@ -491,10 +491,10 @@ test "graph adjacency list" {
     try my_graph.setData(1, 5);
     try my_graph.setData(2, 15);
 
-    try my_graph.defineEdge(0, 1, null);
+    try my_graph.defineEdge(0, 1, 1);
     try my_graph.defineEdge(1, 0, 10);
     try my_graph.defineEdge(1, 2, 5);
-    try my_graph.defineEdge(2, 1, null);
+    try my_graph.defineEdge(2, 1, 1);
 
     try std.testing.expect(my_graph.data.items[1] == 5);
     try std.testing.expect(my_graph.list.items[1].items[0].weight == 10);
