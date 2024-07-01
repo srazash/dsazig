@@ -55,7 +55,7 @@ Some common Big-O complexity:
 - O(2^N) grows so quickly it is typically not possible to run on traditional hardware.
 - O(N!) grows so quickly it is typically not possible to run on traditional hardware.
 
-![Comparison of Big-O](big-o.jpg "Comparison of Big-O")
+![Comparison of Big-O](images/big-o.jpg "Comparison of Big-O")
 
 ```zig
 fn sumCharCodesS(n: []const u8) usize {
@@ -106,7 +106,7 @@ Binary search needs the input to be ordered before searching begins. This is bec
 
 This means our complexity is O(logN), comparing this to O(N) of a linear search, if we had 4096 values, a binary search would complete in a maximum of 12 loops, a linear search would complete in a maximum of 4096 loops.
 
-NOTE: If our input is halved at every loop we're likely dealing with O(logN) or O(NlogN)!
+> NOTE: If our input is halved at every loop we're likely dealing with O(logN) or O(NlogN)!
 
 Here is the pseudocode for a recursive version of the binary search:
 
@@ -867,7 +867,7 @@ Typically an adjacency list is used as the time complexity for an adjacency matr
 
 If we have a graph that looks like this:
 
-![A basic graph](graph.png)
+![A basic graph](images/graph.png)
 
 We would represent it using an adjacency list like this:
 
@@ -913,6 +913,34 @@ The running time of performing a search using either DFS or BFS is O(V+E), as in
 
 ## Dijkstra's Shortest Path
 
-Dijkstra's Shortest Path (DSP) calculates all possible paths between all nodes in a graph and will return the shortest for any path we are looking for.
+Dijkstra's Shortest Path (DSP) calculates all possible paths between the vertexes in a graph and will return the shortest for any path we are looking for.
+
+We'll create a new graph with specific weighting on all edges.
+
+![A new graph](images/dijkstragraph.png)
+
+> NOTE! It's important that none of the weights are a negative values, think of the weights as distances between places on a map, none would be (or should be) negative!
+
+### Basic Dijkstra algorithm
+
+Given our new graph, if we wanted to get from vertex 0 to vertex 4 there are 3 possible paths:
+
+- `0 -> 2 -> 4`, with a total weight of 6
+- `0 -> 1 -> 2 -> 4`, with a total weight of 9
+- `0 -> 1 -> 3 -> 2 -> 4`, with a total weight of 9
+
+With `0 -> 2 -> 4`, having a weight of 6, being the obvious shortest path.
+
+```pseudocode
+dijkstra(source, target): // here our source and target are: 0, 4
+    prev[int] = [-1, -1, ...] // previous array initialised to all -1s
+    seen[bool] = [false, false, ...] // seen array initialised to all falses
+    dists[uint] = [inf...0]
+
+    // find the nearest unseen node
+    while (hasUnvisited())
+        low = getLowestUnseen()
+        seen[low] = true
+```
 
 ## Maps & LRU
