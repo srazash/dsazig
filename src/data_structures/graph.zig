@@ -102,6 +102,88 @@ pub fn GraphAL(comptime T: type) type {
 
             return false;
         }
+
+        pub fn dijkstra(self: *Self, source: usize, target: usize) !?[]usize {
+            var seen = try std.ArrayList(bool).initCapacity(self.allocator, self.size);
+            defer seen.deinit();
+            for (0..self.size) |_|
+                seen.appendAssumeCapacity(false);
+
+            var dists = try std.ArrayList(usize).initCapacity(self.allocator, self.size);
+            defer dists.deinit();
+            for (0..self.size) |_|
+                dists.appendAssumeCapacity(std.math.maxInt(usize));
+
+            var prev = try std.ArrayList(isize).initCapacity(self.allocator, self.size);
+            defer prev.deinit();
+            for (0..self.size) |_|
+                prev.appendAssumeCapacity(-1);
+
+            dists.items[source] = 0;
+
+            while (hasUnvisited(&seen, &dists)) {
+                const current = getLowestUnvisited(&seen, &dists);
+
+                seen.items[current] = true;
+
+                for (self.list.items[current].items) |edge| {
+                    if (seen.items[edge.to])
+                        continue;
+
+                    const dist = dists.items[current] + edge.weight;
+                    if (dist < dists.items[edge.to]) {
+                        dists.items[edge.to] = dist;
+                        prev.items[edge.to] = @intCast(current);
+                    }
+                }
+            }
+
+            var dsp = std.ArrayList(usize).init(self.allocator);
+            defer dsp.deinit();
+
+            var out = std.ArrayList(usize).init(self.allocator);
+            defer out.deinit();
+
+            var current = target;
+
+            while (prev.items[current] != -1) {
+                try dsp.append(current);
+                current = @intCast(prev.items[current]);
+            }
+
+            if (dsp.items.len == 0)
+                return null;
+
+            try out.append(source);
+            for (dsp.items) |_|
+                try out.append(dsp.pop());
+
+            return try out.toOwnedSlice();
+        }
+
+        fn hasUnvisited(seen: *std.ArrayList(bool), dists: *std.ArrayList(usize)) bool {
+            for (seen.items, 0..) |s, i|
+                if (s == false and dists.items[i] < std.math.maxInt(usize))
+                    return true;
+            return false;
+        }
+
+        fn getLowestUnvisited(seen: *std.ArrayList(bool), dists: *std.ArrayList(usize)) usize {
+            var idx: usize = 0;
+            var lowestDist: usize = std.math.maxInt(usize);
+
+            for (seen.items, 0..) |s, i| {
+                if (s)
+                    continue;
+
+                if (lowestDist > dists.items[i]) {
+                    lowestDist = dists.items[i];
+                    idx = i;
+                }
+            }
+
+            return idx;
+        }
     };
 }
 

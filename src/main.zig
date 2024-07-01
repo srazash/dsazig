@@ -308,11 +308,12 @@ pub fn main() !void {
     for (0..5) |value| try my_graph_al.setData(value, value + 1);
 
     try my_graph_al.defineEdge(0, 1, 1);
-    try my_graph_al.defineEdge(0, 2, 4);
-    try my_graph_al.defineEdge(0, 3, 5);
-    try my_graph_al.defineEdge(1, 0, 1);
-    try my_graph_al.defineEdge(2, 3, 2);
-    try my_graph_al.defineEdge(3, 4, 5);
+    try my_graph_al.defineEdge(0, 2, 5);
+    try my_graph_al.defineEdge(1, 2, 7);
+    try my_graph_al.defineEdge(1, 3, 3);
+    try my_graph_al.defineEdge(2, 4, 1);
+    try my_graph_al.defineEdge(3, 1, 1);
+    try my_graph_al.defineEdge(3, 2, 2);
 
     try stdout.print("my_graph_al data -> {any}\n", .{my_graph_al.data.items});
 
@@ -322,6 +323,10 @@ pub fn main() !void {
     //defer allocator.free(results);
 
     try stdout.print("my_graph_al dfs results -> {any}\n", .{al_results});
+
+    const al_dsp = try my_graph_al.dijkstra(0, 4);
+
+    try stdout.print("my_graph_al dsp results -> {any}\n", .{al_dsp});
 
     // adjacency matrix
     var my_graph_am = try ds.GraphAM(usize).init(allocator, 5);

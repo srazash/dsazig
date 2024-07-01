@@ -1,5 +1,6 @@
 const std = @import("std");
 const testing = std.testing;
+const allocator = testing.allocator;
 
 const algo = @import("algorithms/algorithms.zig");
 const ds = @import("data_structures/data_structures.zig");
@@ -40,7 +41,7 @@ test "test bubble sort" {
 }
 
 test "basic linked list" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
     try my_list.push(100);
     const result = my_list.head.?.data;
@@ -49,7 +50,7 @@ test "basic linked list" {
 }
 
 test "linked list: push" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(10); // head
@@ -68,7 +69,7 @@ test "linked list: push" {
 }
 
 test "linked list: at" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(25); // 0
@@ -82,14 +83,14 @@ test "linked list: at" {
 }
 
 test "linked list: empty list error" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try testing.expectError(error.EmptyList, my_list.at(0));
 }
 
 test "linked list: out of bounds error" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(1); // 0
@@ -98,7 +99,7 @@ test "linked list: out of bounds error" {
 }
 
 test "linked list: len vs length" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(25);
@@ -115,7 +116,7 @@ test "linked list: len vs length" {
 }
 
 test "linked list: addrof" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(1);
@@ -127,7 +128,7 @@ test "linked list: addrof" {
 }
 
 test "linked list: delete" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(5);
@@ -168,7 +169,7 @@ test "linked list: delete" {
 }
 
 test "linked list: push and pop" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.push(1);
@@ -192,7 +193,7 @@ test "linked list: push and pop" {
 }
 
 test "linked list: enqueue and dequeue" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.enqueue(1);
@@ -216,7 +217,7 @@ test "linked list: enqueue and dequeue" {
 }
 
 test "linked list: prepend" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.append(1);
@@ -229,7 +230,7 @@ test "linked list: prepend" {
 }
 
 test "linked list: update" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.append(99);
@@ -240,7 +241,7 @@ test "linked list: update" {
 }
 
 test "linked list: insert" {
-    var my_list = try ds.LinkedList(usize).init(std.testing.allocator);
+    var my_list = try ds.LinkedList(usize).init(allocator);
     defer my_list.deinit();
 
     try my_list.append(10); // 0
@@ -272,7 +273,6 @@ test "simple recursion" {
 }
 
 test "recursive maze solver" {
-    const allocator = std.testing.allocator;
     var maze = try allocator.create([5][5]u8);
     defer allocator.destroy(maze);
 
@@ -312,15 +312,15 @@ test "recursive maze solver" {
     const start: algo.Point = .{ .x = 4, .y = 1 };
     const end: algo.Point = .{ .x = 1, .y = 4 };
 
-    try algo.mazeSolver(std.testing.allocator, maze, start, end, &path);
+    try algo.mazeSolver(allocator, maze, start, end, &path);
 
     try testing.expect(std.meta.eql(path.items[0], start));
     try testing.expect(std.meta.eql(path.items[6], end));
 }
 
 test "quick sort" {
-    var my_array = try std.testing.allocator.alloc(u8, 5);
-    defer std.testing.allocator.free(my_array);
+    var my_array = try allocator.alloc(u8, 5);
+    defer allocator.free(my_array);
 
     const rand = std.crypto.random;
     for (my_array, 0..) |_, i| my_array[i] = rand.intRangeAtMost(u8, 0, 255);
@@ -334,97 +334,97 @@ test "quick sort" {
 }
 
 test "basic tree test" {
-    var my_tree = try ds.BinaryTree(usize).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(usize).init(allocator);
     defer my_tree.deinit();
 
     my_tree.root = try my_tree.new(1);
     my_tree.root.?.left = try my_tree.new(2);
     my_tree.root.?.right = try my_tree.new(3);
 
-    try std.testing.expect(my_tree.root.?.data == 1);
-    try std.testing.expect(my_tree.root.?.left.?.data == 2);
-    try std.testing.expect(my_tree.root.?.right.?.data == 3);
+    try testing.expect(my_tree.root.?.data == 1);
+    try testing.expect(my_tree.root.?.left.?.data == 2);
+    try testing.expect(my_tree.root.?.right.?.data == 3);
 }
 
 test "pre order transversal" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
-    var my_path = std.ArrayList(u8).init(std.testing.allocator);
+    var my_path = std.ArrayList(u8).init(allocator);
     defer my_path.deinit();
 
     try my_tree.preOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 10);
-    try std.testing.expect(my_path.items[3] == 9);
-    try std.testing.expect(my_path.items[6] == 15);
+    try testing.expect(my_path.items[0] == 10);
+    try testing.expect(my_path.items[3] == 9);
+    try testing.expect(my_path.items[6] == 15);
 }
 
 test "in order transversal" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
-    var my_path = std.ArrayList(u8).init(std.testing.allocator);
+    var my_path = std.ArrayList(u8).init(allocator);
     defer my_path.deinit();
 
     try my_tree.inOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 3);
-    try std.testing.expect(my_path.items[3] == 10);
-    try std.testing.expect(my_path.items[6] == 15);
+    try testing.expect(my_path.items[0] == 3);
+    try testing.expect(my_path.items[3] == 10);
+    try testing.expect(my_path.items[6] == 15);
 }
 
 test "post order transversal" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
     const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_tree.insert(n);
 
-    var my_path = std.ArrayList(u8).init(std.testing.allocator);
+    var my_path = std.ArrayList(u8).init(allocator);
     defer my_path.deinit();
 
     try my_tree.postOrderSearch(&my_path);
 
-    try std.testing.expect(my_path.items[0] == 3);
-    try std.testing.expect(my_path.items[3] == 11);
-    try std.testing.expect(my_path.items[6] == 10);
+    try testing.expect(my_path.items[0] == 3);
+    try testing.expect(my_path.items[3] == 11);
+    try testing.expect(my_path.items[6] == 10);
 }
 
 test "breadth-first search" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
 
     const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
     for (my_nums) |n| try my_tree.insert(n);
 
-    try std.testing.expect(try my_tree.breadthFirstSearch(7));
-    try std.testing.expect(try my_tree.breadthFirstSearch(1));
-    try std.testing.expect(try my_tree.breadthFirstSearch(99) == false);
+    try testing.expect(try my_tree.breadthFirstSearch(7));
+    try testing.expect(try my_tree.breadthFirstSearch(1));
+    try testing.expect(try my_tree.breadthFirstSearch(99) == false);
 }
 
 test "depth-first compare" {
-    var my_tree_a = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree_a = try ds.BinaryTree(u8).init(allocator);
     defer my_tree_a.deinit();
 
-    var my_tree_b = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree_b = try ds.BinaryTree(u8).init(allocator);
     defer my_tree_b.deinit();
 
     const my_nums: [7]u8 = .{ 1, 2, 3, 4, 5, 6, 7 };
     for (my_nums) |n| try my_tree_a.insert(n);
     for (my_nums) |n| try my_tree_b.insert(n);
 
-    try std.testing.expect(try my_tree_a.compare(my_tree_b));
+    try testing.expect(try my_tree_a.compare(my_tree_b));
 
     my_tree_b.root.?.data = 99;
-    try std.testing.expect(try my_tree_a.compare(my_tree_b) == false);
+    try testing.expect(try my_tree_a.compare(my_tree_b) == false);
 }
 
 test "depth-first find" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
 
     my_tree.root = try my_tree.new(10);
@@ -435,12 +435,12 @@ test "depth-first find" {
     my_tree.root.?.right.?.left = try my_tree.new(11);
     my_tree.root.?.right.?.right = try my_tree.new(15);
 
-    try std.testing.expect(my_tree.find(11));
-    try std.testing.expect(my_tree.find(20) == false);
+    try testing.expect(my_tree.find(11));
+    try testing.expect(my_tree.find(20) == false);
 }
 
 test "depth-first insert" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
 
     try my_tree.insert(50);
@@ -449,12 +449,12 @@ test "depth-first insert" {
     try my_tree.insert(0);
     try my_tree.insert(100);
 
-    try std.testing.expect(my_tree.root.?.left.?.left.?.data == 0);
-    try std.testing.expect(my_tree.root.?.right.?.right.?.data == 100);
+    try testing.expect(my_tree.root.?.left.?.left.?.data == 0);
+    try testing.expect(my_tree.root.?.right.?.right.?.data == 100);
 }
 
 test "depth-first search" {
-    var my_tree = try ds.BinaryTree(u8).init(std.testing.allocator);
+    var my_tree = try ds.BinaryTree(u8).init(allocator);
     defer my_tree.deinit();
 
     try my_tree.insert(50);
@@ -463,28 +463,28 @@ test "depth-first search" {
     try my_tree.insert(0);
     try my_tree.insert(100);
 
-    try std.testing.expect(my_tree.search(100));
-    try std.testing.expect(my_tree.search(101) == false);
+    try testing.expect(my_tree.search(100));
+    try testing.expect(my_tree.search(101) == false);
 }
 
 test "heap" {
-    var my_heap = ds.Heap(u8).init(std.testing.allocator);
+    var my_heap = ds.Heap(u8).init(allocator);
     defer my_heap.deinit();
 
     const my_nums: [7]u8 = .{ 10, 7, 13, 3, 9, 11, 15 };
     for (my_nums) |n| try my_heap.add(n);
 
-    try std.testing.expect(my_heap.length == 7);
+    try testing.expect(my_heap.length == 7);
 
     _ = try my_heap.delete();
     _ = try my_heap.delete();
 
-    try std.testing.expect(my_heap.length == 5);
-    try std.testing.expect(my_heap.data.items[4] > my_heap.data.items[0]);
+    try testing.expect(my_heap.length == 5);
+    try testing.expect(my_heap.data.items[4] > my_heap.data.items[0]);
 }
 
 test "graph adjacency list" {
-    var my_graph = try ds.GraphAL(usize).init(std.testing.allocator, 3);
+    var my_graph = try ds.GraphAL(usize).init(allocator, 3);
     defer my_graph.deinit();
 
     try my_graph.setData(0, 10);
@@ -496,12 +496,12 @@ test "graph adjacency list" {
     try my_graph.defineEdge(1, 2, 5);
     try my_graph.defineEdge(2, 1, 1);
 
-    try std.testing.expect(my_graph.data.items[1] == 5);
-    try std.testing.expect(my_graph.list.items[1].items[0].weight == 10);
+    try testing.expect(my_graph.data.items[1] == 5);
+    try testing.expect(my_graph.list.items[1].items[0].weight == 10);
 }
 
 test "graph adjacency matrix" {
-    var my_graph = try ds.GraphAM(usize).init(std.testing.allocator, 3);
+    var my_graph = try ds.GraphAM(usize).init(allocator, 3);
     defer my_graph.deinit();
 
     try my_graph.setData(0, 10);
@@ -513,13 +513,13 @@ test "graph adjacency matrix" {
     try my_graph.defineEdge(1, 2, 5);
     try my_graph.defineEdge(2, 1, 1);
 
-    try std.testing.expect(my_graph.size == 3);
-    try std.testing.expect(my_graph.data.items[1] == 5);
-    try std.testing.expect(my_graph.matrix.items[1].items[0] == 10);
+    try testing.expect(my_graph.size == 3);
+    try testing.expect(my_graph.data.items[1] == 5);
+    try testing.expect(my_graph.matrix.items[1].items[0] == 10);
 }
 
 test "graph adjacency matrix bfs" {
-    var my_graph = try ds.GraphAM(usize).init(std.testing.allocator, 5);
+    var my_graph = try ds.GraphAM(usize).init(allocator, 5);
     defer my_graph.deinit();
 
     for (0..5) |value| try my_graph.setData(value, value + 1);
@@ -531,30 +531,30 @@ test "graph adjacency matrix bfs" {
     try my_graph.defineEdge(2, 3, 2);
     try my_graph.defineEdge(3, 4, 5);
 
-    try std.testing.expect(my_graph.size == 5);
+    try testing.expect(my_graph.size == 5);
 
     var result = try my_graph.bfs(0, 4);
     const expect = &[_]usize{ 0, 3, 4 };
-    try std.testing.expectEqualSlices(usize, expect, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.bfs(1, 4);
     const expect2 = &[_]usize{ 1, 0, 3, 4 };
-    try std.testing.expectEqualSlices(usize, expect2, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect2, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.bfs(1, 0);
     const expect3 = &[_]usize{ 1, 0 };
-    try std.testing.expectEqualSlices(usize, expect3, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect3, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.bfs(2, 0);
-    try std.testing.expect(result == null);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expect(result == null);
+    if (result) |r| allocator.free(r);
 }
 
 test "graph adjacency list dfs" {
-    var my_graph = try ds.GraphAL(usize).init(std.testing.allocator, 5);
+    var my_graph = try ds.GraphAL(usize).init(allocator, 5);
     defer my_graph.deinit();
 
     for (0..5) |value| try my_graph.setData(value, value + 1);
@@ -566,24 +566,44 @@ test "graph adjacency list dfs" {
     try my_graph.defineEdge(2, 3, 2);
     try my_graph.defineEdge(3, 4, 5);
 
-    try std.testing.expect(my_graph.size == 5);
+    try testing.expect(my_graph.size == 5);
 
     var result = try my_graph.dfs(0, 4);
     const expect = &[_]usize{ 0, 2, 3, 4 };
-    try std.testing.expectEqualSlices(usize, expect, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.dfs(1, 4);
     const expect2 = &[_]usize{ 1, 0, 2, 3, 4 };
-    try std.testing.expectEqualSlices(usize, expect2, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect2, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.dfs(1, 0);
     const expect3 = &[_]usize{ 1, 0 };
-    try std.testing.expectEqualSlices(usize, expect3, result.?);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expectEqualSlices(usize, expect3, result.?);
+    if (result) |r| allocator.free(r);
 
     result = try my_graph.dfs(2, 0);
-    try std.testing.expect(result == null);
-    if (result) |r| std.testing.allocator.free(r);
+    try testing.expect(result == null);
+    if (result) |r| allocator.free(r);
+}
+
+test "graph adjacency list dijkstra" {
+    var my_graph = try ds.GraphAL(usize).init(allocator, 5);
+    defer my_graph.deinit();
+
+    for (0..5) |value| try my_graph.setData(value, value + 1);
+
+    try my_graph.defineEdge(0, 1, 1);
+    try my_graph.defineEdge(0, 2, 5);
+    try my_graph.defineEdge(1, 2, 7);
+    try my_graph.defineEdge(1, 3, 3);
+    try my_graph.defineEdge(2, 4, 1);
+    try my_graph.defineEdge(3, 1, 1);
+    try my_graph.defineEdge(3, 2, 2);
+
+    const result = try my_graph.dijkstra(0, 4);
+    const expect = &[_]usize{ 0, 2, 4 };
+    try testing.expectEqualSlices(usize, expect, result.?);
+    if (result) |r| allocator.free(r);
 }
