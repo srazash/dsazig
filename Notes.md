@@ -970,3 +970,16 @@ This comes out, overall, to O(V^2 + E).
 BUT! We can improved this by using a minheap. By using a minimum heap we can remove vertexes which have been seen (so we no longer need our seen array), this reduces our overall time complexity from O(V^2 + E) to O(logV(V+E)).
 
 ## Maps & LRU
+
+What is a map?
+
+In short a map (or a hash map) is a key-value data struture, where the key is a unique hash which points to associated data.
+
+Load factor: the amount of data points vs the amount of storage - think len vs capacity, so if we have a len of 7 and a capacity of 10, our load factor would be 0.7
+
+Key: a unique, hashable value
+
+Value: the data associated with our key, values do not need to be unique
+
+Collision: when two keys point to the same cell
+
