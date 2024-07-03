@@ -971,6 +971,8 @@ BUT! We can improved this by using a minheap. By using a minimum heap we can rem
 
 ## Maps & LRU
 
+### Maps
+
 What is a map?
 
 In short a map (or a hash map) is a key-value data struture, where the key is a unique hash which points to associated data.
@@ -982,4 +984,34 @@ Key: a unique, hashable value
 Value: the data associated with our key, values do not need to be unique
 
 Collision: when two keys point to the same cell
+
+How a map works:
+
+We have a key and it maps to a value
+
+`K -> V`
+
+The key must be a **consistent hash**, meaning that for a given input, the output will always be the same.
+
+We need a hashing function which takes in a key and produces a unique number, we can then take this number and modulo it against the length of our map.
+
+For example, if we have a map of 10 elements, taking the modulo of our hashed key number will point us to the element that hash value is associated with. We store the key with our value, both to verify and identify which value we have accessed, this is called a key-value pair.
+
+![How a hash map works](images/hash.png)
+
+There is a chance of a collision occurring, this is when the hashing function produces the same number for two different keys. And the chance of a collision occurring increases with the load factor.
+
+There are a couple of techniques employed to mitigate collisions.
+
+One way is to use a linear or exponential backoff, meaning that if a collision occurs the next element down or an element further down the list will be used to store the new value.
+
+Another is to keep the load factor low enough to ensure the chances of a collision are as low as possible. The optimal load factor, depending on how the map is implemented, is 0.7.
+
+When new values are added or when values are removed from the map, the len will chance to optimise the load factor. This typically involves creating a new data structure, recalculating the indeces of where the data should be with a new length and copying/moving them.
+
+For retrievals, the same overall process is used to access the value but the stored key and looked up key are compared to verify the correct value is being retrieved.
+
+The time complexity of a map is O(1) thanks to the use of hashing, which ensures we can always directly access values based on their key.
+
+### LRUs
 
