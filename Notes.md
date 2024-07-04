@@ -1007,7 +1007,7 @@ One way is to use a linear or exponential backoff, meaning that if a collision o
 
 Another is to keep the load factor low enough to ensure the chances of a collision are as low as possible. The optimal load factor, depending on how the map is implemented, is 0.7.
 
-When new values are added or when values are removed from the map, the len will chance to optimise the load factor. This typically involves creating a new data structure, recalculating the indeces of where the data should be with a new length and copying/moving them.
+When new values are added or when values are removed from the map, the len will chance to optimise the load factor. This typically involves creating a new data structure, recalculating the indexes of where the data should be with a new length and copying/moving them.
 
 For retrievals, the same overall process is used to access the value but the stored key and looked up key are compared to verify the correct value is being retrieved.
 
@@ -1015,3 +1015,41 @@ The time complexity of a map is O(1) thanks to the use of hashing, which ensures
 
 ### LRUs
 
+What is an LRU?
+
+Least Recently Used (LRU) is a caching mechanism which evicts the least recently used element.
+
+In essence, an LRU is a linked list where the most recently used element is moved to the head of the list.
+
+```
+[0]<->[1]<->[2]<->[3]<->...
+             ^
+             when element 2 is accessed (read or modified)
+[2]<->[0]<->[1]<->[3]<->...
+ ^
+ it is moved to the head of the list
+```
+
+The element at the head should be the most recently used item, and the element at the tail of the list should be the least recently used.
+
+In order to allow O(1) access to our elements we will implement our LRU as a hashmap, where our value is a node struct which contains our data plus next and previous pointers to implement our linked list.
+
+Our LRU implementation won't have an insert function, instead our update function will pull double duty.
+
+We'll also have a get function to retrieve our value.
+
+```
+get function, takes a key and returns a value if one exists:
+    - check the cache for the provided key
+        - continue if found
+        - return null if not
+    - move it to the head of the LRU (most recently used)
+    - return the value
+```
+
+```
+update function, takes a key and value, returns nothing:
+    - check if the key already exists
+        - if not, we insert the value, check capacity and evict if over
+        - if so, we update the value and promote to the head of the list
+```
