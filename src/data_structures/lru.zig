@@ -5,20 +5,30 @@ pub fn LRU(comptime K: type, comptime V: type) type {
         const Self = @This();
 
         const Node = struct {
-            prev: ?*Node,
             next: ?*Node,
+            prev: ?*Node,
             value: V,
 
-            fn init() !void {}
+            fn init(allocator: std.mem.Allocator, value: V) !*Node {
+                const node = try allocator.create(Node);
+                node.next = null;
+                node.prev = null;
+                node.value = value;
+                return node;
+            }
 
-            fn deinit() !void {}
+            fn deinit(self: *Node, allocator: std.mem.Allocator) !void {
+                if (self.next) |node|
+                    node.deinit(allocator);
+                allocator.destroy(self);
+            }
         };
 
         allocator: std.mem.Allocator,
         head: ?*Node,
         tail: ?*Node,
         length: usize,
-        capcity: usize,
+        map: std.AutoHashMap(K, *Node),
 
         pub fn init() !void {}
 
