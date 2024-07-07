@@ -17,7 +17,7 @@ pub fn LRU(comptime K: type, comptime V: type) type {
                 return node;
             }
 
-            fn deinit(self: *Node, allocator: std.mem.Allocator) !void {
+            fn deinit(self: *Node, allocator: std.mem.Allocator) void {
                 if (self.next) |node|
                     node.deinit(allocator);
                 allocator.destroy(self);
@@ -30,9 +30,21 @@ pub fn LRU(comptime K: type, comptime V: type) type {
         length: usize,
         map: std.AutoHashMap(K, *Node),
 
-        pub fn init() !void {}
+        pub fn init(allocator: std.mem.Allocator) !Self {
+            return .{
+                .allocator = allocator,
+                .head = null,
+                .tail = null,
+                .length = 0,
+                .map = std.AutoHashMap(K, *Node).init(allocator),
+            };
+        }
 
-        pub fn deinit() !void {}
+        pub fn deinit(self: *Self) void {
+            if (self.head) |head|
+                head.deinit(self.allocator);
+            self.map.deinit();
+        }
 
         pub fn update(self: *Self, key: K, value: V) !void {}
 
