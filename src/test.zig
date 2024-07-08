@@ -607,3 +607,8 @@ test "graph adjacency list dijkstra" {
     try testing.expectEqualSlices(usize, expect, result.?);
     if (result) |r| allocator.free(r);
 }
+
+test "lru init-deinit test" {
+    var my_lru = try ds.LRU(usize, isize).init(allocator);
+    defer my_lru.deinit();
+}

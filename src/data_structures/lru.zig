@@ -46,8 +46,8 @@ pub fn LRU(comptime K: type, comptime V: type) type {
             self.map.deinit();
         }
 
-        pub fn update(self: *Self, key: K, value: V) !void {}
+        //pub fn update(self: *Self, key: K, value: V) !void {}
 
-        pub fn get(self: *Self, key: K) !?V {}
+        //pub fn get(self: *Self, key: K) !?V {}
     };
 }
