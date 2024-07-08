@@ -126,5 +126,31 @@ pub fn LRU(comptime K: type, comptime V: type) type {
 
             self.length -= 1;
         }
+
+        pub fn count(self: *Self) usize {
+            var c: usize = 0;
+            var current = self.head;
+            while (current != null) {
+                current = current.?.next;
+                c += 1;
+            }
+            return c;
+        }
+
+        pub fn list(self: *Self) !?[]V {
+            if (self.head == null)
+                return null;
+
+            var l = std.ArrayList(V).init(self.allocator);
+            defer l.deinit();
+
+            var current = self.head;
+            while (current != null) {
+                try l.append(current.?.value);
+                current = current.?.next;
+            }
+
+            return try l.toOwnedSlice();
+        }
     };
 }

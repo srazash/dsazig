@@ -350,4 +350,32 @@ pub fn main() !void {
     //defer allocator.free(results);
 
     try stdout.print("my_graph_am bfs results -> {any}\n", .{results});
+
+    // LRU CACHE
+    var my_lru = try ds.LRU(usize, isize).init(allocator, 5);
+
+    try my_lru.update(0, -100);
+    try my_lru.update(1, -50);
+    try my_lru.update(2, 0);
+    try my_lru.update(3, 50);
+    try my_lru.update(4, 100);
+
+    try stdout.print("my_lru: length -> {}, capacity -> {}, count -> {}\n", .{ my_lru.length, my_lru.capacity, my_lru.count() });
+
+    var list = try my_lru.list();
+    try stdout.print("my_lru items -> {any}\n", .{list});
+
+    try my_lru.update(99, 999);
+    try stdout.print("my_lru: length -> {}, capacity -> {}, count -> {}\n", .{ my_lru.length, my_lru.capacity, my_lru.count() });
+
+    try stdout.print("my_lru: head -> {?}\n", .{my_lru.head.?.value});
+    try stdout.print("my_lru: tail -> {?}\n", .{my_lru.tail.?.value});
+
+    list = try my_lru.list();
+    try stdout.print("my_lru items -> {any}\n", .{list});
+
+    var get = my_lru.lookup.get(0);
+    try stdout.print("my_lru: 4 -> {?}\n", .{if (get) |node| node.value else null});
+    get = my_lru.lookup.get(99);
+    try stdout.print("my_lru: 99 -> {?}\n", .{if (get) |node| node.value else null});
 }
