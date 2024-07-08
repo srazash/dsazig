@@ -2,6 +2,14 @@ const std = @import("std");
 
 pub fn LRU(comptime K: type, comptime V: type) type {
     return struct {
+        allocator: std.mem.Allocator,
+        head: ?*Node,
+        tail: ?*Node,
+        length: usize,
+        capacity: usize,
+        lookup: std.AutoHashMap(K, *Node),
+        reverseLookup: std.AutoHashMap(*Node, K),
+
         const Self = @This();
 
         const Node = struct {
@@ -24,30 +32,40 @@ pub fn LRU(comptime K: type, comptime V: type) type {
             }
         };
 
-        allocator: std.mem.Allocator,
-        head: ?*Node,
-        tail: ?*Node,
-        length: usize,
-        map: std.AutoHashMap(K, *Node),
+        pub fn init(allocator: std.mem.Allocator, capacity: usize) !Self {
+            if (capacity > 0)
+                return error.InvalidCapacity;
 
-        pub fn init(allocator: std.mem.Allocator) !Self {
             return .{
                 .allocator = allocator,
                 .head = null,
                 .tail = null,
                 .length = 0,
-                .map = std.AutoHashMap(K, *Node).init(allocator),
+                .capacity = capacity,
+                .lookup = std.AutoHashMap(K, *Node).init(allocator),
+                .reverseLookup = std.AutoHashMap(*Node, K).init(allocator),
             };
         }
 
         pub fn deinit(self: *Self) void {
             if (self.head) |head|
                 head.deinit(self.allocator);
-            self.map.deinit();
+            self.lookup.deinit();
+            self.reverseLookup.deinit();
         }
 
-        //pub fn update(self: *Self, key: K, value: V) !void {}
+        pub fn update(self: *Self, key: K, value: V) !void {
+            if (self.lookup.contains(key)) {
+                return;
+            }
+        }
 
-        //pub fn get(self: *Self, key: K) !?V {}
+        fn insert(self: *Self, key: K, value: V) !void {
+            return;
+        }
+
+        pub fn get(self: *Self, key: K) !?V {
+            return;
+        }
     };
 }
