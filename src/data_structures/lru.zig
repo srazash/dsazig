@@ -33,7 +33,7 @@ pub fn LRU(comptime K: type, comptime V: type) type {
         };
 
         pub fn init(allocator: std.mem.Allocator, capacity: usize) !Self {
-            if (capacity > 0)
+            if (capacity <= 0)
                 return error.InvalidCapacity;
 
             return .{
@@ -55,17 +55,76 @@ pub fn LRU(comptime K: type, comptime V: type) type {
         }
 
         pub fn update(self: *Self, key: K, value: V) !void {
-            if (self.lookup.contains(key)) {
-                return;
+            var node = self.lookup.get(key);
+            if (node == null) {
+                node = try Node.init(self.allocator, value);
+
+                self.length += 1;
+                self.prepend(node.?);
+                self.prune();
+
+                try self.lookup.put(key, node.?);
+                try self.reverseLookup.put(node.?, key);
+            } else {
+                self.detach(node.?);
+                self.prepend(node.?);
+                node.?.value = value;
             }
         }
 
-        fn insert(self: *Self, key: K, value: V) !void {
-            return;
+        pub fn get(self: *Self, key: K) !?V {
+            const node = self.lookup.get(key);
+            if (node == null)
+                return null;
+
+            self.detach(node.?);
+            self.prepend(node.?);
+
+            return node.?.value;
         }
 
-        pub fn get(self: *Self, key: K) !?V {
-            return;
+        fn detach(self: *Self, node: *Node) void {
+            if (node.prev != null)
+                node.prev.?.next = node.next;
+
+            if (node.next != null)
+                node.next.?.prev = node.prev;
+
+            if (self.head == node)
+                self.head = self.head.?.next;
+
+            if (self.tail == node)
+                self.tail = self.tail.?.prev;
+
+            node.next = null;
+            node.prev = null;
+        }
+
+        fn prepend(self: *Self, node: *Node) void {
+            if (self.head == null) {
+                self.head = node;
+                self.tail = node;
+                return;
+            }
+
+            node.next = self.head.?;
+            self.head.?.prev = node;
+            self.head = node;
+        }
+
+        fn prune(self: *Self) void {
+            if (self.length <= self.capacity)
+                return;
+
+            const tail = self.tail;
+            self.detach(tail.?);
+            defer tail.?.deinit(self.allocator);
+
+            const key = self.reverseLookup.get(tail.?);
+            _ = self.lookup.remove(key.?);
+            _ = self.reverseLookup.remove(tail.?);
+
+            self.length -= 1;
         }
     };
 }

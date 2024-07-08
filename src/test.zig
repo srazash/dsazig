@@ -608,7 +608,27 @@ test "graph adjacency list dijkstra" {
     if (result) |r| allocator.free(r);
 }
 
-test "lru init-deinit test" {
-    var my_lru = try ds.LRU(usize, isize).init(allocator);
+test "lru test" {
+    var my_lru = try ds.LRU(usize, isize).init(allocator, 5);
     defer my_lru.deinit();
+
+    try testing.expect(my_lru.length == 0);
+    try testing.expect(my_lru.capacity == 5);
+
+    try my_lru.update(0, -100);
+    try my_lru.update(1, -50);
+    try my_lru.update(2, 0);
+    try my_lru.update(3, 50);
+    try my_lru.update(4, 100);
+
+    try testing.expect(my_lru.length == 5);
+    try testing.expect(my_lru.capacity == 5);
+
+    var result = try my_lru.get(0);
+    try testing.expect(result.? == -100);
+    try testing.expect(my_lru.head.?.value == -100);
+    result = try my_lru.get(1);
+    try testing.expect(result.? == -50);
+    try testing.expect(my_lru.head.?.value == -50);
+    try testing.expect(my_lru.head.?.next.?.value == -100);
 }
